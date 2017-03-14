@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Ezreal">
+      <UniqueIdentifier>{2b0fe6cd-2e32-4195-9f95-83d15f9cc3e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Corki">
+      <UniqueIdentifier>{22221ba8-16c0-4087-a5b5-be3edb88935c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vayne">
+      <UniqueIdentifier>{61d9b5ed-c2be-4946-a8a3-898c77fad9f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Jinx">
+      <UniqueIdentifier>{0265fc34-b918-4dc5-b59f-3490de72c7de}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LPPConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginSDK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Template.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainVariables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EzrealLoad.h">
+      <Filter>Ezreal</Filter>
+    </ClInclude>
+    <ClInclude Include="EzrealModes.h">
+      <Filter>Ezreal</Filter>
+    </ClInclude>
+    <ClInclude Include="EzrealConfig.h">
+      <Filter>Ezreal</Filter>
+    </ClInclude>
+    <ClInclude Include="EzrealVariables.h">
+      <Filter>Ezreal</Filter>
+    </ClInclude>
+    <ClInclude Include="CorkiLoad.h">
+      <Filter>Corki</Filter>
+    </ClInclude>
+    <ClInclude Include="CorkiVariables.h">
+      <Filter>Corki</Filter>
+    </ClInclude>
+    <ClInclude Include="CorkiConfig.h">
+      <Filter>Corki</Filter>
+    </ClInclude>
+    <ClInclude Include="CorkiModes.h">
+      <Filter>Corki</Filter>
+    </ClInclude>
+    <ClInclude Include="VayneLoad.h">
+      <Filter>Vayne</Filter>
+    </ClInclude>
+    <ClInclude Include="VayneVariables.h">
+      <Filter>Vayne</Filter>
+    </ClInclude>
+    <ClInclude Include="VayneConfig.h">
+      <Filter>Vayne</Filter>
+    </ClInclude>
+    <ClInclude Include="VayneModes.h">
+      <Filter>Vayne</Filter>
+    </ClInclude>
+    <ClInclude Include="JinxConfig.h">
+      <Filter>Jinx</Filter>
+    </ClInclude>
+    <ClInclude Include="JinxVariables.h">
+      <Filter>Jinx</Filter>
+    </ClInclude>
+    <ClInclude Include="JinxModes.h">
+      <Filter>Jinx</Filter>
+    </ClInclude>
+    <ClInclude Include="JinxLoad.h">
+      <Filter>Jinx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PluginSDK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
