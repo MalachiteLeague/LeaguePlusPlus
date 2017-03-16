@@ -3,7 +3,7 @@
 inline Vec3 VayneCondemnPos() {return Extend(Player()->GetPosition(), GGame->CursorPosition(), 300);}
 inline void VayneModeAfterAttack(IUnit* Source, IUnit* Target)
 {
-	if (Target == nullptr)
+	if (Target == nullptr || Target->IsDead())
 		return;
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo)
 	{

@@ -4,6 +4,8 @@
 #include "CorkiLoad.h"
 #include "VayneLoad.h"
 #include "JinxLoad.h"
+#include "TwitchLoad.h"
+#include "LucianLoad.h"
 
 PluginSetup("MalachiteAIO");
 
@@ -75,6 +77,9 @@ PLUGIN_EVENT(void) OnPreCast(int Slot, IUnit* Target, Vec3* StartPosition, Vec3*
 }
 PLUGIN_EVENT(void) OnDash(UnitDash* Args)
 {
+	//if (Args->Source->GetNetworkId() != Player()->GetNetworkId())
+	//	return;
+	//GGame->PrintChat(std::to_string(Distance(Args->EndPosition, Args->StartPosition)).c_str());
 }
 PLUGIN_EVENT(void) OnD3DPresent(void* Direct3D9DevicePtr)
 {
@@ -125,7 +130,7 @@ PLUGIN_EVENT(void) OnGameUpdate()
 SArray <string> ChampionList;
 PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 {
-	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx"});
+	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian"});
 	// Initializes global interfaces for core access
 	PluginSDKSetup(PluginSDK);
 	if (!ChampionList.Any([&](string i) {return  Contains(GEntityList->Player()->ChampionName(), i); }))
@@ -139,7 +144,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	InitOnLoad();
 
 	GEventManager->AddEventHandler(kEventOnGameUpdate, OnGameUpdate);
-
+	GEventManager->AddEventHandler(kEventOnDash, OnDash);
 	if (Contains(GEntityList->Player()->ChampionName(), "ezreal"))
 	{
 		EzrealOnLoad();
@@ -155,6 +160,14 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	else if (Contains(GEntityList->Player()->ChampionName(), "jinx"))
 	{
 		JinxOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "twitch"))
+	{
+		TwitchOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "lucian"))
+	{
+		LucianOnload();
 	}
 }
 
@@ -172,6 +185,7 @@ PLUGIN_API void OnUnload()
 	InitUnload();
 
 	GEventManager->RemoveEventHandler(kEventOnGameUpdate, OnGameUpdate);
+	GEventManager->RemoveEventHandler(kEventOnDash, OnDash);
 
 	if (Contains(GEntityList->Player()->ChampionName(), "ezreal"))
 	{
@@ -188,5 +202,13 @@ PLUGIN_API void OnUnload()
 	else if (Contains(GEntityList->Player()->ChampionName(), "jinx"))
 	{
 		JinxUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "twitch"))
+	{
+		TwitchUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "lucian"))
+	{
+		LucianUnload();
 	}
 }

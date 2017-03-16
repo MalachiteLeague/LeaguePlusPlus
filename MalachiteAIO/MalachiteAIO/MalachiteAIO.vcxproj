@@ -167,6 +167,14 @@
     <ClInclude Include="EzrealLoad.h" />
     <ClInclude Include="EzrealModes.h" />
     <ClInclude Include="EzrealVariables.h" />
+    <ClInclude Include="LucianLoad.h" />
+    <ClInclude Include="LucianVariables.h" />
+    <ClInclude Include="LucianModes.h" />
+    <ClInclude Include="LucianConfig.h" />
+    <ClInclude Include="TwitchConfig.h" />
+    <ClInclude Include="TwitchLoad.h" />
+    <ClInclude Include="TwitchModes.h" />
+    <ClInclude Include="TwitchVariables.h" />
     <ClInclude Include="JinxConfig.h" />
     <ClInclude Include="JinxVariables.h" />
     <ClInclude Include="JinxModes.h" />

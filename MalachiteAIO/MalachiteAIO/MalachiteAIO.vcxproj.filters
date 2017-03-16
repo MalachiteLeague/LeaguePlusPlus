@@ -25,6 +25,12 @@
     <Filter Include="Jinx">
       <UniqueIdentifier>{0265fc34-b918-4dc5-b59f-3490de72c7de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Twitch">
+      <UniqueIdentifier>{dd127a7e-664b-4123-bffe-d3ce43cf9dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lucian">
+      <UniqueIdentifier>{b0bd6add-ab8c-4242-a583-07e71dd3007a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -95,6 +101,30 @@
     </ClInclude>
     <ClInclude Include="JinxLoad.h">
       <Filter>Jinx</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchConfig.h">
+      <Filter>Twitch</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchLoad.h">
+      <Filter>Twitch</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchModes.h">
+      <Filter>Twitch</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchVariables.h">
+      <Filter>Twitch</Filter>
+    </ClInclude>
+    <ClInclude Include="LucianLoad.h">
+      <Filter>Lucian</Filter>
+    </ClInclude>
+    <ClInclude Include="LucianVariables.h">
+      <Filter>Lucian</Filter>
+    </ClInclude>
+    <ClInclude Include="LucianModes.h">
+      <Filter>Lucian</Filter>
+    </ClInclude>
+    <ClInclude Include="LucianConfig.h">
+      <Filter>Lucian</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
