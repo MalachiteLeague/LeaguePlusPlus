@@ -34,6 +34,9 @@
     <Filter Include="Jhin">
       <UniqueIdentifier>{e3d497e7-34f3-4fb8-bbcc-7ede2e976a02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sivir">
+      <UniqueIdentifier>{2afe3582-f12a-4c01-b169-c33c4edd76ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -140,6 +143,18 @@
     </ClInclude>
     <ClInclude Include="JhinVariables.h">
       <Filter>Jhin</Filter>
+    </ClInclude>
+    <ClInclude Include="SivirLoad.h">
+      <Filter>Sivir</Filter>
+    </ClInclude>
+    <ClInclude Include="SivirModes.h">
+      <Filter>Sivir</Filter>
+    </ClInclude>
+    <ClInclude Include="SivirConfig.h">
+      <Filter>Sivir</Filter>
+    </ClInclude>
+    <ClInclude Include="SivirVariables.h">
+      <Filter>Sivir</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

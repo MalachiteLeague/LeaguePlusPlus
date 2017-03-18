@@ -167,6 +167,10 @@
     <ClInclude Include="EzrealLoad.h" />
     <ClInclude Include="EzrealModes.h" />
     <ClInclude Include="EzrealVariables.h" />
+    <ClInclude Include="SivirLoad.h" />
+    <ClInclude Include="SivirModes.h" />
+    <ClInclude Include="SivirConfig.h" />
+    <ClInclude Include="SivirVariables.h" />
     <ClInclude Include="JhinLoad.h" />
     <ClInclude Include="JhinModes.h" />
     <ClInclude Include="JhinConfig.h" />

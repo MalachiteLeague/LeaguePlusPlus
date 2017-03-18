@@ -7,6 +7,7 @@
 #include "TwitchLoad.h"
 #include "LucianLoad.h"
 #include "JhinLoad.h"
+#include "SivirLoad.h"
 
 PluginSetup("MalachiteAIO");
 
@@ -127,11 +128,18 @@ PLUGIN_EVENT(void) OnGameUpdate()
 			}
 		}
 	}
+	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo && Player()->HasItemId(3142))
+	{
+		if (CountEnemiesInRange(Player()->GetPosition(), 800) >= 1)
+		{
+			CastItemOnUnit(3142, 500, nullptr);
+		}
+	}
 }
 SArray <string> ChampionList;
 PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 {
-	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin"});
+	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin", "sivir"});
 	// Initializes global interfaces for core access
 	PluginSDKSetup(PluginSDK);
 	if (!ChampionList.Any([&](string i) {return  Contains(GEntityList->Player()->ChampionName(), i); }))
@@ -173,6 +181,10 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	else if (Contains(GEntityList->Player()->ChampionName(), "jhin"))
 	{
 		JhinOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "sivir"))
+	{
+		SivirOnload();
 	}
 }
 
@@ -219,5 +231,9 @@ PLUGIN_API void OnUnload()
 	else if (Contains(GEntityList->Player()->ChampionName(), "jhin"))
 	{
 		JhinUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "sivir"))
+	{
+		SivirUnload();
 	}
 }

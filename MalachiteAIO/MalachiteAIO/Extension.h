@@ -254,13 +254,6 @@ inline Vec3 Extend(Vec3 from, Vec3 to, float distance)
 	auto direction = (to - from).VectorNormalize();
 	return from + direction * realDistance;
 }
-inline int CountEnemiesInRange(Vec3 Position, float Range)
-{
-	vector<IUnit*> a;
-	a = SArray<IUnit*>(GEntityList->GetAllHeros(false, true)).Where([&](IUnit* i) { return
-		i != nullptr && !i->IsDead() && Distance(i->GetPosition(), Position) <= Range; }).ToVector();
-	return a.size();
-}
 
 inline SArray<IUnit*> ValidTargets(vector<IUnit*> input)
 {
@@ -272,39 +265,39 @@ inline SArray<IUnit*> ValidAllies(vector<IUnit*> input)
 	SArray<IUnit*> targets = SArray<IUnit*>(input);
 	return  targets.Where([](IUnit* i) {return i != nullptr && !i->IsDead(); });
 }
-inline bool IsValidTarget(IUnit* target, float range = 100000)
+inline bool IsValidTarget(IUnit* target, float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return target != nullptr && GEntityList->Player()->IsValidTarget(target, range) && Distance(GEntityList->Player(), target) <= range;
+	return target != nullptr && GEntityList->Player()->IsValidTarget(target, range) && Distance(target, RangeCheckFrom) <= range;
 }
-inline bool IsValidAllies(IUnit* target, float range = 100000)
+inline bool IsValidAllies(IUnit* target, float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return target != nullptr && !target->IsDead() && Distance(GEntityList->Player(), target) <= range;
+	return target != nullptr && !target->IsDead() && Distance(target, RangeCheckFrom) <= range;
 }
-inline bool IsValidBoth(IUnit* target, float range = 100000)
+inline bool IsValidBoth(IUnit* target, float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return (target->IsEnemy(GEntityList->Player()) && IsValidTarget(target, range))
-		|| (!target->IsEnemy(GEntityList->Player()) && IsValidAllies(target, range));
+	return (target->IsEnemy(GEntityList->Player()) && IsValidTarget(target, range, RangeCheckFrom))
+		|| (!target->IsEnemy(GEntityList->Player()) && IsValidAllies(target, range, RangeCheckFrom));
 }
-inline SArray<IUnit*> EnemyMinions(float range = 100000)
+inline SArray<IUnit*> EnemyMinions(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllMinions(false, true, false)).Where([&](IUnit* i) {return IsValidTarget(i, range) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
+	return SArray<IUnit*>(GEntityList->GetAllMinions(false, true, false)).Where([&](IUnit* i) {return IsValidTarget(i, range, RangeCheckFrom) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
 }
-inline SArray<IUnit*> AllyMinions(float range = 100000)
+inline SArray<IUnit*> AllyMinions(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllMinions(true, false, false)).Where([&](IUnit* i) {return IsValidAllies(i, range) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
+	return SArray<IUnit*>(GEntityList->GetAllMinions(true, false, false)).Where([&](IUnit* i) {return IsValidAllies(i, range, RangeCheckFrom) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
 }
-inline SArray<IUnit*> NeutralMinions(float range = 100000)
+inline SArray<IUnit*> NeutralMinions(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllMinions(false, false, true)).Where([&](IUnit* i) {return IsValidTarget(i, range) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
+	return SArray<IUnit*>(GEntityList->GetAllMinions(false, false, true)).Where([&](IUnit* i) {return IsValidTarget(i, range, RangeCheckFrom) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
 }
-inline SArray<IUnit*> AllMinions(float range = 100000)
+inline SArray<IUnit*> AllMinions(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllMinions(true, true, true)).Where([&](IUnit* i) {return IsValidBoth(i, range) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
+	return SArray<IUnit*>(GEntityList->GetAllMinions(true, true, true)).Where([&](IUnit* i) {return IsValidBoth(i, range, RangeCheckFrom) && !IsWard(i) && !Contains(i->GetObjectName(), "barrel"); });
 }
-inline SArray<IUnit*> WardMinions(float range = 100000, bool jungle = true, bool ally = true, bool enemy = true)
+inline SArray<IUnit*> WardMinions(float range = 100000, bool jungle = true, bool ally = true, bool enemy = true, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
 	SArray<IUnit*> allwards = SArray<IUnit*>(GEntityList->GetAllMinions(true, true, true))
-		.Where([&](IUnit* i) {return IsValidBoth(i, range) && IsWard(i); });
+		.Where([&](IUnit* i) {return IsValidBoth(i, range, RangeCheckFrom) && IsWard(i); });
 	SArray<IUnit*> junglewards = allwards.Where([](IUnit* i) {return i->IsJungleCreep(); });
 	SArray<IUnit*> enemywards = allwards.Where([](IUnit* i) {return GEntityList->Player()->IsEnemy(i); });
 	SArray<IUnit*> allywards = allwards.Where([](IUnit* i) {return !GEntityList->Player()->IsEnemy(i); });
@@ -314,6 +307,13 @@ inline SArray<IUnit*> WardMinions(float range = 100000, bool jungle = true, bool
 	if (enemy) returnwards.AddRange(enemywards);
 	return returnwards;
 }
+inline int CountEnemiesInRange(Vec3 Position, float Range)
+{
+	vector<IUnit*> a;
+	a = SArray<IUnit*>(GEntityList->GetAllHeros(false, true)).Where([&](IUnit* i) { return
+		IsValidTarget(i) && Distance(i->GetPosition(), Position) <= Range; }).ToVector();
+	return a.size();
+}
 inline int CountMinionsInRange(Vec3 Position, float Range, bool enemy = true, bool neutral = false, bool ally = false)
 {
 	int i = 0;
@@ -322,17 +322,17 @@ inline int CountMinionsInRange(Vec3 Position, float Range, bool enemy = true, bo
 	if (ally) i += AllyMinions().Where([&](IUnit* i) {return Distance(i, Position) <= Range; }).Count();
 	return i;
 }
-inline SArray<IUnit*> ValidEnemies(float range = 100000)
+inline SArray<IUnit*> ValidEnemies(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllHeros(false, true)).Where([&](IUnit* i) {return IsValidTarget(i, range); });
+	return SArray<IUnit*>(GEntityList->GetAllHeros(false, true)).Where([&](IUnit* i) {return IsValidTarget(i, range, RangeCheckFrom); });
 }
-inline SArray<IUnit*> ValidAllies(float range = 100000)
+inline SArray<IUnit*> ValidAllies(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllHeros(true, false)).Where([&](IUnit* i) {return IsValidAllies(i, range); });
+	return SArray<IUnit*>(GEntityList->GetAllHeros(true, false)).Where([&](IUnit* i) {return IsValidAllies(i, range, RangeCheckFrom); });
 }
-inline SArray<IUnit*> ValidAllHeroes(float range = 100000)
+inline SArray<IUnit*> ValidAllHeroes(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return SArray<IUnit*>(GEntityList->GetAllHeros(true, true)).Where([&](IUnit* i) {return IsValidBoth(i, range); });
+	return SArray<IUnit*>(GEntityList->GetAllHeros(true, true)).Where([&](IUnit* i) {return IsValidBoth(i, range, RangeCheckFrom); });
 }
 inline bool InAutoAttackRange(IUnit* target)
 {
@@ -372,6 +372,32 @@ inline void CastItemOnUnit(int itemid, float range, IUnit* target)
 inline bool IsCCed (IUnit * hero)
 {
 	return hero->HasBuffOfType(BUFF_Stun) || hero->HasBuffOfType(BUFF_Snare) || hero->HasBuffOfType(BUFF_Suppression) || hero->HasBuffOfType(BUFF_Charm) || hero->HasBuffOfType(BUFF_Snare);
+}
+void FindBestLineCastPosition(vector<Vec3> RangeCheckFroms, float range, float radius, bool Minions, bool Heroes, Vec3& CastPosition , int& HitCounts, Vec3& CastPositionFrom)
+{
+	HitCounts = 0;
+	for (Vec3 RangeCheckFrom : RangeCheckFroms)
+	{
+		auto minions = EnemyMinions(range, RangeCheckFrom);
+		auto heroes = ValidEnemies(range, RangeCheckFrom);
+		SArray<IUnit*> targets;
+		if (Minions)
+			targets.AddRange(minions);
+		if (Heroes)
+			targets.AddRange(heroes);
+		for (auto target : targets.ToVector())
+		{
+			Vec3 endpos = Extend(RangeCheckFrom, target->GetPosition(), range);
+			int count = targets.Where([&](IUnit* i) 
+				{ return Distance(i->GetPosition(), Extend(RangeCheckFrom, endpos, -radius/2), Extend(endpos, RangeCheckFrom, - radius/2), true) <= radius / 2 + i->BoundingRadius(); }).Count();
+			if (count > HitCounts)
+			{
+				HitCounts = count;
+				CastPosition = endpos;
+			}
+		}
+	}
+
 }
 inline Vec4 Red() { return Vec4(255, 0, 0, 255); }
 inline Vec4 Green() { return Vec4(0, 255, 0, 255); }
