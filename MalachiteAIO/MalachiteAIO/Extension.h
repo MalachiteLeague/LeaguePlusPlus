@@ -161,6 +161,12 @@ inline bool Contains(string Container, string Contained)
 	if (LoweredContainer.find(LoweredContained) != string::npos) return true;
 	else return false;
 }
+inline bool Equals(string a , string b)
+{
+	if (strcmp(a.c_str(), b.c_str()) == 0)
+		return true;
+	return false;
+}
 //isward
 inline bool IsWard(IUnit* target)
 {
@@ -175,6 +181,19 @@ inline Vec2 ToVec2(Vec3 vec)
 inline Vec3 ToVec3(Vec2 vec)
 {
 	return Vec3(vec.x, 0, vec.y);
+}
+inline Vec3 Normalize(Vec3 x)
+{
+	float sqr = x.x * x.x + x.y * x.y + x.z * x.z;
+	return x * (1.0f / sqrt(sqr));
+}
+inline Vec3 Pendicular (Vec3 x)
+{
+	auto X1 = ToVec2(x);
+	Vec2 X2;
+	X2.x = -X1.y;
+	X2.y = X1.x;
+	return ToVec3(X2);
 }
 
 inline float Distance(Vec3 from, Vec3 to)
@@ -191,6 +210,16 @@ inline float AngleBetween(Vec3 a, Vec3 center, Vec3 c)
 	{
 		return acos((a1 * a1 + c1 * c1 - b1 * b1) / (2 * a1 * c1)) * (180 / PI);
 	}
+}
+
+inline bool InTheCone(Vec3 pos, Vec3 centerconePolar, Vec3 centerconeEnd, float coneAngle)
+
+{
+
+	return AngleBetween(pos, centerconePolar, centerconeEnd) < coneAngle / 2
+
+		&& Distance(pos, centerconePolar) < Distance(centerconePolar, centerconeEnd);
+
 }
 inline float Distance(Vec3 point, Vec3 segmentStart, Vec3 segmentEnd, bool onlyIfOnSegment = false)
 {
@@ -339,6 +368,10 @@ inline void CastItemOnUnit(int itemid, float range, IUnit* target)
 			Item->CastOnPlayer();
 		}
 	}
+}
+inline bool IsCCed (IUnit * hero)
+{
+	return hero->HasBuffOfType(BUFF_Stun) || hero->HasBuffOfType(BUFF_Snare) || hero->HasBuffOfType(BUFF_Suppression) || hero->HasBuffOfType(BUFF_Charm) || hero->HasBuffOfType(BUFF_Snare);
 }
 inline Vec4 Red() { return Vec4(255, 0, 0, 255); }
 inline Vec4 Green() { return Vec4(0, 255, 0, 255); }

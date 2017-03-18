@@ -31,6 +31,9 @@
     <Filter Include="Lucian">
       <UniqueIdentifier>{b0bd6add-ab8c-4242-a583-07e71dd3007a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Jhin">
+      <UniqueIdentifier>{e3d497e7-34f3-4fb8-bbcc-7ede2e976a02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -125,6 +128,18 @@
     </ClInclude>
     <ClInclude Include="LucianConfig.h">
       <Filter>Lucian</Filter>
+    </ClInclude>
+    <ClInclude Include="JhinLoad.h">
+      <Filter>Jhin</Filter>
+    </ClInclude>
+    <ClInclude Include="JhinModes.h">
+      <Filter>Jhin</Filter>
+    </ClInclude>
+    <ClInclude Include="JhinConfig.h">
+      <Filter>Jhin</Filter>
+    </ClInclude>
+    <ClInclude Include="JhinVariables.h">
+      <Filter>Jhin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@
 #include "JinxLoad.h"
 #include "TwitchLoad.h"
 #include "LucianLoad.h"
+#include "JhinLoad.h"
 
 PluginSetup("MalachiteAIO");
 
@@ -130,7 +131,7 @@ PLUGIN_EVENT(void) OnGameUpdate()
 SArray <string> ChampionList;
 PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 {
-	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian"});
+	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin"});
 	// Initializes global interfaces for core access
 	PluginSDKSetup(PluginSDK);
 	if (!ChampionList.Any([&](string i) {return  Contains(GEntityList->Player()->ChampionName(), i); }))
@@ -168,6 +169,10 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	else if (Contains(GEntityList->Player()->ChampionName(), "lucian"))
 	{
 		LucianOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "jhin"))
+	{
+		JhinOnload();
 	}
 }
 
@@ -210,5 +215,9 @@ PLUGIN_API void OnUnload()
 	else if (Contains(GEntityList->Player()->ChampionName(), "lucian"))
 	{
 		LucianUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "jhin"))
+	{
+		JhinUnload();
 	}
 }

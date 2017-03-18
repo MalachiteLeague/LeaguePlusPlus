@@ -167,6 +167,10 @@
     <ClInclude Include="EzrealLoad.h" />
     <ClInclude Include="EzrealModes.h" />
     <ClInclude Include="EzrealVariables.h" />
+    <ClInclude Include="JhinLoad.h" />
+    <ClInclude Include="JhinModes.h" />
+    <ClInclude Include="JhinConfig.h" />
+    <ClInclude Include="JhinVariables.h" />
     <ClInclude Include="LucianLoad.h" />
     <ClInclude Include="LucianVariables.h" />
     <ClInclude Include="LucianModes.h" />
