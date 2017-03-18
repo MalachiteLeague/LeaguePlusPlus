@@ -122,7 +122,7 @@ inline void JhinModeOnUpdate()
 		}
 	}
 	{
-		if (Equals(Player()->GetSpellName(kSlotR), "JhinRShot"))
+		if (JhinAutoR->Enabled() && Equals(Player()->GetSpellName(kSlotR), "JhinRShot"))
 		{
 			SArray<IUnit*> ignoredTarget;
 			ignoredTarget.AddRange(ValidEnemies(R->Range()).Where([&](IUnit* i) {return !InTheCone(i->GetPosition(), Player()->GetPosition(), Player()->GetPosition() + Normalize(Player()->Direction())* R->Range(), 60); }));
@@ -136,9 +136,12 @@ inline void JhinModeOnUpdate()
 			return;
 		if (!GOrbwalking->CanMove())
 			return;
-		for (auto target : ValidEnemies(W->Range()).Where([&](IUnit* i) {return IsCCed(i); }).ToVector())
+		if (JhinAutoW->Enabled())
 		{
-			W->CastOnTarget(target, kHitChanceMedium);
+			for (auto target : ValidEnemies(W->Range()).Where([&](IUnit* i) {return IsCCed(i); }).ToVector())
+			{
+				W->CastOnTarget(target, kHitChanceMedium);
+			}
 		}
 	}
 }
