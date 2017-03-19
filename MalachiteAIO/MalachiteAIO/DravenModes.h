@@ -70,7 +70,7 @@ inline void DravenModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, E->Range());
 			if (IsValidTarget(target))
 			{
-				E->CastOnTarget(target, kHitChanceMedium);
+				E->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 		if (DravenComboR->Enabled() && DravenIsR1())
@@ -78,7 +78,7 @@ inline void DravenModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, 2000);
 			if (IsValidTarget(target) && GetSpellDamage(target, kSlotR) >= target->GetHealth())
 			{
-				R->CastOnTarget(target, kHitChanceMedium);
+				R->CastOnTarget(target, kHitChanceHigh);
 			}
 			Vec3 CastPosition;
 			Vec3 CastPositionFrom;
@@ -112,7 +112,7 @@ inline void DravenModeOnGapClose(GapCloserSpell const& Args)
 		return;
 	if (Args.Sender == nullptr || !InSpellRange(E, Args.Sender))
 		return;
-	E->CastOnTarget(Args.Sender, kHitChanceMedium);
+	E->CastOnTarget(Args.Sender, kHitChanceHigh);
 }
 inline void DravenModeOnInterrupt(InterruptibleSpell const& Args)
 {
@@ -120,7 +120,7 @@ inline void DravenModeOnInterrupt(InterruptibleSpell const& Args)
 		return;
 	if (Args.Target == nullptr || !InSpellRange(E, Args.Target))
 		return;
-	E->CastOnTarget(Args.Target, kHitChanceMedium);
+	E->CastOnTarget(Args.Target, kHitChanceHigh);
 }
 inline void DravenModeOnRender ()
 {

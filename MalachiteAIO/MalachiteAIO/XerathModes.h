@@ -11,13 +11,25 @@ inline void XerathModeOnUpdate()
 		R->SetOverrideRange(5800);
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo)
 	{
+		if (XerathComboE->Enabled())
+		{
+			auto target = SelectTarget(SpellDamage, E->Range());
+			if (IsValidTarget(target))
+				E->CastOnTarget(target, kHitChanceHigh);
+		}
+		if (XerathComboW->Enabled())
+		{
+			auto target = SelectTarget(SpellDamage, W->Range());
+			if (IsValidTarget(target))
+				W->CastOnTarget(target, kHitChanceHigh);
+		}
 		if (Q->IsReady() && XerathComboQ->Enabled())
 		{
 			if (Q->IsCharging())
 			{
 				auto target = SelectTarget(SpellDamage, Q->Range());
 				if (IsValidTarget(target))
-					Q->CastOnTarget(target, kHitChanceMedium);
+					Q->CastOnTarget(target, kHitChanceHigh);
 			}
 			if (!Q->IsCharging())
 			{
@@ -25,31 +37,25 @@ inline void XerathModeOnUpdate()
 				if (IsValidTarget(target))
 					Q->StartCharging();
 			}
-		}
-		if (XerathComboW->Enabled())
-		{
-			auto target = SelectTarget(SpellDamage, W->Range());
-			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceMedium);
-		}
-		if (XerathComboE->Enabled())
-		{
-			auto target = SelectTarget(SpellDamage, E->Range());
-			if (IsValidTarget(target))
-				E->CastOnTarget(target, kHitChanceMedium);
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed)
 	{
 		if (Player()->ManaPercent() <= XerathHarassMana->GetInteger())
 			return;
+		if (XerathHarassW->Enabled())
+		{
+			auto target = SelectTarget(SpellDamage, W->Range());
+			if (IsValidTarget(target))
+				W->CastOnTarget(target, kHitChanceHigh);
+		}
 		if (Q->IsReady() && XerathHarassQ->Enabled())
 		{
 			if (Q->IsCharging())
 			{
 				auto target = SelectTarget(SpellDamage, Q->Range());
 				if (IsValidTarget(target))
-					Q->CastOnTarget(target, kHitChanceMedium);
+					Q->CastOnTarget(target, kHitChanceHigh);
 			}
 			if (!Q->IsCharging())
 			{
@@ -57,12 +63,6 @@ inline void XerathModeOnUpdate()
 				if (IsValidTarget(target))
 					Q->StartCharging();
 			}
-		}
-		if (XerathHarassW->Enabled())
-		{
-			auto target = SelectTarget(SpellDamage, W->Range());
-			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceMedium);
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear && Player()->ManaPercent() >= XerathFarmMana->GetInteger())
@@ -88,7 +88,7 @@ inline void XerathModeOnUpdate()
 				&ValidEnemies().Where([&](IUnit* i) {return Distance(i, GGame->CursorPosition()) > XerathAutoRDistance->GetInteger(); }).ToVector());
 			if (IsValidTarget(target))
 			{
-				R->CastOnTarget(target, kHitChanceMedium);
+				R->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 	}

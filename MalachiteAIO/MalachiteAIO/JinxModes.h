@@ -52,7 +52,7 @@ inline void JinxModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target) && !IsInAutoAttackRange(target))
 			{
-				W->CastOnTarget(target, kHitChanceMedium);
+				W->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 		if (JinxComboE->Enabled())
@@ -60,7 +60,7 @@ inline void JinxModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, E->Range());
 			if (IsValidTarget(target))
 			{
-				E->CastOnTarget(target, kHitChanceMedium);
+				E->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 		if (JinxComboR->Enabled())
@@ -99,7 +99,7 @@ inline void JinxModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target) && !IsInAutoAttackRange(target))
 			{
-				W->CastOnTarget(target, kHitChanceMedium);
+				W->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 	}

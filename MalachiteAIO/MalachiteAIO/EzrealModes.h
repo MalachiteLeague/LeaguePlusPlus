@@ -36,7 +36,7 @@ inline void EzrealComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (EzealComboW->Enabled())
@@ -44,7 +44,7 @@ inline void EzrealComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, W->Range());
 		if (IsValidTarget(target))
 		{
-			W->CastOnTarget(target, kHitChanceMedium);
+			W->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (EzealComboR->Enabled() && CountEnemiesInRange(Player()->GetPosition(), 1000) == 0)
@@ -52,7 +52,7 @@ inline void EzrealComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage,2000);
 		if (IsValidTarget(target) && GetSpellDamage(target,kSlotR) >= target->GetHealth() / 1.5)
 		{
-			R->CastOnTarget(target, kHitChanceMedium);
+			R->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 }
@@ -69,7 +69,7 @@ inline void EzrealHarassOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (EzealHarassW->Enabled())
@@ -77,7 +77,7 @@ inline void EzrealHarassOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, W->Range());
 		if (IsValidTarget(target))
 		{
-			W->CastOnTarget(target, kHitChanceMedium);
+			W->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 }
@@ -94,7 +94,7 @@ inline void EzrealLastHitOnUpdate()
 		auto targets = EnemyMinions(Q->Range()).Where([&](IUnit* i) {return GetSpellDamage(i, kSlotQ) >= i->GetHealth(); }).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 }
@@ -111,7 +111,7 @@ inline void EzrealLaneJungOnUpdate()
 		auto targets = NeutralMinions(Q->Range()).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}	
 	if (EzealLaneClearQ->Enabled())
@@ -119,7 +119,7 @@ inline void EzrealLaneJungOnUpdate()
 		auto targets = EnemyMinions(Q->Range()).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 
@@ -135,7 +135,7 @@ inline void EzrealAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (EzealAutoW->Enabled())
@@ -143,7 +143,7 @@ inline void EzrealAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, W->Range());
 		if (IsValidTarget(target))
 		{
-			W->CastOnTarget(target, kHitChanceMedium);
+			W->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (Player()->HasItemId(3070) || Player()->HasItemId(3004) || Player()->HasItemId(3003))

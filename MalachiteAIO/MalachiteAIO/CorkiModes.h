@@ -35,7 +35,7 @@ inline void CorkiComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (CorkiComboE->Enabled())
@@ -51,7 +51,7 @@ inline void CorkiComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, R->Range());
 		if (IsValidTarget(target))
 		{
-			R->CastOnTarget(target, kHitChanceMedium);
+			R->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 }
@@ -68,7 +68,7 @@ inline void CorkiHarassOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (CorkiHarassE->Enabled())
@@ -93,7 +93,7 @@ inline void CorkiLastHitOnUpdate()
 		auto targets = EnemyMinions(Q->Range()).Where([&](IUnit* i) {return GetSpellDamage(i, kSlotQ) >= i->GetHealth(); }).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 }
@@ -110,7 +110,7 @@ inline void CorkiLaneJungOnUpdate()
 		auto targets = NeutralMinions(Q->Range()).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (CorkiJungleClearE->Enabled())
@@ -126,7 +126,7 @@ inline void CorkiLaneJungOnUpdate()
 		auto targets = EnemyMinions(Q->Range()).Where([&](IUnit* i) {return CountMinionsInRange(i->GetPosition(), 250) >= 3; }).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target,kHitChanceMedium);
+			Q->CastOnTarget(target,kHitChanceHigh);
 		}
 	}
 	if (CorkiLaneClearE->Enabled())
@@ -148,7 +148,7 @@ inline void CorkiAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceMedium);
+			Q->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 	if (CorkiAutoR->Enabled() && Player()->GetSpellBook()->GetAmmo(kSlotR) >=  CorkiAutoRAtStack->GetInteger())
@@ -156,7 +156,7 @@ inline void CorkiAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, R->Range());
 		if (IsValidTarget(target))
 		{
-			R->CastOnTarget(target, kHitChanceMedium);
+			R->CastOnTarget(target, kHitChanceHigh);
 		}
 	}
 }

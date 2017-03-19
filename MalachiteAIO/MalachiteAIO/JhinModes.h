@@ -45,7 +45,7 @@ inline void JhinModeOnUpdate()
 		{
 			for (IUnit* hero : ValidEnemies(W->Range()).Where([&](IUnit* i) {return JhinTargetHasPassive(i); }).ToVector())
 			{
-				W->CastOnTarget(hero, kHitChanceMedium);
+				W->CastOnTarget(hero, kHitChanceHigh);
 			}
 		}
 		if (JhinComboE->Enabled())
@@ -77,7 +77,7 @@ inline void JhinModeOnUpdate()
 		{
 			for (IUnit* hero : ValidEnemies(W->Range()).Where([&](IUnit* i) {return JhinTargetHasPassive(i); }).ToVector())
 			{
-				W->CastOnTarget(hero, kHitChanceMedium);
+				W->CastOnTarget(hero, kHitChanceHigh);
 			}
 		}
 
@@ -129,7 +129,7 @@ inline void JhinModeOnUpdate()
 			auto target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, R->Range(), nullptr, true, &ignoredTarget.ToVector());
 			if (IsValidTarget(target))
 			{
-				R->CastOnTarget(target, kHitChanceMedium);
+				R->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 		if (Equals(Player()->GetSpellName(kSlotR), "JhinRShot"))
@@ -140,7 +140,7 @@ inline void JhinModeOnUpdate()
 		{
 			for (auto target : ValidEnemies(W->Range()).Where([&](IUnit* i) {return IsCCed(i); }).ToVector())
 			{
-				W->CastOnTarget(target, kHitChanceMedium);
+				W->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 	}

@@ -90,7 +90,7 @@ inline void SivirModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, Q->Range());
 			if (IsValidTarget(target))
 			{
-				Q->CastOnTarget(target, kHitChanceMedium);
+				Q->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 		if (SivirComboR->Enabled())
@@ -110,7 +110,7 @@ inline void SivirModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, Q->Range());
 			if (IsValidTarget(target))
 			{
-				Q->CastOnTarget(target, kHitChanceMedium);
+				Q->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 	}
@@ -134,7 +134,7 @@ inline void SivirModeOnUpdate()
 			auto targets = NeutralMinions(Q->Range()).OrderBy<float>([&](IUnit* i) {return 1- i->GetMaxHealth(); });
 			for (auto target : targets.ToVector())
 			{
-				Q->CastOnTarget(target, kHitChanceMedium);
+				Q->CastOnTarget(target, kHitChanceHigh);
 			}
 		}
 	}

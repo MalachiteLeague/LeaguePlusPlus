@@ -58,7 +58,7 @@ inline  void TwitchModeOnUpdate()
 		{
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceMedium);
+				W->CastOnTarget(target, kHitChanceHigh);
 		}
 		if (TwitchComboE->Enabled())
 		{
@@ -87,7 +87,7 @@ inline  void TwitchModeOnUpdate()
 		{
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceMedium);
+				W->CastOnTarget(target, kHitChanceHigh);
 		}
 		if (TwitchHarassE->Enabled())
 		{
