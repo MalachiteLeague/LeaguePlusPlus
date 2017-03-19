@@ -29,8 +29,7 @@ IMenuOption* XerathHarassMana;
 IMenuOption* XerathLastHitQ;
 
 //laneclear
-IMenuOption* XerathLaneClearQ;
-IMenuOption* XerathLaneClearE;
+IMenuOption* XerathLaneClearW;
 
 
 //jungleclear
@@ -71,7 +70,7 @@ inline void XerathMenuAndSpells()
 	XerathHarassMana = XerathHarassMenu->AddInteger("Mana %", 0, 100, 0);
 
 	XerathFarmMenu = XerathMainMenu->AddMenu("Farm Settings");
-	XerathLaneClearE = XerathFarmMenu->CheckBox("LaneClear W", true);
+	XerathLaneClearW = XerathFarmMenu->CheckBox("LaneClear W", true);
 	XerathFarmMana = XerathFarmMenu->AddInteger("Mana %", 0, 100, 0);
 
 	XerathAutoMenu = XerathMainMenu->AddMenu("Auto Settings");

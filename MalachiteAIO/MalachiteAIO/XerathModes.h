@@ -69,7 +69,7 @@ inline void XerathModeOnUpdate()
 	{
 		if (!GOrbwalking->CanMove())
 			return;
-		if (XerathLaneClearQ->Enabled())
+		if (XerathLaneClearW->Enabled())
 		{
 			Vec3 CastPosition;
 			int HitCount;
