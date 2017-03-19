@@ -394,6 +394,7 @@ void FindBestLineCastPosition(vector<Vec3> RangeCheckFroms, float range, float r
 			{
 				HitCounts = count;
 				CastPosition = endpos;
+				CastPositionFrom = RangeCheckFrom;
 			}
 		}
 	}

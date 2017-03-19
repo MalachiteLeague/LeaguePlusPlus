@@ -37,6 +37,12 @@
     <Filter Include="Sivir">
       <UniqueIdentifier>{2afe3582-f12a-4c01-b169-c33c4edd76ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Draven">
+      <UniqueIdentifier>{9dc14c37-b60f-4a69-89ac-27b18f1c61e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Xerath">
+      <UniqueIdentifier>{3919b50a-abc8-4199-8664-bf3808b0483d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -155,6 +161,30 @@
     </ClInclude>
     <ClInclude Include="SivirVariables.h">
       <Filter>Sivir</Filter>
+    </ClInclude>
+    <ClInclude Include="DravenLoad.h">
+      <Filter>Draven</Filter>
+    </ClInclude>
+    <ClInclude Include="DravenModes.h">
+      <Filter>Draven</Filter>
+    </ClInclude>
+    <ClInclude Include="DravenConfig.h">
+      <Filter>Draven</Filter>
+    </ClInclude>
+    <ClInclude Include="DravenVariables.h">
+      <Filter>Draven</Filter>
+    </ClInclude>
+    <ClInclude Include="XerathLoad.h">
+      <Filter>Xerath</Filter>
+    </ClInclude>
+    <ClInclude Include="XerathModes.h">
+      <Filter>Xerath</Filter>
+    </ClInclude>
+    <ClInclude Include="XerathConfig.h">
+      <Filter>Xerath</Filter>
+    </ClInclude>
+    <ClInclude Include="XerathVariables.h">
+      <Filter>Xerath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

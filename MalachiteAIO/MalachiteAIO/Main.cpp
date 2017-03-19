@@ -8,6 +8,8 @@
 #include "LucianLoad.h"
 #include "JhinLoad.h"
 #include "SivirLoad.h"
+#include "DravenLoad.h"
+#include "XerathLoad.h"
 
 PluginSetup("MalachiteAIO");
 
@@ -128,6 +130,9 @@ PLUGIN_EVENT(void) OnGameUpdate()
 			}
 		}
 	}
+	float MainEndTime;
+	if (Player()->IsCastingImportantSpell(&MainEndTime))
+		return;
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo && Player()->HasItemId(3142))
 	{
 		if (CountEnemiesInRange(Player()->GetPosition(), 800) >= 1)
@@ -139,7 +144,7 @@ PLUGIN_EVENT(void) OnGameUpdate()
 SArray <string> ChampionList;
 PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 {
-	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin", "sivir"});
+	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin", "sivir", "draven", "xerath"});
 	// Initializes global interfaces for core access
 	PluginSDKSetup(PluginSDK);
 	if (!ChampionList.Any([&](string i) {return  Contains(GEntityList->Player()->ChampionName(), i); }))
@@ -185,6 +190,14 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	else if (Contains(GEntityList->Player()->ChampionName(), "sivir"))
 	{
 		SivirOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "draven"))
+	{
+		DravenOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "xerath"))
+	{
+		XerathOnload();
 	}
 }
 
@@ -235,5 +248,13 @@ PLUGIN_API void OnUnload()
 	else if (Contains(GEntityList->Player()->ChampionName(), "sivir"))
 	{
 		SivirUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "draven"))
+	{
+		DravenUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "xerath"))
+	{
+		XerathUnload();
 	}
 }
