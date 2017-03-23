@@ -5,7 +5,7 @@ inline void FioraModeOnUpdate()
 {
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo && FioraComboOrbwalk->Enabled())
 	{
-		auto target = FioraGetTarget(500);
+		auto target = FioraGetTarget(700);
 		if (IsValidTarget(target))
 		{
 			auto status = FioraGetPassiveStatus(target, 0);
@@ -32,9 +32,18 @@ inline void FioraModeOnUpdate()
 		if (GOrbwalking->GetOrbwalkingMode() == kModeCombo && Ultedtarget != nullptr && Distance(Ultedtarget, Player()) <= 700)
 		{
 			GOrbwalking->SetOverrideTarget(Ultedtarget);
+			if (IsInAutoAttackRange(Ultedtarget))
+			{
+				GOrbwalking->SetAttacksAllowed(true);
+			}
+			else
+			{
+				GOrbwalking->SetAttacksAllowed(false);
+			}
 		}
 		else
 		{
+			GOrbwalking->SetAttacksAllowed(true);
 			GOrbwalking->SetOverrideTarget(nullptr);
 		}
 	}
@@ -46,7 +55,7 @@ inline void FioraModeOnUpdate()
 			return;
 		if (Q->IsReady() && FioraComboQ->Enabled())
 		{
-			auto hero = FioraGetTarget(500);
+			auto hero = FioraGetTarget(700);
 			if (IsValidTarget(hero))
 			{
 				auto status = FioraGetPassiveStatus(hero ,0);
@@ -105,7 +114,7 @@ inline void FioraModeOnUpdate()
 			return;
 		if (Q->IsReady() && FioraHarassQ->Enabled())
 		{
-			auto hero = FioraGetTarget(500);
+			auto hero = FioraGetTarget(700);
 			if (IsValidTarget(hero))
 			{
 				auto status = FioraGetPassiveStatus(hero, 0);
