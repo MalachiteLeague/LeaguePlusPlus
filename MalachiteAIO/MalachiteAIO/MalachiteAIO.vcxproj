@@ -171,6 +171,14 @@
     <ClInclude Include="DravenModes.h" />
     <ClInclude Include="DravenConfig.h" />
     <ClInclude Include="DravenVariables.h" />
+    <ClInclude Include="FioraLoad.h" />
+    <ClInclude Include="FioraConfig.h" />
+    <ClInclude Include="FioraModes.h" />
+    <ClInclude Include="FioraVariables.h" />
+    <ClInclude Include="SpellBlockerSpells.h" />
+    <ClInclude Include="SpellBlockerConfig.h" />
+    <ClInclude Include="TargetedSpells.h" />
+    <ClInclude Include="SpellBlockerLoad.h" />
     <ClInclude Include="XerathLoad.h" />
     <ClInclude Include="XerathModes.h" />
     <ClInclude Include="XerathConfig.h" />

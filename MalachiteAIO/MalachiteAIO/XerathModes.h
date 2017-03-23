@@ -25,14 +25,16 @@ inline void XerathModeOnUpdate()
 		}
 		if (Q->IsReady() && XerathComboQ->Enabled())
 		{
-			if (Q->IsCharging())
+			if (XerathIsQCharging())
 			{
+				//GGame->PrintChat("charging");
 				auto target = SelectTarget(SpellDamage, Q->Range());
 				if (IsValidTarget(target))
 					Q->CastOnTarget(target, kHitChanceHigh);
 			}
-			if (!Q->IsCharging())
+			if (!XerathIsQCharging())
 			{
+				//GGame->PrintChat("NOTcharging");
 				auto target = SelectTarget(SpellDamage, Q->Range());
 				if (IsValidTarget(target))
 					Q->StartCharging();
@@ -51,13 +53,13 @@ inline void XerathModeOnUpdate()
 		}
 		if (Q->IsReady() && XerathHarassQ->Enabled())
 		{
-			if (Q->IsCharging())
+			if (XerathIsQCharging())
 			{
 				auto target = SelectTarget(SpellDamage, Q->Range());
 				if (IsValidTarget(target))
 					Q->CastOnTarget(target, kHitChanceHigh);
 			}
-			if (!Q->IsCharging())
+			if (!XerathIsQCharging())
 			{
 				auto target = SelectTarget(SpellDamage, Q->Range());
 				if (IsValidTarget(target))

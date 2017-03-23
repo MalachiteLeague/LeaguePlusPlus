@@ -13,7 +13,7 @@ inline void DravenModeOnUpdate()
 		Axes = Axes.Where([&](IUnit* i) {return Distance(GMissileData->GetEndPosition(i), GGame->CursorPosition()) <= DravenAxePickRange->GetInteger(); });
 		if (Axes.Any())
 		{
-			GOrbwalking->SetOverridePosition(GMissileData->GetEndPosition(Axes.ToVector().front()));
+			GOrbwalking->SetOverridePosition(Extend(GMissileData->GetEndPosition(Axes.ToVector().front()), GGame->CursorPosition(), 100));
 		}
 		else
 		{
@@ -96,7 +96,7 @@ inline void DravenModeOnUpdate()
 			return;
 		if (Player()->ManaPercent() <= DravenFarmMana->GetInteger())
 			return;
-		if (DravenFarmQ->Enabled() && DravenAxesOnHand() + DravenAxesObject.Count() < 2)
+		if (DravenFarmQ->Enabled() && DravenAxesOnHand() + DravenAxesObject.Count() < 1)
 		{
 			auto Minions = EnemyMinions(700).AddRange(NeutralMinions(700));
 			if (Minions.Count() > 0)

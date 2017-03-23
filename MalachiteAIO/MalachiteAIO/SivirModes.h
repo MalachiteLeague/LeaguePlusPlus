@@ -4,21 +4,6 @@
 
 inline void SivirModeOnSpellCast(CastedSpell const& Args)
 {
-	if (SivirAutoE->Enabled() )
-	{
-		if (Args.Caster_ != nullptr && Args.Caster_->IsEnemy(Player()) && Args.Caster_->IsHero() && GSpellData->GetTarget(Args.Data_) != nullptr
-			&& GSpellData->GetTarget(Args.Data_)->GetNetworkId() == Player()->GetNetworkId())
-		{
-			vector<eSpellSlot> spells {kSlotQ, kSlotE, kSlotW, kSlotR};
-			for (auto spell : spells)
-			{
-				if (GSpellData->GetSlot(Args.Data_) == spell)
-				{
-					E->CastOnPlayer();
-				}
-			}
-		}
-	}
 }
 
 inline void SivirModeAfterAttack(IUnit* Source, IUnit* Target)

@@ -15,7 +15,6 @@ IMenuOption* SivirComboW;
 IMenuOption* SivirComboR;
 
 //auto
-IMenuOption* SivirAutoE;
 IMenuOption* SivirAutoRAtStack;
 
 //harass
@@ -62,5 +61,4 @@ inline void SivirMenuAndSpells()
 	SivirFarmMana = SivirFarmMenu->AddInteger("Mana %", 0, 100, 0);
 
 	SivirAutoMenu = SivirMainMenu->AddMenu("Auto Settings");
-	SivirAutoE = SivirAutoMenu->CheckBox("E on targeted spells", true);
 }

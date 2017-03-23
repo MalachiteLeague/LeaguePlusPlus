@@ -43,6 +43,12 @@
     <Filter Include="Xerath">
       <UniqueIdentifier>{3919b50a-abc8-4199-8664-bf3808b0483d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fiora">
+      <UniqueIdentifier>{5a451ffb-ec29-47a9-86e5-de76c2ced37c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpellBlocker">
+      <UniqueIdentifier>{4d1a3dd4-281f-458a-8d6d-56f430490a63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -185,6 +191,30 @@
     </ClInclude>
     <ClInclude Include="XerathVariables.h">
       <Filter>Xerath</Filter>
+    </ClInclude>
+    <ClInclude Include="FioraLoad.h">
+      <Filter>Fiora</Filter>
+    </ClInclude>
+    <ClInclude Include="FioraConfig.h">
+      <Filter>Fiora</Filter>
+    </ClInclude>
+    <ClInclude Include="FioraModes.h">
+      <Filter>Fiora</Filter>
+    </ClInclude>
+    <ClInclude Include="FioraVariables.h">
+      <Filter>Fiora</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetedSpells.h">
+      <Filter>SpellBlocker</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellBlockerLoad.h">
+      <Filter>SpellBlocker</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellBlockerConfig.h">
+      <Filter>SpellBlocker</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellBlockerSpells.h">
+      <Filter>SpellBlocker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
