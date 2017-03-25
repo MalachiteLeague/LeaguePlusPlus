@@ -6,7 +6,7 @@ inline bool LucianIsShortEPrior (IUnit* target)
 	{
 		return false;
 	}
-	else if (!IsGoingToWard(target, Player()) && AngleBetween(target->GetPosition(), Player()->GetPosition(), GGame->CursorPosition()) < 50)
+	else if (!IsGoingToWard(target, Player()) && AngleBetween(target->GetPosition(), Player()->GetPosition(), GGame->CursorPosition()) < 50 && Distance(Player(), target) >= 300)
 	{
 		return false;
 	}

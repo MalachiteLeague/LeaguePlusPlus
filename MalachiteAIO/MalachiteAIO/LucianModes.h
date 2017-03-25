@@ -25,13 +25,21 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed && Player()->ManaPercent() >= LucianHarassMana->GetInteger())
 	{
-		if (Q->IsReady() && LucianComboQ->Enabled() && InSpellRange(Q, Target))
+		if (Q->IsReady() && LucianHarassQ->Enabled() && InSpellRange(Q, Target))
 		{
-			Q->CastOnUnit(Target);
+			auto target = SelectTarget(PhysicalDamage, Q->Range());
+			if (IsValidTarget(target))
+			{
+				Q->CastOnUnit(Target);
+			}
 		}
-		else if (W->IsReady() && LucianComboW->Enabled() && InSpellRange(W, Target))
+		else if (W->IsReady() && LucianHarassW->Enabled() && InSpellRange(W, Target))
 		{
-			W->CastOnTarget(Target, kHitChanceHigh);
+			auto target = SelectTarget(PhysicalDamage, Q->Range());
+			if (IsValidTarget(target))
+			{
+				W->CastOnTarget(Target, kHitChanceHigh);
+			}
 		}
 	}
 }
