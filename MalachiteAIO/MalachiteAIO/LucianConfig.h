@@ -1,5 +1,5 @@
 #pragma once
-#include "LucianVariables.h"
+#include "MainVariables.h"
 
 //menu
 IMenu* LucianMainMenu;
@@ -13,6 +13,8 @@ IMenu* LucianDrawingsMenu;
 IMenuOption* LucianComboQ;
 IMenuOption* LucianComboW;
 IMenuOption* LucianComboE;
+IMenuOption* LucianComboEMode;
+IMenuOption* LucianComboEGap;
 
 //auto
 IMenuOption* LucianAutoQ;
@@ -40,6 +42,8 @@ inline void LucianMenuAndSpells()
 	LucianComboQ = LucianComboMenu->CheckBox("Q", true);
 	LucianComboW = LucianComboMenu->CheckBox("W", true);
 	LucianComboE = LucianComboMenu->CheckBox("E", true);
+	LucianComboEMode = LucianComboMenu->AddInteger("E Mode : (Mouse = 1, Auto = 2)", 1, 2, 1);
+	LucianComboEGap = LucianComboMenu->CheckBox("E to gap close", false);
 
 	LucianHarassMenu = LucianMainMenu->AddMenu("Harass Settings");
 	LucianHarassQ = LucianHarassMenu->CheckBox("Q ", true);

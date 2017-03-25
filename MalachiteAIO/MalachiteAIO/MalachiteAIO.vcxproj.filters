@@ -49,6 +49,12 @@
     <Filter Include="SpellBlocker">
       <UniqueIdentifier>{4d1a3dd4-281f-458a-8d6d-56f430490a63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Kalista">
+      <UniqueIdentifier>{f376ed93-f236-4ecd-a945-f05b7efacb36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Viktor">
+      <UniqueIdentifier>{a302db92-487a-42d0-bee2-e7cc4d3c584e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -215,6 +221,30 @@
     </ClInclude>
     <ClInclude Include="SpellBlockerSpells.h">
       <Filter>SpellBlocker</Filter>
+    </ClInclude>
+    <ClInclude Include="KalistaLoad.h">
+      <Filter>Kalista</Filter>
+    </ClInclude>
+    <ClInclude Include="KalistaModes.h">
+      <Filter>Kalista</Filter>
+    </ClInclude>
+    <ClInclude Include="KalistaConfig.h">
+      <Filter>Kalista</Filter>
+    </ClInclude>
+    <ClInclude Include="KalistaVariables.h">
+      <Filter>Kalista</Filter>
+    </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>Viktor</Filter>
+    </ClInclude>
+    <ClInclude Include="Header1.h">
+      <Filter>Viktor</Filter>
+    </ClInclude>
+    <ClInclude Include="Header2.h">
+      <Filter>Viktor</Filter>
+    </ClInclude>
+    <ClInclude Include="Header3.h">
+      <Filter>Viktor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

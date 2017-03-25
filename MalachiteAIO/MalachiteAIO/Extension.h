@@ -278,7 +278,26 @@ inline Vec3 Extend(Vec3 from, Vec3 to, float distance)
 	auto direction = (to - from).VectorNormalize();
 	return from + direction * realDistance;
 }
+inline SArray<Vec3> GetCircleCircleIntersections(Vec3 center1, Vec3 center2, float radius1, float radius2)
+{
+	SArray<Vec3> result;
+	float D = Distance(center2, center1);
+	//The Circles dont intersect:
+	if (D > radius1 + radius2 || (D <= abs(radius1 - radius2)))
+	{
+		return result;
+	}
 
+	float A = (radius1 * radius1 - radius2 * radius2 + D * D) / (2 * D);
+	float H = sqrt(radius1 * radius1 - A * A);
+	Vec3 Direction = (center2 - center1).VectorNormalize();
+	Vec3 PA = ToVec3(ToVec2(center1) + A * ToVec2(Direction));
+	Vec3 S1 = ToVec3(ToVec2(PA) + H * ToVec2(Pendicular(Direction)));
+	Vec3 S2 = ToVec3((ToVec2(PA) - H * ToVec2(Pendicular(Direction))));
+	result.Add(S1);
+	result.Add(S2);
+	return result;
+}
 inline SArray<IUnit*> ValidTargets(vector<IUnit*> input)
 {
 	SArray<IUnit*> targets = SArray<IUnit*>(input);
@@ -397,6 +416,10 @@ inline bool IsCCed (IUnit * hero)
 {
 	return hero->HasBuffOfType(BUFF_Stun) || hero->HasBuffOfType(BUFF_Snare) || hero->HasBuffOfType(BUFF_Suppression) || hero->HasBuffOfType(BUFF_Charm) || hero->HasBuffOfType(BUFF_Snare);
 }
+inline bool IsEnoughMana(IMenuOption* Slider)
+{
+	return GEntityList->Player()->ManaPercent() >= Slider->GetInteger();
+}
 void FindBestLineCastPosition(vector<Vec3> RangeCheckFroms, float range, float radius, bool Minions, bool Heroes, Vec3& CastPosition , int& HitCounts, Vec3& CastPositionFrom)
 {
 	HitCounts = 0;
@@ -441,6 +464,16 @@ inline bool IsWallBetween (Vec3 start, Vec3 end)
 	}
 	auto endflag = GNavMesh->GetCollisionFlagsForPoint(end);
 	if (endflag&kWallMesh || endflag&kBuildingMesh)
+	{
+		return true;
+	}
+	return false;
+}
+inline bool IsGoingToWard(IUnit* ThisUnit, IUnit* ToUnit)
+{
+	Vec3 pred;
+	GPrediction->GetFutureUnitPosition(ThisUnit, 0.2f, false, pred);
+	if (Distance(ToUnit, pred) < Distance(ToUnit, ThisUnit))
 	{
 		return true;
 	}

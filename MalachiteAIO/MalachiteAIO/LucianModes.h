@@ -1,5 +1,5 @@
 #pragma once
-#include "LucianConfig.h"
+#include "LucianVariables.h"
 
 inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 {
@@ -32,6 +32,44 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 		else if (W->IsReady() && LucianComboW->Enabled() && InSpellRange(W, Target))
 		{
 			W->CastOnTarget(Target, kHitChanceHigh);
+		}
+	}
+}
+inline void LucianModeOnUpdate()
+{
+	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo)
+	{
+		{
+
+			IUnit* target = SelectTarget(SpellDamage, 700);
+
+			CastItemOnUnit(3146, 700, target);
+
+		}
+
+		{
+
+			IUnit* target = SelectTarget(SpellDamage, 550);
+
+			CastItemOnUnit(3144, 550, target);
+
+		}
+		{
+
+			IUnit* target = SelectTarget(SpellDamage, 650);
+
+			CastItemOnUnit(3153, 650, target);
+
+		}
+		if (E->IsReady() && LucianComboEGap->Enabled() 
+			&& CountEnemiesInRange(Player()->GetPosition(),Player()->GetRealAutoAttackRange(Player())) == 0)
+		{
+			SArray<IUnit*> Ignored = ValidEnemies().Where([&](IUnit* i) {return Distance(i, GGame->CursorPosition()) > 500; });
+			auto target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, Q->Range() + E->Range(), nullptr, true, &Ignored.ToVector());
+			if (IsValidTarget(target))
+			{
+				LucianCastEToGap(target);
+			}
 		}
 	}
 }

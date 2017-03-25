@@ -175,6 +175,14 @@
     <ClInclude Include="FioraConfig.h" />
     <ClInclude Include="FioraModes.h" />
     <ClInclude Include="FioraVariables.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="Header1.h" />
+    <ClInclude Include="Header2.h" />
+    <ClInclude Include="Header3.h" />
+    <ClInclude Include="KalistaLoad.h" />
+    <ClInclude Include="KalistaModes.h" />
+    <ClInclude Include="KalistaConfig.h" />
+    <ClInclude Include="KalistaVariables.h" />
     <ClInclude Include="SpellBlockerSpells.h" />
     <ClInclude Include="SpellBlockerConfig.h" />
     <ClInclude Include="TargetedSpells.h" />
