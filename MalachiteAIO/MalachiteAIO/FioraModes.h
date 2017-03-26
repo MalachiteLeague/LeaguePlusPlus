@@ -1,6 +1,9 @@
 #pragma once
 #include "FioraConfig.h"
-
+inline bool FioraEIsReady()
+{
+	return E->IsReady() && !Player()->HasBuff("FioraE") && !Player()->HasBuff("fiorae2");
+}
 inline void FioraModeOnUpdate()
 {
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo && FioraComboOrbwalk->Enabled())
@@ -142,9 +145,10 @@ inline void FioraModeAfterAttack(IUnit* Source, IUnit* Target)
 {
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo)
 	{
-		if (E->IsReady())
+		if (FioraEIsReady())
 		{
 			E->CastOnPlayer();
+			GOrbwalking->ResetAA();
 		}
 		else
 		{
@@ -155,9 +159,10 @@ inline void FioraModeAfterAttack(IUnit* Source, IUnit* Target)
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed && Target->UnitFlags() == FL_HERO)
 	{
-		if (E->IsReady() && FioraHarassE->Enabled() && Player()->ManaPercent() > FioraHarassMana->GetInteger())
+		if (FioraEIsReady() && FioraHarassE->Enabled() && Player()->ManaPercent() > FioraHarassMana->GetInteger())
 		{
 			E->CastOnPlayer();
+			GOrbwalking->ResetAA();
 		}
 		else
 		{
@@ -168,10 +173,11 @@ inline void FioraModeAfterAttack(IUnit* Source, IUnit* Target)
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear && Target->UnitFlags() == FL_CREEP)
 	{
-		if (E->IsReady() && Player()->ManaPercent() > FioraHarassMana->GetInteger()
+		if (FioraEIsReady() && Player()->ManaPercent() > FioraHarassMana->GetInteger()
 			&& ((FioraLaneClearE->Enabled() && Target->GetTeam() != kTeamNeutral) || (FioraJungleClearE->Enabled() && Target->GetTeam() == kTeamNeutral)))
 		{
 			E->CastOnPlayer();
+			GOrbwalking->ResetAA();
 		}
 		else
 		{
