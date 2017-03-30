@@ -24,7 +24,7 @@ inline void XerathModeOnUpdate()
 					//if (InSpellRange(Q, pred))
 					//	Q->CastOnPosition(pred);
 					//Q->CastOnTarget(target, kHitChanceHigh);
-					MalachiteCast(Q, target, kHitChanceVeryHigh);
+					MalachiteCast(Q, target, kHitChanceHigh);
 				}
 			}
 			if (!XerathIsQCharging())
@@ -39,14 +39,14 @@ inline void XerathModeOnUpdate()
 			auto target = SelectTarget(SpellDamage, E->Range());
 			if (IsValidTarget(target))
 				//E->CastOnTarget(target, kHitChanceHigh);
-				MalachiteCast(E, target, kHitChanceVeryHigh);
+				MalachiteCast(E, target, kHitChanceHigh);
 		}
 		if (XerathComboW->Enabled())
 		{
 			auto target = SelectTarget(SpellDamage, W->Range());
 			if (IsValidTarget(target))
 				//W->CastOnTarget(target, kHitChanceHigh);
-				MalachiteCast(W, target, kHitChanceVeryHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed)
@@ -63,7 +63,7 @@ inline void XerathModeOnUpdate()
 					//if (InSpellRange(Q, pred))
 					//	Q->CastOnPosition(pred);
 					//Q->CastOnTarget(target, kHitChanceHigh);
-					MalachiteCast(Q, target, kHitChanceVeryHigh);
+					MalachiteCast(Q, target, kHitChanceHigh);
 				}
 			}
 			if (!XerathIsQCharging())
@@ -84,7 +84,7 @@ inline void XerathModeOnUpdate()
 				//GPrediction->GetFutureUnitPosition(target, 0.3f, true, pred);
 				//W->CastOnPosition(pred);
 				//W->CastOnTarget(target, kHitChanceHigh);
-				MalachiteCast(W, target, kHitChanceVeryHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 			}
 
 		}
@@ -116,7 +116,7 @@ inline void XerathModeOnUpdate()
 				//GPrediction->GetFutureUnitPosition(target, 0.3f, true, pred);
 				//R->CastOnPosition(pred);
 				//R->CastOnTarget(target, kHitChanceHigh);
-				MalachiteCast(R, target, kHitChanceVeryHigh);
+				MalachiteCast(R, target, kHitChanceHigh);
 			}
 		}
 	}

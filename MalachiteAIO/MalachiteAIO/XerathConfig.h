@@ -49,7 +49,7 @@ inline void XerathMenuAndSpells()
 {
 	Q = GPluginSDK->CreateSpell2(kSlotQ, kLineCast, false, false, kCollidesWithNothing);
 	Q->SetSkillshot(0.6f, 95, std::numeric_limits<float>::infinity(), 1550);
-	Q->SetCharged(600, 1550, 1.6f);
+	Q->SetCharged(750, 1550, 1.6f);
 	//Q->SetChargedBuffName("XerathArcanopulseChargeUp");
 	W = GPluginSDK->CreateSpell2(kSlotW, kLineCast, true, false, kCollidesWithNothing);
 	W->SetSkillshot(0.7f, 125, std::numeric_limits<float>::infinity(), 1100);
