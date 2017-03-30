@@ -28,7 +28,7 @@ inline void JinxModeOnUpdate()
 
 		}
 
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		
 		if (JinxComboQ->Enabled() && !Player()->HasBuff("JinxQ") && Q->IsReady())
@@ -52,7 +52,7 @@ inline void JinxModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target) && !IsInAutoAttackRange(target))
 			{
-				W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 			}
 		}
 		if (JinxComboE->Enabled())
@@ -60,7 +60,7 @@ inline void JinxModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, E->Range());
 			if (IsValidTarget(target))
 			{
-				E->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(E, target, kHitChanceHigh);
 			}
 		}
 		if (JinxComboR->Enabled())
@@ -74,7 +74,7 @@ inline void JinxModeOnUpdate()
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed)
 	{
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (JinxHarassQ->Enabled() && !Player()->HasBuff("JinxQ") && Q->IsReady())
 		{
@@ -99,13 +99,13 @@ inline void JinxModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target) && !IsInAutoAttackRange(target))
 			{
-				W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 			}
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear)
 	{
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (Player()->HasBuff("JinxQ") && Q->IsReady())
 		{
@@ -120,7 +120,7 @@ inline void JinxModeOnUpdate()
 			{
 				if (hero->HasBuffOfType(BUFF_Stun) || hero->HasBuffOfType(BUFF_Snare) || hero->HasBuffOfType(BUFF_Suppression) || hero->HasBuffOfType(BUFF_Charm) || hero->HasBuffOfType(BUFF_Snare))
 				{
-					E->CastOnTarget(hero);
+					MalachiteCast(E, hero, kHitChanceHigh);
 				}
 			}
 		}

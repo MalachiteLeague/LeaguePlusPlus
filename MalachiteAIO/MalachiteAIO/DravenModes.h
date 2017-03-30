@@ -44,7 +44,7 @@ inline void DravenModeOnUpdate()
 			CastItemOnUnit(3153, 650, target);
 
 		}
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (DravenComboQ->Enabled() && DravenAxesOnHand() + DravenAxesObject.Count() < 2)
 		{
@@ -70,7 +70,7 @@ inline void DravenModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, E->Range());
 			if (IsValidTarget(target))
 			{
-				E->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(E, target, kHitChanceHigh);
 			}
 		}
 		if (DravenComboR->Enabled() && DravenIsR1())
@@ -78,21 +78,18 @@ inline void DravenModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, 2000);
 			if (IsValidTarget(target) && GetSpellDamage(target, kSlotR) >= target->GetHealth())
 			{
-				R->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(R, target, kHitChanceHigh);
 			}
-			Vec3 CastPosition;
-			Vec3 CastPositionFrom;
-			int HitCounts;
-			FindBestLineCastPosition(vector<Vec3>{Player()->GetPosition()}, 1500, R->Radius(), false, true, CastPosition, HitCounts, CastPositionFrom);
-			if (HitCounts >= 3)
+			auto location = FindBestLineCastPosition(vector<Vec3>{Player()->GetPosition()}, 1500, 1500, R->Radius(), false, true);
+			if (location.HitCount >= 3)
 			{
-				R->CastOnPosition(CastPosition);
+				R->CastOnPosition(location.CastPosition);
 			}
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear || GOrbwalking->GetOrbwalkingMode() == kModeLastHit)
 	{
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (Player()->ManaPercent() <= DravenFarmMana->GetInteger())
 			return;
@@ -112,7 +109,7 @@ inline void DravenModeOnGapClose(GapCloserSpell const& Args)
 		return;
 	if (Args.Sender == nullptr || !InSpellRange(E, Args.Sender))
 		return;
-	E->CastOnTarget(Args.Sender, kHitChanceHigh);
+	MalachiteCast(E, Args.Sender, kHitChanceHigh);
 }
 inline void DravenModeOnInterrupt(InterruptibleSpell const& Args)
 {
@@ -120,7 +117,7 @@ inline void DravenModeOnInterrupt(InterruptibleSpell const& Args)
 		return;
 	if (Args.Target == nullptr || !InSpellRange(E, Args.Target))
 		return;
-	E->CastOnTarget(Args.Target, kHitChanceHigh);
+	MalachiteCast(E, Args.Target, kHitChanceHigh);
 }
 inline void DravenModeOnRender ()
 {

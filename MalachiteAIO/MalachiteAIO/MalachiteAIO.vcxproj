@@ -179,6 +179,8 @@
     <ClInclude Include="Header1.h" />
     <ClInclude Include="Header2.h" />
     <ClInclude Include="Header3.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="MalachitePred.h" />
     <ClInclude Include="KalistaLoad.h" />
     <ClInclude Include="KalistaModes.h" />
     <ClInclude Include="KalistaConfig.h" />

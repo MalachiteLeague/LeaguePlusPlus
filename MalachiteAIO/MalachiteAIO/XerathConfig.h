@@ -47,9 +47,10 @@ IMenuOption* XerathDrawRCast;
 
 inline void XerathMenuAndSpells()
 {
-	Q = GPluginSDK->CreateSpell2(kSlotQ, kLineCast, true, false, kCollidesWithNothing);
-	Q->SetSkillshot(0.6f, 95, 1000000000, 1550);
-	Q->SetCharged(750, 1550, 1.5f);
+	Q = GPluginSDK->CreateSpell2(kSlotQ, kLineCast, false, false, kCollidesWithNothing);
+	Q->SetSkillshot(0.6f, 95, std::numeric_limits<float>::infinity(), 1550);
+	Q->SetCharged(600, 1550, 1.6f);
+	//Q->SetChargedBuffName("XerathArcanopulseChargeUp");
 	W = GPluginSDK->CreateSpell2(kSlotW, kLineCast, true, false, kCollidesWithNothing);
 	W->SetSkillshot(0.7f, 125, std::numeric_limits<float>::infinity(), 1100);
 	E = GPluginSDK->CreateSpell2(kSlotE, kLineCast, true, false, kCollidesWithYasuoWall | kCollidesWithMinions | kCollidesWithHeroes);

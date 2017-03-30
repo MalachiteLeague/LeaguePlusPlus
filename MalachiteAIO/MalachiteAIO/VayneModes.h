@@ -62,7 +62,7 @@ inline void VayneModeOnUpdate()
 			CastItemOnUnit(3153, 650, target);
 
 		}
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (VayneComboE->Enabled())
 		{

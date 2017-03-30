@@ -68,14 +68,14 @@ inline void SivirModeOnUpdate()
 			CastItemOnUnit(3153, 650, target);
 
 		}
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (SivirComboQ->Enabled())
 		{
 			auto target = SelectTarget(PhysicalDamage, Q->Range());
 			if (IsValidTarget(target))
 			{
-				Q->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(Q, target, kHitChanceHigh);
 			}
 		}
 		if (SivirComboR->Enabled())
@@ -88,30 +88,27 @@ inline void SivirModeOnUpdate()
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed && Player()->ManaPercent() >= SivirHarassMana->GetInteger())
 	{
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (SivirHarassQ->Enabled())
 		{
 			auto target = SelectTarget(PhysicalDamage, Q->Range());
 			if (IsValidTarget(target))
 			{
-				Q->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(Q, target, kHitChanceHigh);
 			}
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear && Player()->ManaPercent() >= SivirFarmMana->GetInteger())
 	{
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (SivirLaneClearQ->Enabled())
 		{
-			Vec3 CastPositionFrom;
-			Vec3 CastPosition;
-			int HitCount;
-			FindBestLineCastPosition(vector<Vec3>{Player()->GetPosition()}, Q->Range(), Q->Radius(), true, false, CastPosition, HitCount, CastPositionFrom);
-			if (HitCount >=3)
+			FarmLocation Location = FindBestLineCastPosition(vector<Vec3>{Player()->GetPosition()}, Q->Range(),Q->Range(), Q->Radius(), true, false);
+			if (Location.HitCount >=3)
 			{
-				Q->CastOnPosition(CastPosition);
+				Q->CastOnPosition(Location.CastPosition);
 			}
 		}
 		if (SivirJungleClearQ->Enabled())
@@ -119,7 +116,7 @@ inline void SivirModeOnUpdate()
 			auto targets = NeutralMinions(Q->Range()).OrderBy<float>([&](IUnit* i) {return 1- i->GetMaxHealth(); });
 			for (auto target : targets.ToVector())
 			{
-				Q->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(Q, target, kHitChanceHigh);
 			}
 		}
 	}

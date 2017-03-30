@@ -45,7 +45,7 @@ inline  void TwitchModeOnUpdate()
 
 		}
 
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (TwitchComboQ->Enabled())
 		{
@@ -58,7 +58,7 @@ inline  void TwitchModeOnUpdate()
 		{
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 		}
 		if (TwitchComboE->Enabled())
 		{
@@ -81,13 +81,13 @@ inline  void TwitchModeOnUpdate()
 	{
 		if (Player()->ManaPercent() <= TwitchHarassMana->GetInteger())
 			return;
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (TwitchHarassW->Enabled())
 		{
 			auto target = SelectTarget(PhysicalDamage, W->Range());
 			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 		}
 		if (TwitchHarassE->Enabled())
 		{

@@ -29,14 +29,14 @@ inline void EzrealComboOnUpdate()
 		CastItemOnUnit(3153, 650, target);
 
 	}
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (EzealComboQ->Enabled())
 	{
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (EzealComboW->Enabled())
@@ -44,7 +44,7 @@ inline void EzrealComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, W->Range());
 		if (IsValidTarget(target))
 		{
-			W->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(W, target, kHitChanceHigh);
 		}
 	}
 	if (EzealComboR->Enabled() && CountEnemiesInRange(Player()->GetPosition(), 1000) == 0)
@@ -52,7 +52,7 @@ inline void EzrealComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage,2000);
 		if (IsValidTarget(target) && GetSpellDamage(target,kSlotR) >= target->GetHealth() / 1.5)
 		{
-			R->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(R, target, kHitChanceHigh);
 		}
 	}
 }
@@ -62,14 +62,14 @@ inline void EzrealHarassOnUpdate()
 		return;
 	if (Player()->ManaPercent() <= EzealHarassMana->GetInteger())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (EzealHarassQ->Enabled())
 	{
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (EzealHarassW->Enabled())
@@ -77,7 +77,7 @@ inline void EzrealHarassOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, W->Range());
 		if (IsValidTarget(target))
 		{
-			W->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(W, target, kHitChanceHigh);
 		}
 	}
 }
@@ -87,14 +87,14 @@ inline void EzrealLastHitOnUpdate()
 		return;
 	if (Player()->ManaPercent() <= EzealFarmMana->GetInteger())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (EzealLastHitQ->Enabled())
 	{
 		auto targets = EnemyMinions(Q->Range()).Where([&](IUnit* i) {return GetSpellDamage(i, kSlotQ) >= i->GetHealth(); }).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 }
@@ -104,14 +104,15 @@ inline void EzrealLaneJungOnUpdate()
 		return;
 	if (Player()->ManaPercent() <= EzealFarmMana->GetInteger())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (EzealJungleClearQ->Enabled())
 	{
 		auto targets = NeutralMinions(Q->Range()).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			//Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}	
 	if (EzealLaneClearQ->Enabled())
@@ -119,7 +120,7 @@ inline void EzrealLaneJungOnUpdate()
 		auto targets = EnemyMinions(Q->Range()).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 
@@ -128,14 +129,14 @@ inline void EzrealAutoOnUpdate()
 {
 	if (Player()->IsRecalling())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (EzealAutoQ->Enabled())
 	{
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (EzealAutoW->Enabled())
@@ -143,7 +144,7 @@ inline void EzrealAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, W->Range());
 		if (IsValidTarget(target))
 		{
-			W->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(W, target, kHitChanceHigh);
 		}
 	}
 	if (Player()->HasItemId(3070) || Player()->HasItemId(3004) || Player()->HasItemId(3003))

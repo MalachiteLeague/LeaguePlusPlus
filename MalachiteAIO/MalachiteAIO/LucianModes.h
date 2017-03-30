@@ -15,12 +15,20 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 		}
 		else if (Q->IsReady() && LucianComboQ->Enabled() && InSpellRange(Q, Target))
 		{
-			Q->CastOnUnit(Target);
+			auto target = SelectTarget(PhysicalDamage, Q->Range());
+			if (IsValidTarget(target))
+			{
+				Q->CastOnUnit(target);
+			}
 			//GOrbwalking->ResetAA();
+		}
+		else if (Q->IsReady() && LucianComboQ->Enabled() && LucianCastQExtend())
+		{
+			
 		}
 		else if (W->IsReady() && LucianComboW->Enabled() && InSpellRange(W, Target))
 		{
-			W->CastOnTarget(Target, kHitChanceHigh);
+			MalachiteCast(W, Target, kHitChanceHigh);
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed && Player()->ManaPercent() >= LucianHarassMana->GetInteger())
@@ -30,7 +38,7 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 			auto target = SelectTarget(PhysicalDamage, Q->Range());
 			if (IsValidTarget(target))
 			{
-				Q->CastOnUnit(Target);
+				Q->CastOnUnit(target);
 			}
 		}
 		else if (W->IsReady() && LucianHarassW->Enabled() && InSpellRange(W, Target))
@@ -38,7 +46,30 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 			auto target = SelectTarget(PhysicalDamage, Q->Range());
 			if (IsValidTarget(target))
 			{
-				W->CastOnTarget(Target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
+			}
+		}
+	}
+	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear && Player()->ManaPercent() >= LucianFarmMana->GetInteger())
+	{
+		//GGame->PrintChat(std::to_string(Target->GetTeam()).c_str());
+		if (Target->GetTeam() != kTeamNeutral)
+		{
+			if (LucianLaneClearW->Enabled() && CountMinionsInRange(Player()->GetPosition(), 700) >= 2)
+			{
+				MalachiteCast(W, Target, kHitChanceHigh);
+			}
+		}
+		if (Target->GetTeam() == kTeamNeutral)
+		{
+			//GGame->PrintChat("a");
+			if (Q->IsReady() && LucianJungClearQ->Enabled() && InSpellRange(Q, Target))
+			{
+				Q->CastOnUnit(Target);
+			}
+			else if (W->IsReady() && LucianJungClearW->Enabled() && InSpellRange(W, Target))
+			{
+				MalachiteCast(W, Target, kHitChanceHigh);
 			}
 		}
 	}
@@ -69,6 +100,8 @@ inline void LucianModeOnUpdate()
 			CastItemOnUnit(3153, 650, target);
 
 		}
+		if (!IsADCanCastSpell())
+			return;
 		if (E->IsReady() && LucianComboEGap->Enabled() 
 			&& CountEnemiesInRange(Player()->GetPosition(),Player()->GetRealAutoAttackRange(Player())) == 0)
 		{
@@ -78,6 +111,56 @@ inline void LucianModeOnUpdate()
 			{
 				LucianCastEToGap(target);
 			}
+		}
+		if (LucianComboQExtend->Enabled() && Player()->ManaPercent() > LucianComboQExtendMana->GetInteger() 
+			&& CountEnemiesInRange(Player()->GetPosition(),Player()->GetRealAutoAttackRange(Player()) + 50) == 0)
+		{
+			LucianCastQExtend();
+		}
+	}
+
+	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed && Player()->ManaPercent() >= LucianHarassMana->GetInteger())
+	{
+		if (!IsADCanCastSpell())
+			return;
+		if (LucianHarassQ ->Enabled())
+		{
+			LucianCastQExtend();
+		}
+	}
+
+	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear && Player()->ManaPercent() >= LucianFarmMana->GetInteger())
+	{
+		if (!IsADCanCastSpell())
+			return;
+		if (Player()->HasBuff("LucianPassiveBuff"))
+			return;
+		//GGame->PrintChat("a");
+		//lane
+		if (LucianLaneClearQ->Enabled())
+		{
+			//GGame->PrintChat("a");
+			auto pred = FindBestLineCastPosition(vector<Vec3>{ Player()->GetPosition() }, 900, Q->Range(), 70, true, true);
+			//GGame->PrintChat(std::to_string(pred.HitCount).c_str());
+			if (pred.HitCount >= LucianLaneClearQMinionHitCount->GetInteger() && pred.CastOnUnit != nullptr)
+			{
+				Q->CastOnUnit(pred.CastOnUnit);
+			}
+		}
+	}
+	//auto
+	{
+		if (LucianAutoQKS->Enabled())
+		{
+			LucianCastQExtend(true);
+		}
+		if (GOrbwalking->GetOrbwalkingMode() == kModeCombo)
+			return;
+		if (!IsADCanCastSpell())
+			return;
+		if(LucianAutoQ->Enabled() && Player()->ManaPercent() >= LucianAutoMana->GetInteger())
+		{
+			LucianCastQExtend();
 		}
 	}
 }

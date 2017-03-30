@@ -246,6 +246,12 @@
     <ClInclude Include="Header3.h">
       <Filter>Viktor</Filter>
     </ClInclude>
+    <ClInclude Include="MalachitePred.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PluginSDK.cpp">

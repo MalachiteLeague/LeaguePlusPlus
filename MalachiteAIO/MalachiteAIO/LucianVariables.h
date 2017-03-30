@@ -39,7 +39,7 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 				return true;
 			}
 		}
-		if (LucianComboEMode->GetInteger() == 2)
+		if (LucianComboEMode->GetInteger() == 1)
 		{
 			for (int i = 200; i <= 425; i = i + 25)
 			{
@@ -68,7 +68,7 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 				return true;
 			}
 		}
-		if (LucianComboEMode->GetInteger() == 2)
+		if (LucianComboEMode->GetInteger() == 1)
 		{
 			for (int i = 200; i <= 425; i = i + 25)
 			{
@@ -81,6 +81,34 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 						Position = position;
 						return true;
 					}
+				}
+			}
+		}
+	}
+	return false;
+}
+inline bool LucianCastQExtend(bool OnlyforKS = false, SArray<IUnit*> IgnoredChampion = SArray<IUnit*>())
+{
+	auto extender = EnemyMinions(Q->Range()).AddRange(ValidEnemies(Q->Range()));
+	auto extendee = ValidEnemies(900).Where([&](IUnit* i)
+	{
+		return !IgnoredChampion.Any([&](IUnit* i2) {return i2->GetNetworkId() == i->GetNetworkId(); });
+	});
+	for (IUnit* hero : extendee.ToVector())
+	{
+		Vec3 predhero = MalachitePredGetUnitPosition(hero, 
+			vector<float>{0.4f, 0.39f, 0.38f, 0.37f, 0.36f, 0.36f, 0.35f, 0.34f, 
+				0.33f, 0.32f, 0.31f, 0.30f, 0.29f, 0.29f, 0.28f, 0.27f, 0.26f, 0.25f}[Player()->GetLevel() - 1]);
+		for (IUnit* minion : extender.ToVector())
+		{
+			Vec3 predminion = MalachitePredGetUnitPosition(minion, 0.f);
+			Vec3 endpos = Extend(Player()->GetPosition(), predminion, 900);
+			if (Distance(predhero, Player()->GetPosition(),endpos,true) <= hero->BoundingRadius())
+			{
+				if (!OnlyforKS || GetSpellDamage(hero, kSlotQ) > hero->GetHealth())
+				{
+					Q->CastOnUnit(minion);
+					return true;
 				}
 			}
 		}

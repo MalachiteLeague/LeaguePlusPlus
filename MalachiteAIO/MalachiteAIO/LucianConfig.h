@@ -11,6 +11,8 @@ IMenu* LucianDrawingsMenu;
 
 //combo
 IMenuOption* LucianComboQ;
+IMenuOption* LucianComboQExtend;
+IMenuOption* LucianComboQExtendMana;
 IMenuOption* LucianComboW;
 IMenuOption* LucianComboE;
 IMenuOption* LucianComboEMode;
@@ -19,12 +21,21 @@ IMenuOption* LucianComboEGap;
 //auto
 IMenuOption* LucianAutoQ;
 IMenuOption* LucianAutoW;
-IMenuOption* LucianAutoStackTear;
+IMenuOption* LucianAutoMana;
+IMenuOption* LucianAutoQKS;
 
 //harass
 IMenuOption* LucianHarassQ;
+IMenuOption* LucianHarassQExtend;
 IMenuOption* LucianHarassW;
 IMenuOption* LucianHarassMana;
+// farm 
+IMenuOption* LucianLaneClearQ;
+IMenuOption* LucianLaneClearQMinionHitCount;
+IMenuOption* LucianJungClearQ;
+IMenuOption* LucianLaneClearW;
+IMenuOption* LucianJungClearW;
+IMenuOption* LucianFarmMana;
 
 
 inline void LucianMenuAndSpells()
@@ -40,13 +51,30 @@ inline void LucianMenuAndSpells()
 
 	LucianComboMenu = LucianMainMenu->AddMenu("Combo Settings");
 	LucianComboQ = LucianComboMenu->CheckBox("Q", true);
+	LucianComboQExtend = LucianComboMenu->CheckBox("Q extend", false);
+	LucianComboQExtendMana = LucianComboMenu->AddInteger("Q extend mana", 0,100,50);
 	LucianComboW = LucianComboMenu->CheckBox("W", true);
 	LucianComboE = LucianComboMenu->CheckBox("E", true);
-	LucianComboEMode = LucianComboMenu->AddInteger("E Mode : (Mouse = 1, Auto = 2)", 1, 2, 1);
+	//LucianComboEMode = LucianComboMenu->AddInteger("E Mode : (Mouse = 1, Auto = 2)", 1, 2, 1);
+	LucianComboEMode = LucianComboMenu->AddSelection("E Mode", 1, {"Mouse","Smart"});
 	LucianComboEGap = LucianComboMenu->CheckBox("E to gap close", false);
 
 	LucianHarassMenu = LucianMainMenu->AddMenu("Harass Settings");
 	LucianHarassQ = LucianHarassMenu->CheckBox("Q ", true);
+	LucianHarassQExtend = LucianHarassMenu->CheckBox("Q extend", true);
 	LucianHarassW = LucianHarassMenu->CheckBox("W ", true);
-	LucianHarassMana = LucianHarassMenu->AddInteger("Mana %", 0, 100, 0);
+	LucianHarassMana = LucianHarassMenu->AddInteger("Mana %", 0, 100, 50);
+
+	LucianFarmMenu = LucianMainMenu->AddMenu("Farm Settings");
+	LucianLaneClearQ = LucianFarmMenu->CheckBox("LaneClear Q ", true);
+	LucianLaneClearQMinionHitCount = LucianFarmMenu->AddInteger("if hit X minion", 1,3,2);
+	LucianLaneClearW = LucianFarmMenu->CheckBox("LaneClear W ", true);
+	LucianJungClearQ = LucianFarmMenu->CheckBox("Jungle Q ", true);
+	LucianJungClearW = LucianFarmMenu->CheckBox("Jungle W ", true);
+	LucianFarmMana = LucianFarmMenu->AddInteger("Mana %", 0, 100, 50);
+
+	LucianAutoMenu = LucianMainMenu->AddMenu("Auto Settings");
+	LucianAutoQ = LucianAutoMenu->CheckBox("Auto Q Harass", true);
+	LucianAutoMana = LucianAutoMenu->AddInteger("Auto Q Harass if %Mana >", 0, 100, 50);
+	LucianAutoQKS = LucianAutoMenu->CheckBox("Auto Q KS", true);
 }

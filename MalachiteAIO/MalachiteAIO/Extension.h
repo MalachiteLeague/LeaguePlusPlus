@@ -1,9 +1,10 @@
 #pragma once
 #include "PluginSDK.h"
-#include "Template.h"
-#include "cmath"
-#define PI 3.14159265f
+#include "Geometry.h"
 using namespace std;
+
+//global variables
+map<int, IInventoryItem*> AllItems;
 
 #pragma region extension
 //linqq ne`
@@ -177,127 +178,6 @@ inline bool IsWard(IUnit* target)
 	Vec2 pos;
 	return Contains(target->GetObjectName(), "ward") && !Contains(target->GetObjectName(), "corpse");
 }
-//lay khoang cach ne may ban
-inline Vec2 ToVec2(Vec3 vec)
-{
-	return Vec2(vec.x, vec.z);
-}
-inline Vec3 ToVec3(Vec2 vec)
-{
-	return Vec3(vec.x, 0, vec.y);
-}
-inline Vec3 Normalize(Vec3 x)
-{
-	float sqr = x.x * x.x + x.y * x.y + x.z * x.z;
-	return x * (1.0f / sqrt(sqr));
-}
-inline Vec3 Pendicular (Vec3 x)
-{
-	auto X1 = ToVec2(x);
-	Vec2 X2;
-	X2.x = -X1.y;
-	X2.y = X1.x;
-	return ToVec3(X2);
-}
-
-inline float Distance(Vec3 from, Vec3 to)
-{
-	return (from - to).Length2D();
-}
-inline float AngleBetween(Vec3 a, Vec3 center, Vec3 c)
-{
-	float a1 = Distance(c, center);
-	float b1 = Distance(a, c);
-	float c1 = Distance(center, a);
-	if (a1 == 0 || c1 == 0) { return 0; }
-	else
-	{
-		return acos((a1 * a1 + c1 * c1 - b1 * b1) / (2 * a1 * c1)) * (180 / PI);
-	}
-}
-inline float AngleToRadian(float Angle)
-{
-	return Angle * PI / 180.f;
-}
-inline Vec3 RotateAround(Vec3 pointToRotate3D, Vec3 centerPoint3D, float angleInDegree)
-{
-	auto angleInRadians = AngleToRadian(angleInDegree);
-	double cosTheta = cos(angleInRadians);
-	double sinTheta = cos(angleInRadians);
-	Vec2 pointToRotate = ToVec2(pointToRotate3D);
-	Vec2 centerPoint = ToVec2(centerPoint3D);
-	Vec2 vec2Return
-	(
-		(cosTheta * (pointToRotate.x - centerPoint.x) -
-		sinTheta * (pointToRotate.y - centerPoint.y) + centerPoint.x),
-
-		(sinTheta * (pointToRotate.x - centerPoint.x) +
-			cosTheta * (pointToRotate.y - centerPoint.y) + centerPoint.y)
-	);
-	return ToVec3(vec2Return);
-}
-inline bool InTheCone(Vec3 pos, Vec3 centerconePolar, Vec3 centerconeEnd, float coneAngle)
-
-{
-
-	return AngleBetween(pos, centerconePolar, centerconeEnd) < coneAngle / 2
-
-		&& Distance(pos, centerconePolar) < Distance(centerconePolar, centerconeEnd);
-
-}
-inline float Distance(Vec3 point, Vec3 segmentStart, Vec3 segmentEnd, bool onlyIfOnSegment = false)
-{
-	auto a = ToVec2(point);
-	auto b = ToVec2(segmentStart);
-	auto c = ToVec2(segmentEnd);
-	float STriangle = 0.5f * abs((b.x - a.x)*(c.y - a.y) - (c.x - a.x)*(b.y - a.y));
-	float botLength = Distance(segmentStart, segmentEnd);
-	float distance = 2 * STriangle / botLength;
-	if (!onlyIfOnSegment)
-		return distance;
-	if (AngleBetween(point, segmentStart, segmentEnd) > 90 || AngleBetween(point, segmentEnd, segmentStart) > 90)
-		return 100000.f;
-	return distance;
-}
-inline float Distance(IUnit* from, IUnit* to)
-{
-	return (from->GetPosition() - to->GetPosition()).Length2D();
-}
-inline float Distance(IUnit* from, Vec3 to)
-{
-	return (from->GetPosition() - to).Length2D();
-}
-inline float Distance(Vec2 from, Vec2 to)
-{
-	return (from - to).Length();
-}
-//dich chuyen ex- vector tend
-inline Vec3 Extend(Vec3 from, Vec3 to, float distance)
-{
-	float realDistance = (from - to).Length() * distance / (from - to).Length2D();
-	auto direction = (to - from).VectorNormalize();
-	return from + direction * realDistance;
-}
-inline SArray<Vec3> GetCircleCircleIntersections(Vec3 center1, Vec3 center2, float radius1, float radius2)
-{
-	SArray<Vec3> result;
-	float D = Distance(center2, center1);
-	//The Circles dont intersect:
-	if (D > radius1 + radius2 || (D <= abs(radius1 - radius2)))
-	{
-		return result;
-	}
-
-	float A = (radius1 * radius1 - radius2 * radius2 + D * D) / (2 * D);
-	float H = sqrt(radius1 * radius1 - A * A);
-	Vec3 Direction = (center2 - center1).VectorNormalize();
-	Vec3 PA = ToVec3(ToVec2(center1) + A * ToVec2(Direction));
-	Vec3 S1 = ToVec3(ToVec2(PA) + H * ToVec2(Pendicular(Direction)));
-	Vec3 S2 = ToVec3((ToVec2(PA) - H * ToVec2(Pendicular(Direction))));
-	result.Add(S1);
-	result.Add(S2);
-	return result;
-}
 inline SArray<IUnit*> ValidTargets(vector<IUnit*> input)
 {
 	SArray<IUnit*> targets = SArray<IUnit*>(input);
@@ -401,14 +281,23 @@ inline void CastItemOnUnit(int itemid, float range, IUnit* target)
 {
 	if (GEntityList->Player()->HasItemId(itemid))
 	{
-		IInventoryItem* Item = GPluginSDK->CreateItemForId(itemid, range);
-		if (IsValidTarget(target) && Item->IsReady())
+		//IInventoryItem* Item = GPluginSDK->CreateItemForId(itemid, range);
+		//if (IsValidTarget(target) && Item->IsReady())
+		//{
+		//	Item->CastOnTarget(target);
+		//}
+		//if (target == nullptr)
+		//{
+		//	Item->CastOnPlayer();
+		//}
+		AllItems[itemid] = GPluginSDK->CreateItemForId(itemid, range);
+		if (IsValidTarget(target) && AllItems[itemid]->IsReady())
 		{
-			Item->CastOnTarget(target);
+			AllItems[itemid]->CastOnTarget(target);
 		}
-		if (target == nullptr)
+		else if (target == nullptr)
 		{
-			Item->CastOnPlayer();
+			AllItems[itemid]->CastOnPlayer();
 		}
 	}
 }
@@ -420,32 +309,43 @@ inline bool IsEnoughMana(IMenuOption* Slider)
 {
 	return GEntityList->Player()->ManaPercent() >= Slider->GetInteger();
 }
-void FindBestLineCastPosition(vector<Vec3> RangeCheckFroms, float range, float radius, bool Minions, bool Heroes, Vec3& CastPosition , int& HitCounts, Vec3& CastPositionFrom)
+FarmLocation FindBestLineCastPosition(vector<Vec3> RangeCheckFroms, float range, float castrange, float radius, bool Minions, bool Heroes)
 {
-	HitCounts = 0;
+	FarmLocation result;
+	result.HitCount = 0;
 	for (Vec3 RangeCheckFrom : RangeCheckFroms)
 	{
 		auto minions = EnemyMinions(range, RangeCheckFrom);
 		auto heroes = ValidEnemies(range, RangeCheckFrom);
+		auto castminions = EnemyMinions(castrange, RangeCheckFrom);
+		auto castheroes = ValidEnemies(castrange, RangeCheckFrom);
 		SArray<IUnit*> targets;
+		SArray<IUnit*> casttargets;
 		if (Minions)
+		{
 			targets.AddRange(minions);
+			casttargets.AddRange(castminions);
+		}
 		if (Heroes)
+		{
 			targets.AddRange(heroes);
-		for (auto target : targets.ToVector())
+			casttargets.AddRange(castheroes);
+		}
+		for (auto target : casttargets.ToVector())
 		{
 			Vec3 endpos = Extend(RangeCheckFrom, target->GetPosition(), range);
 			int count = targets.Where([&](IUnit* i) 
 				{ return Distance(i->GetPosition(), Extend(RangeCheckFrom, endpos, -radius/2), Extend(endpos, RangeCheckFrom, - radius/2), true) <= radius / 2 + i->BoundingRadius(); }).Count();
-			if (count > HitCounts)
+			if (count > result.HitCount)
 			{
-				HitCounts = count;
-				CastPosition = endpos;
-				CastPositionFrom = RangeCheckFrom;
+				result.HitCount = count;
+				result.CastPosition = endpos;
+				result.CastPositionFrom = RangeCheckFrom;
+				result.CastOnUnit = target;
 			}
 		}
 	}
-
+	return result;
 }
 inline Vec4 Red() { return Vec4(255, 0, 0, 255); }
 inline Vec4 Green() { return Vec4(0, 255, 0, 255); }
@@ -486,6 +386,21 @@ inline bool IsInAutoAttackRange(Vec3 position)
 inline bool IsInAutoAttackRange(IUnit* target)
 {
 	return GEntityList->Player()->GetRealAutoAttackRange(target) >= Distance(GEntityList->Player(), target);
+}
+inline bool IsADCanCastSpell()
+{
+	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo || GOrbwalking->GetOrbwalkingMode() == kModeMixed)
+	{
+		if (CountEnemiesInRange(GEntityList->Player()->GetPosition(), GEntityList->Player()->GetRealAutoAttackRange(GEntityList->Player())) == 0)
+			return true;
+		if (GOrbwalking->CanMove() && !GOrbwalking->CanAttack())
+			return true;
+		return false;
+	}
+	else
+	{
+		return GOrbwalking->CanMove();
+	}
 }
 #pragma endregion 
 

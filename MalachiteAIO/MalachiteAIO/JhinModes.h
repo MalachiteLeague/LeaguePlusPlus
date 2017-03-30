@@ -31,7 +31,7 @@ inline void JhinModeOnUpdate()
 			CastItemOnUnit(3153, 650, target);
 
 		}
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (JhinComboQ->Enabled())
 		{
@@ -45,7 +45,7 @@ inline void JhinModeOnUpdate()
 		{
 			for (IUnit* hero : ValidEnemies(W->Range()).Where([&](IUnit* i) {return JhinTargetHasPassive(i); }).ToVector())
 			{
-				W->CastOnTarget(hero, kHitChanceHigh);
+				MalachiteCast(W, hero, kHitChanceHigh);
 			}
 		}
 		if (JhinComboE->Enabled())
@@ -63,7 +63,7 @@ inline void JhinModeOnUpdate()
 			return;
 		if (Player()->ManaPercent() <= JhinHarassMana->GetInteger())
 			return;
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (JhinHarassQ->Enabled())
 		{
@@ -77,7 +77,7 @@ inline void JhinModeOnUpdate()
 		{
 			for (IUnit* hero : ValidEnemies(W->Range()).Where([&](IUnit* i) {return JhinTargetHasPassive(i); }).ToVector())
 			{
-				W->CastOnTarget(hero, kHitChanceHigh);
+				MalachiteCast(W, hero, kHitChanceHigh);
 			}
 		}
 
@@ -88,7 +88,7 @@ inline void JhinModeOnUpdate()
 			return;
 		if (Player()->ManaPercent() <= JhinFarmMana->GetInteger())
 			return;
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (JhinLaneClearQ->Enabled())
 		{
@@ -111,7 +111,7 @@ inline void JhinModeOnUpdate()
 			return;
 		if (Player()->ManaPercent() <= JhinFarmMana->GetInteger())
 			return;
-		if (!GOrbwalking->CanMove())
+		if (!IsADCanCastSpell())
 			return;
 		if (JhinLaneClearQ->Enabled())
 		{
@@ -129,7 +129,7 @@ inline void JhinModeOnUpdate()
 			auto target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, R->Range(), nullptr, true, &ignoredTarget.ToVector());
 			if (IsValidTarget(target))
 			{
-				R->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(R, target, kHitChanceHigh);
 			}
 		}
 		if (Equals(Player()->GetSpellName(kSlotR), "JhinRShot"))
@@ -140,7 +140,7 @@ inline void JhinModeOnUpdate()
 		{
 			for (auto target : ValidEnemies(W->Range()).Where([&](IUnit* i) {return IsCCed(i); }).ToVector())
 			{
-				W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceHigh);
 			}
 		}
 	}

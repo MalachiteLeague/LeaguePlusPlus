@@ -1,6 +1,6 @@
 #pragma once
 #include "XerathConfig.h"
-
+float XerathLastChargeTick;
 inline void XerathModeOnUpdate()
 {
 	if (Player()->GetSpellLevel(kSlotR) == 1)
@@ -9,26 +9,26 @@ inline void XerathModeOnUpdate()
 		R->SetOverrideRange(4550);
 	else if (Player()->GetSpellLevel(kSlotR) == 3)
 		R->SetOverrideRange(5800);
+
 	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo)
 	{
 		if (Q->IsReady() && XerathComboQ->Enabled())
 		{
 			if (XerathIsQCharging())
 			{
-				//GGame->PrintChat("charging");
 				auto target = SelectTarget(SpellDamage, 1550);
 				if (IsValidTarget(target))
 				{
-					Vec3 pred;
-					GPrediction->GetFutureUnitPosition(target, 0.2f, true, pred);
-					if (InSpellRange(Q,pred))
-						Q->CastOnPosition(pred);
+					//Vec3 pred;
+					//GPrediction->GetFutureUnitPosition(target, 0.2f, true, pred);
+					//if (InSpellRange(Q, pred))
+					//	Q->CastOnPosition(pred);
 					//Q->CastOnTarget(target, kHitChanceHigh);
+					MalachiteCast(Q, target, kHitChanceVeryHigh);
 				}
 			}
 			if (!XerathIsQCharging())
 			{
-				//GGame->PrintChat("NOTcharging");
 				auto target = SelectTarget(SpellDamage, 1550);
 				if (IsValidTarget(target))
 					Q->StartCharging();
@@ -38,13 +38,15 @@ inline void XerathModeOnUpdate()
 		{
 			auto target = SelectTarget(SpellDamage, E->Range());
 			if (IsValidTarget(target))
-				E->CastOnTarget(target, kHitChanceHigh);
+				//E->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(E, target, kHitChanceVeryHigh);
 		}
 		if (XerathComboW->Enabled())
 		{
 			auto target = SelectTarget(SpellDamage, W->Range());
 			if (IsValidTarget(target))
-				W->CastOnTarget(target, kHitChanceHigh);
+				//W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceVeryHigh);
 		}
 	}
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed)
@@ -56,11 +58,12 @@ inline void XerathModeOnUpdate()
 				auto target = SelectTarget(SpellDamage, 1550);
 				if (IsValidTarget(target))
 				{
-					Vec3 pred;
-					GPrediction->GetFutureUnitPosition(target, 0.2f, true, pred);
-					if (InSpellRange(Q, pred))
-						Q->CastOnPosition(pred);
+					//Vec3 pred;
+					//GPrediction->GetFutureUnitPosition(target, 0.2f, true, pred);
+					//if (InSpellRange(Q, pred))
+					//	Q->CastOnPosition(pred);
 					//Q->CastOnTarget(target, kHitChanceHigh);
+					MalachiteCast(Q, target, kHitChanceVeryHigh);
 				}
 			}
 			if (!XerathIsQCharging())
@@ -77,10 +80,11 @@ inline void XerathModeOnUpdate()
 			auto target = SelectTarget(SpellDamage, W->Range());
 			if (IsValidTarget(target))
 			{
-				Vec3 pred;
-				GPrediction->GetFutureUnitPosition(target, 0.3f, true, pred);
-				W->CastOnPosition(pred);
+				//Vec3 pred;
+				//GPrediction->GetFutureUnitPosition(target, 0.3f, true, pred);
+				//W->CastOnPosition(pred);
 				//W->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(W, target, kHitChanceVeryHigh);
 			}
 
 		}
@@ -108,10 +112,11 @@ inline void XerathModeOnUpdate()
 				&ValidEnemies().Where([&](IUnit* i) {return Distance(i, GGame->CursorPosition()) > XerathAutoRDistance->GetInteger(); }).ToVector());
 			if (IsValidTarget(target))
 			{
-				Vec3 pred;
-				GPrediction->GetFutureUnitPosition(target, 0.3f, true, pred);
-				R->CastOnPosition(pred);
+				//Vec3 pred;
+				//GPrediction->GetFutureUnitPosition(target, 0.3f, true, pred);
+				//R->CastOnPosition(pred);
 				//R->CastOnTarget(target, kHitChanceHigh);
+				MalachiteCast(R, target, kHitChanceVeryHigh);
 			}
 		}
 	}

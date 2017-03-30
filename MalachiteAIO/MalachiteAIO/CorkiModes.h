@@ -28,14 +28,14 @@ inline void CorkiComboOnUpdate()
 		CastItemOnUnit(3153, 650, target);
 
 	}
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (CorkiComboQ->Enabled())
 	{
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (CorkiComboE->Enabled())
@@ -51,7 +51,7 @@ inline void CorkiComboOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, R->Range());
 		if (IsValidTarget(target))
 		{
-			R->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(R, target, kHitChanceHigh);
 		}
 	}
 }
@@ -61,14 +61,14 @@ inline void CorkiHarassOnUpdate()
 		return;
 	if (Player()->ManaPercent() <= CorkiHarassMana->GetInteger())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (CorkiHarassQ->Enabled())
 	{
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (CorkiHarassE->Enabled())
@@ -86,14 +86,14 @@ inline void CorkiLastHitOnUpdate()
 		return;
 	if (Player()->ManaPercent() <= CorkiFarmMana->GetInteger())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (CorkiLastHitQ->Enabled())
 	{
 		auto targets = EnemyMinions(Q->Range()).Where([&](IUnit* i) {return GetSpellDamage(i, kSlotQ) >= i->GetHealth(); }).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 }
@@ -103,14 +103,14 @@ inline void CorkiLaneJungOnUpdate()
 		return;
 	if (Player()->ManaPercent() <= CorkiFarmMana->GetInteger())
 		return;
-	if (!GOrbwalking->CanMove())
+	if (!IsADCanCastSpell())
 		return;
 	if (CorkiJungleClearQ->Enabled())
 	{
 		auto targets = NeutralMinions(Q->Range()).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (CorkiJungleClearE->Enabled())
@@ -126,7 +126,7 @@ inline void CorkiLaneJungOnUpdate()
 		auto targets = EnemyMinions(Q->Range()).Where([&](IUnit* i) {return CountMinionsInRange(i->GetPosition(), 250) >= 3; }).ToVector();
 		for (IUnit* target : targets)
 		{
-			Q->CastOnTarget(target,kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (CorkiLaneClearE->Enabled())
@@ -148,7 +148,7 @@ inline void CorkiAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, Q->Range());
 		if (IsValidTarget(target))
 		{
-			Q->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(Q, target, kHitChanceHigh);
 		}
 	}
 	if (CorkiAutoR->Enabled() && Player()->GetSpellBook()->GetAmmo(kSlotR) >=  CorkiAutoRAtStack->GetInteger())
@@ -156,7 +156,7 @@ inline void CorkiAutoOnUpdate()
 		auto target = SelectTarget(PhysicalDamage, R->Range());
 		if (IsValidTarget(target))
 		{
-			R->CastOnTarget(target, kHitChanceHigh);
+			MalachiteCast(R, target, kHitChanceHigh);
 		}
 	}
 }

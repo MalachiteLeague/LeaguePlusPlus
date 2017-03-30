@@ -2,6 +2,8 @@
 #include "Template.h"
 #include "cmath"
 #include "Extension.h"
+#include <map>
+#include "MalachitePred.h"
 
 #pragma region variables
 DelayAction * pDelay = nullptr;
@@ -37,10 +39,12 @@ inline void InitOnLoad()
 		Smite = GPluginSDK->CreateSpell(eSpellSlot(Unknown), 550);
 	}
 	GEventManager->AddEventHandler(kEventOnGameUpdate, InitOnUpdate);
+	MalachitePredOnload();
 }
 inline void InitUnload()
 {
 	GEventManager->RemoveEventHandler(kEventOnGameUpdate, InitOnUpdate);
+	MalachitePredUnload();
 }
 // de coi nha hihi
 inline void Dutru()
