@@ -60,7 +60,7 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 				MalachiteCast(W, Target, kHitChanceHigh);
 			}
 		}
-		if (Target->GetTeam() == kTeamNeutral)
+		if (Target->IsJungleCreep())
 		{
 			//GGame->PrintChat("a");
 			if (Q->IsReady() && LucianJungClearQ->Enabled() && InSpellRange(Q, Target))

@@ -242,7 +242,7 @@ enum eObjectTeam
 	kTeamUnknown = 0,
 	kTeamOrder = 100,
 	kTeamChaos = 200,
-	kTeamNeutral = 300,
+	kTeamNeutral = 44,
 };
 
 enum eFontWeight
