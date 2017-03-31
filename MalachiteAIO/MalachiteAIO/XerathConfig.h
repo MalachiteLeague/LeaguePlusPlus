@@ -48,15 +48,15 @@ IMenuOption* XerathDrawRCast;
 inline void XerathMenuAndSpells()
 {
 	Q = GPluginSDK->CreateSpell2(kSlotQ, kLineCast, false, false, kCollidesWithNothing);
-	Q->SetSkillshot(0.6f, 95, std::numeric_limits<float>::infinity(), 1550);
-	Q->SetCharged(750, 1550, 1.6f);
-	//Q->SetChargedBuffName("XerathArcanopulseChargeUp");
+	Q->SetSkillshot(0.3f, 95, std::numeric_limits<float>::infinity(), 1550);
+	Q->SetCharged(700, 1500, 1.5f);
+	Q->SetChargedBuffName("XerathArcanopulseChargeUp");
 	W = GPluginSDK->CreateSpell2(kSlotW, kLineCast, true, false, kCollidesWithNothing);
-	W->SetSkillshot(0.7f, 125, std::numeric_limits<float>::infinity(), 1100);
+	W->SetSkillshot(0.4f, 125, std::numeric_limits<float>::infinity(), 1100);
 	E = GPluginSDK->CreateSpell2(kSlotE, kLineCast, true, false, kCollidesWithYasuoWall | kCollidesWithMinions | kCollidesWithHeroes);
-	E->SetSkillshot(0.25f, 60, 1400, 1050);
+	E->SetSkillshot(0.f, 60, 1400, 1050);
 	R = GPluginSDK->CreateSpell2(kSlotR, kLineCast, true, false, kCollidesWithNothing);
-	R->SetSkillshot(0.7f, 130, std::numeric_limits<float>::infinity(), 3520);// 4840 , 6160
+	R->SetSkillshot(0.4f, 130, std::numeric_limits<float>::infinity(), 3520);// 4840 , 6160
 
 	XerathMainMenu = GPluginSDK->AddMenu("MalaChiteAIO Xerath");
 

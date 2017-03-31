@@ -122,7 +122,7 @@ inline MalachitePredOutPut MalachitePredGetPrediction (ISpell2*  spell , IUnit* 
 		output.HitChance = kHitChanceHigh;
 	}
 	float speed = target->IsDashing() ? MalachitePredAllDashData[target->GetNetworkId()]->Speed : target->MovementSpeed();
-	float realspelldelay = spell->GetDelay() > spell->Radius() / 2.f / speed ? spell->GetDelay() - spell->Radius() / 2.f / speed : 0.f;
+	float realspelldelay = spell->GetDelay(); /*> spell->Radius() / 2.f / speed ? spell->GetDelay() - spell->Radius() / 2.f / speed : 0.f;*/
 	float time = 0.f;
 	for (int i = 1; i < waypoint.size(); i = i + 1)
 	{
