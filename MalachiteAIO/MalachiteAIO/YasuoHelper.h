@@ -13,6 +13,7 @@ inline bool YasuoNotDashing()
 
 inline int YasuoQStage()
 {
+	if (Player()->GetSpellBook()->GetLevel(kSlotQ) == 0) return 1;
 	string name = Player()->GetSpellBook()->GetName(kSlotQ);
 	string Q1 = "YasuoQW";
 	string Q2 = "YasuoQ2W";

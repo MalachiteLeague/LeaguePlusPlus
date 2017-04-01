@@ -5,7 +5,7 @@ PLUGIN_EVENT(void) YasuoOnGameUpdate()
 	YasuoModeOnUpdate();
 	//if (YasuoIsDashing() && GGame->TickCount() - YasuoLastETick > 420 - GGame->Latency())
 	//	Q->CastOnPosition(Player()->GetPosition());
-	//GGame->PrintChat(std::to_string(YasuoAllETargets().Count()).c_str());
+	//GGame->PrintChat(std::to_string(YasuoQStage()).c_str());
 }
 PLUGIN_EVENT(void) YasuoOnSpellCast(CastedSpell const& Args)
 {

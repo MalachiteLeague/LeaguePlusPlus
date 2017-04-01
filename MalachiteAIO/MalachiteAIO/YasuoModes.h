@@ -174,7 +174,7 @@ inline void YasuoModeOnUpdate()
 	{
 		bool underturret = YasuoFarmUnderTurret->Enabled();
 		//lane
-		if (YasuoLaneClearQ->Enabled() && YasuoLaneClearE->Enabled())
+		if (YasuoLaneClearQ->Enabled() && YasuoLaneClearE->Enabled() && E->IsReady() && Q->IsReady())
 		{
 			SArray<IUnit*>  Minions = EnemyMinions(E->Range());
 			for (IUnit* minion : Minions.ToVector())
@@ -231,7 +231,7 @@ inline void YasuoModeOnUpdate()
 		if (YasuoFleeStackQ)
 			YasuoStackQ();
 	}
-	//// AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO
+	// AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO
 	{
 		if (GOrbwalking->GetOrbwalkingMode() == kModeCombo || IsKeyDown(YasuoCustomKey) || IsKeyDown(YasuoFleeKey))
 			return;
