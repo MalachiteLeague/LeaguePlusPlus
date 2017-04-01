@@ -70,7 +70,7 @@ inline  void TwitchModeOnUpdate()
 		}
 		if (TwitchComboR->Enabled())
 		{
-			if (CountEnemiesInRange(Player()->GetPosition(), Player()->GetRealAutoAttackRange(Player()) + 300))
+			if (CountEnemiesInRange(Player()->GetPosition(), Player()->AttackRange() + Player()->BoundingRadius()*2 + 300))
 			{
 				R->CastOnPlayer();
 			}

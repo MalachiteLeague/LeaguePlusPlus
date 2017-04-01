@@ -17,6 +17,7 @@ IMenuOption* EzealComboR;
 //auto
 IMenuOption* EzealAutoQ;
 IMenuOption* EzealAutoW;
+IMenuOption* EzrealAutoUnderTurret;
 IMenuOption* EzealAutoStackTear;
 
 //harass
@@ -66,5 +67,6 @@ inline void EzrealMenuAndSpells()
 	EzealAutoMenu = EzealMainMenu->AddMenu("Auto Settings");
 	EzealAutoQ = EzealAutoMenu->CheckBox("Q", true);
 	EzealAutoW = EzealAutoMenu->CheckBox("W", false);
+	EzrealAutoUnderTurret = EzealAutoMenu->CheckBox("Auto Under Turret ?", false);
 	EzealAutoStackTear = EzealAutoMenu->CheckBox("Stack Tear in Fountain", true);
 }

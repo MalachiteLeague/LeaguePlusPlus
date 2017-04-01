@@ -33,7 +33,7 @@ inline void JinxModeOnUpdate()
 		
 		if (JinxComboQ->Enabled() && !Player()->HasBuff("JinxQ") && Q->IsReady())
 		{
-			auto target = SelectTarget(PhysicalDamage, Player()->GetRealAutoAttackRange(Player()) + vector<int>{75,100,125,150,175} [Player()->GetSpellLevel(kSlotQ) - 1]);
+			auto target = SelectTarget(PhysicalDamage, GetAutoAttackRange(Player()) + vector<int>{75,100,125,150,175} [Player()->GetSpellLevel(kSlotQ) - 1]);
 			if (IsValidTarget(target) && !IsInAutoAttackRange(target))
 			{
 				Q->CastOnPlayer();
@@ -41,7 +41,7 @@ inline void JinxModeOnUpdate()
 		}
 		if (JinxComboQ->Enabled() && Player()->HasBuff("JinxQ") && Q->IsReady())
 		{
-			auto target = SelectTarget(PhysicalDamage, Player()->GetRealAutoAttackRange(Player()) + vector<int>{75, 100, 125, 150, 175}[Player()->GetSpellLevel(kSlotQ) - 1]);
+			auto target = SelectTarget(PhysicalDamage, GetAutoAttackRange(Player()) + vector<int>{75, 100, 125, 150, 175}[Player()->GetSpellLevel(kSlotQ) - 1]);
 			if (IsValidTarget(target) && Distance(Player(), target) <= 525 + Player()->BoundingRadius() + target->BoundingRadius())
 			{
 				Q->CastOnPlayer();
@@ -78,7 +78,7 @@ inline void JinxModeOnUpdate()
 			return;
 		if (JinxHarassQ->Enabled() && !Player()->HasBuff("JinxQ") && Q->IsReady())
 		{
-			auto target = SelectTarget(PhysicalDamage, Player()->GetRealAutoAttackRange(Player()) + vector<int>{75, 100, 125, 150, 175}[Player()->GetSpellLevel(kSlotQ) - 1]);
+			auto target = SelectTarget(PhysicalDamage, GetAutoAttackRange(Player()) + vector<int>{75, 100, 125, 150, 175}[Player()->GetSpellLevel(kSlotQ) - 1]);
 			if (IsValidTarget(target) && !IsInAutoAttackRange(target))
 			{
 				Q->CastOnPlayer();
@@ -86,7 +86,7 @@ inline void JinxModeOnUpdate()
 		}
 		if (JinxHarassQ->Enabled() && Player()->HasBuff("JinxQ") && Q->IsReady())
 		{
-			auto target = SelectTarget(PhysicalDamage, Player()->GetRealAutoAttackRange(Player()) + vector<int>{75, 100, 125, 150, 175}[Player()->GetSpellLevel(kSlotQ) - 1]);
+			auto target = SelectTarget(PhysicalDamage, GetAutoAttackRange(Player()) + vector<int>{75, 100, 125, 150, 175}[Player()->GetSpellLevel(kSlotQ) - 1]);
 			if (IsValidTarget(target) && Distance(Player(), target) <= 525 + Player()->BoundingRadius() + target->BoundingRadius())
 			{
 				Q->CastOnPlayer();

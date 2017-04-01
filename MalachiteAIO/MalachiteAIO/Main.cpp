@@ -11,6 +11,7 @@
 #include "DravenLoad.h"
 #include "XerathLoad.h"
 #include "FioraLoad.h"
+#include "YasuoLoad.h"
 #include "SpellBlockerLoad.h"
 
 PluginSetup("MalachiteAIO");
@@ -146,7 +147,7 @@ PLUGIN_EVENT(void) OnGameUpdate()
 SArray <string> ChampionList;
 PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 {
-	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin", "sivir", "draven", "xerath","fiora"});
+	ChampionList.AddRange(vector<string>{"ezreal","corki","vayne", "jinx", "twitch", "lucian", "jhin", "sivir", "draven", "xerath","fiora","yasuo"});
 	// Initializes global interfaces for core access
 	PluginSDKSetup(PluginSDK);
 	if (!ChampionList.Any([&](string i) {return  Contains(GEntityList->Player()->ChampionName(), i); }))
@@ -204,6 +205,10 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	else if (Contains(GEntityList->Player()->ChampionName(), "fiora"))
 	{
 		FioraOnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "yasuo"))
+	{
+		YasuoOnload();
 	}
 	SpellBlockerOnload();
 }
@@ -267,6 +272,10 @@ PLUGIN_API void OnUnload()
 	else if (Contains(GEntityList->Player()->ChampionName(), "fiora"))
 	{
 		FioraUnload();
+	}
+	else if (Contains(GEntityList->Player()->ChampionName(), "yasuo"))
+	{
+		YasuoUnload();
 	}
 	SpellBlockerUnload();
 }

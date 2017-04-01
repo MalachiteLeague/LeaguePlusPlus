@@ -9,7 +9,7 @@ inline void VayneModeAfterAttack(IUnit* Source, IUnit* Target)
 	{
 		if (VayneComboQ->Enabled())
 		{
-			if (Distance(VayneCondemnPos(), Target->GetPosition()) <= Player()->GetRealAutoAttackRange(Target))
+			if (Distance(VayneCondemnPos(), Target->GetPosition()) <= GetAutoAttackRange(Target))
 			{
 				Q->CastOnPosition(GGame->CursorPosition());
 			}
@@ -19,7 +19,7 @@ inline void VayneModeAfterAttack(IUnit* Source, IUnit* Target)
 	{
 		if (Target->UnitFlags() == FL_HERO && VayneHarassQ->Enabled())
 		{
-			if (Distance(VayneCondemnPos(), Target->GetPosition()) <= Player()->GetRealAutoAttackRange(Target))
+			if (Distance(VayneCondemnPos(), Target->GetPosition()) <= GetAutoAttackRange(Target))
 			{
 				Q->CastOnPosition(GGame->CursorPosition());
 			}
@@ -29,7 +29,7 @@ inline void VayneModeAfterAttack(IUnit* Source, IUnit* Target)
 	{
 		if ((Target->GetTeam() == kTeamNeutral && VayneJungleClearQ->Enabled()) || (Target->GetTeam() != kTeamNeutral && Player()->IsEnemy(Target) && VayneLaneClearQ->Enabled()))
 		{
-			if (Distance(VayneCondemnPos(), Target->GetPosition()) <= Player()->GetRealAutoAttackRange(Target))
+			if (Distance(VayneCondemnPos(), Target->GetPosition()) <= GetAutoAttackRange(Target))
 			{
 				Q->CastOnPosition(GGame->CursorPosition());
 			}

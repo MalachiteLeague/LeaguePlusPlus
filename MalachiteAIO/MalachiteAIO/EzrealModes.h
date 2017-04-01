@@ -131,20 +131,23 @@ inline void EzrealAutoOnUpdate()
 		return;
 	if (!IsADCanCastSpell())
 		return;
-	if (EzealAutoQ->Enabled())
+	if (!GUtility->IsPositionUnderTurret(Player()->GetPosition()) || EzrealAutoUnderTurret->Enabled())
 	{
-		auto target = SelectTarget(PhysicalDamage, Q->Range());
-		if (IsValidTarget(target))
+		if (EzealAutoQ->Enabled())
 		{
-			MalachiteCast(Q, target, kHitChanceHigh);
+			auto target = SelectTarget(PhysicalDamage, Q->Range());
+			if (IsValidTarget(target))
+			{
+				MalachiteCast(Q, target, kHitChanceHigh);
+			}
 		}
-	}
-	if (EzealAutoW->Enabled())
-	{
-		auto target = SelectTarget(PhysicalDamage, W->Range());
-		if (IsValidTarget(target))
+		if (EzealAutoW->Enabled())
 		{
-			MalachiteCast(W, target, kHitChanceHigh);
+			auto target = SelectTarget(PhysicalDamage, W->Range());
+			if (IsValidTarget(target))
+			{
+				MalachiteCast(W, target, kHitChanceHigh);
+			}
 		}
 	}
 	if (Player()->HasItemId(3070) || Player()->HasItemId(3004) || Player()->HasItemId(3003))

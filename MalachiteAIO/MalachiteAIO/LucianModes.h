@@ -103,7 +103,7 @@ inline void LucianModeOnUpdate()
 		if (!IsADCanCastSpell())
 			return;
 		if (E->IsReady() && LucianComboEGap->Enabled() 
-			&& CountEnemiesInRange(Player()->GetPosition(),Player()->GetRealAutoAttackRange(Player())) == 0)
+			&& CountEnemiesInRange(Player()->GetPosition(),Player()->AttackRange() + Player()->BoundingRadius() * 3) == 0)
 		{
 			SArray<IUnit*> Ignored = ValidEnemies().Where([&](IUnit* i) {return Distance(i, GGame->CursorPosition()) > 500; });
 			auto target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, Q->Range() + E->Range(), nullptr, true, &Ignored.ToVector());
@@ -113,7 +113,7 @@ inline void LucianModeOnUpdate()
 			}
 		}
 		if (LucianComboQExtend->Enabled() && Player()->ManaPercent() > LucianComboQExtendMana->GetInteger() 
-			&& CountEnemiesInRange(Player()->GetPosition(),Player()->GetRealAutoAttackRange(Player()) + 50) == 0)
+			&& CountEnemiesInRange(Player()->GetPosition(), Player()->AttackRange() + Player()->BoundingRadius() * 3) == 0)
 		{
 			LucianCastQExtend();
 		}
@@ -158,7 +158,7 @@ inline void LucianModeOnUpdate()
 			return;
 		if (!IsADCanCastSpell())
 			return;
-		if(LucianAutoQ->Enabled() && Player()->ManaPercent() >= LucianAutoMana->GetInteger())
+		if(LucianAutoQ->Enabled() && Player()->ManaPercent() >= LucianAutoMana->GetInteger() && !GUtility->IsPositionUnderTurret(Player()->GetPosition()))
 		{
 			LucianCastQExtend();
 		}

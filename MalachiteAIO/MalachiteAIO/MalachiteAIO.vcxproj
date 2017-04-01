@@ -180,6 +180,11 @@
     <ClInclude Include="Header2.h" />
     <ClInclude Include="Header3.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="YasuoHelper.h" />
+    <ClInclude Include="YasuoLoad.h" />
+    <ClInclude Include="YasuoModes.h" />
+    <ClInclude Include="YasuoVariables.h" />
+    <ClInclude Include="YasuoConfig.h" />
     <ClInclude Include="MalachitePred.h" />
     <ClInclude Include="KalistaLoad.h" />
     <ClInclude Include="KalistaModes.h" />

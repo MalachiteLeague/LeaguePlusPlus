@@ -55,6 +55,9 @@
     <Filter Include="Viktor">
       <UniqueIdentifier>{a302db92-487a-42d0-bee2-e7cc4d3c584e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Yasuo">
+      <UniqueIdentifier>{8e3f8a15-0290-4c13-b068-d487f25d34cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -251,6 +254,21 @@
     </ClInclude>
     <ClInclude Include="Geometry.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YasuoLoad.h">
+      <Filter>Yasuo</Filter>
+    </ClInclude>
+    <ClInclude Include="YasuoModes.h">
+      <Filter>Yasuo</Filter>
+    </ClInclude>
+    <ClInclude Include="YasuoVariables.h">
+      <Filter>Yasuo</Filter>
+    </ClInclude>
+    <ClInclude Include="YasuoConfig.h">
+      <Filter>Yasuo</Filter>
+    </ClInclude>
+    <ClInclude Include="YasuoHelper.h">
+      <Filter>Yasuo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

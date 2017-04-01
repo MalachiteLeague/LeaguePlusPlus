@@ -174,7 +174,7 @@ inline MalachitePredOutPut MalachitePredGetPrediction (ISpell2*  spell , IUnit* 
 	return output;
 }
 //cast
-inline bool MalachiteCast(ISpell2* spell, IUnit* target, ePredictionChance MinHitChane)
+inline bool MalachiteCast(ISpell2* spell, IUnit* target, ePredictionChance MinHitChane = kHitChanceHigh)
 {
 	MalachitePredOutPut pred = MalachitePredGetPrediction(spell, target);
 	if (pred.HitChance >= MinHitChane)

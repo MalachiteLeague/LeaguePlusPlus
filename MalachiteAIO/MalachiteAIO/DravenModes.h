@@ -55,11 +55,11 @@ inline void DravenModeOnUpdate()
 		}
 		if (DravenComboW->Enabled())
 		{
-			if (!DravenHasWAttackSpeed() && CountEnemiesInRange(Player()->GetPosition() ,Player()->GetRealAutoAttackRange(Player())) > 0)
+			if (!DravenHasWAttackSpeed() && CountEnemiesInRange(Player()->GetPosition() , GetAutoAttackRange(Player())) > 0)
 			{
 				W->CastOnPlayer();
 			}
-			if (!DravenHasWMoveSpeed() && CountEnemiesInRange(Player()->GetPosition(), Player()->GetRealAutoAttackRange(Player())) == 0
+			if (!DravenHasWMoveSpeed() && CountEnemiesInRange(Player()->GetPosition(), GetAutoAttackRange(Player())) == 0
 				&& CountEnemiesInRange(Player()->GetPosition(), 900) > 0)
 			{
 				W->CastOnPlayer();

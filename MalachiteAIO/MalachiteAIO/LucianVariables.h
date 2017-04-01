@@ -17,7 +17,7 @@ inline bool LucianCastEToGap(IUnit*  target)
 	for (int i = 450; i >= 200; i = i - 25)
 	{
 		Vec3 pos = Extend(Player()->GetPosition(), GGame->CursorPosition(), i);
-		if (Distance(target, pos) <= Player()->GetRealAutoAttackRange(target) - 200)
+		if (Distance(target, pos) <= GetAutoAttackRange(target) - 200)
 		{
 			E->CastOnPosition(pos);
 			return true;
@@ -32,7 +32,7 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 		for (int i = 200; i <= 425; i = i + 25)
 		{
 			Vec3 pos = Extend(Player()->GetPosition(), GGame->CursorPosition(), i);
-			if (Distance(target, pos) <= Player()->GetRealAutoAttackRange(target))
+			if (Distance(target, pos) <= GetAutoAttackRange(target))
 			{
 				Position = pos;
 				//E->CastOnPosition(pos);
@@ -43,11 +43,11 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 		{
 			for (int i = 200; i <= 425; i = i + 25)
 			{
-				SArray<Vec3> Poses = GetCircleCircleIntersections(Player()->GetPosition(), target->GetPosition(), i, Player()->GetRealAutoAttackRange(target) - 100);
+				SArray<Vec3> Poses = GetCircleCircleIntersections(Player()->GetPosition(), target->GetPosition(), i, GetAutoAttackRange(target) - 100);
 				Poses.OrderBy<float>([&](Vec3 x) {return Distance(x, GGame->CursorPosition()); });
 				for (Vec3 position : Poses.ToVector())
 				{
-					if (Distance(target, position) <= Player()->GetRealAutoAttackRange(target) && !GNavMesh->IsPointWall(position))
+					if (Distance(target, position) <= GetAutoAttackRange(target) && !GNavMesh->IsPointWall(position))
 					{
 						Position = position;
 						return true;
@@ -61,7 +61,7 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 		for (int i = 450; i >= 200; i = i -25)
 		{
 			Vec3 pos = Extend(Player()->GetPosition(), GGame->CursorPosition(), i);
-			if (Distance(target, pos) <= Player()->GetRealAutoAttackRange(target))
+			if (Distance(target, pos) <= GetAutoAttackRange(target))
 			{
 				Position = pos;
 				//E->CastOnPosition(pos);
@@ -72,11 +72,11 @@ inline bool LucianCanUseE (IUnit* target, Vec3& Position )
 		{
 			for (int i = 200; i <= 425; i = i + 25)
 			{
-				SArray<Vec3> Poses = GetCircleCircleIntersections(Player()->GetPosition(), target->GetPosition(), i, Player()->GetRealAutoAttackRange(target) - 100);
+				SArray<Vec3> Poses = GetCircleCircleIntersections(Player()->GetPosition(), target->GetPosition(), i, GetAutoAttackRange(target) - 100);
 				Poses.OrderBy<float>([&](Vec3 x) {return Distance(x, GGame->CursorPosition()); });
 				for (Vec3 position : Poses.ToVector())
 				{
-					if (Distance(target, position) <= Player()->GetRealAutoAttackRange(target) && !GNavMesh->IsPointWall(position))
+					if (Distance(target, position) <= GetAutoAttackRange(target) && !GNavMesh->IsPointWall(position))
 					{
 						Position = position;
 						return true;

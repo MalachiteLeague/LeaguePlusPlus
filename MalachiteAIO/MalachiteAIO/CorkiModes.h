@@ -40,7 +40,7 @@ inline void CorkiComboOnUpdate()
 	}
 	if (CorkiComboE->Enabled())
 	{
-		auto target = SelectTarget(PhysicalDamage, Player()->GetRealAutoAttackRange(Player()));
+		auto target = SelectTarget(PhysicalDamage, GetAutoAttackRange(Player()));
 		if (IsValidTarget(target))
 		{
 			E->CastOnPlayer();
@@ -73,7 +73,7 @@ inline void CorkiHarassOnUpdate()
 	}
 	if (CorkiHarassE->Enabled())
 	{
-		auto target = SelectTarget(PhysicalDamage, Player()->GetRealAutoAttackRange(Player()));
+		auto target = SelectTarget(PhysicalDamage, GetAutoAttackRange(Player()));
 		if (IsValidTarget(target))
 		{
 			E->CastOnPlayer();
@@ -115,7 +115,7 @@ inline void CorkiLaneJungOnUpdate()
 	}
 	if (CorkiJungleClearE->Enabled())
 	{
-		auto targets = NeutralMinions(Player()->GetRealAutoAttackRange(Player())).ToVector();
+		auto targets = NeutralMinions(GetAutoAttackRange(Player())).ToVector();
 		for (IUnit* target : targets)
 		{
 			E->CastOnPlayer();
@@ -131,7 +131,7 @@ inline void CorkiLaneJungOnUpdate()
 	}
 	if (CorkiLaneClearE->Enabled())
 	{
-		if (CountMinionsInRange(Player()->GetPosition(), Player()->GetRealAutoAttackRange(Player())) >= 3)
+		if (CountMinionsInRange(Player()->GetPosition(), GetAutoAttackRange(Player())) >= 3)
 		{
 			E->CastOnPlayer();
 		}

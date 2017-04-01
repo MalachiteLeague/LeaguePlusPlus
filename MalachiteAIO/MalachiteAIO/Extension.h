@@ -143,6 +143,10 @@ inline IUnit* SelectTarget(eDamageType type, float range)
 {
 	return GTargetSelector->FindTarget(QuickestKill, type, range);
 }
+float GetAutoAttackRange(IUnit*target, IUnit* thistarget = GEntityList->Player())
+{
+	return thistarget->BoundingRadius() + thistarget->AttackRange() + target->BoundingRadius();
+}
 // get selected
 inline IUnit* GetSelectedTarget()
 {
@@ -381,17 +385,17 @@ inline bool IsGoingToWard(IUnit* ThisUnit, IUnit* ToUnit)
 }
 inline bool IsInAutoAttackRange(Vec3 position)
 {
-	return GEntityList->Player()->GetRealAutoAttackRange(GEntityList->Player()) >= Distance(GEntityList->Player(), position);
+	return GEntityList->Player()->AttackRange() + GEntityList->Player()->BoundingRadius() *2 >= Distance(GEntityList->Player(), position);
 }
 inline bool IsInAutoAttackRange(IUnit* target)
 {
-	return GEntityList->Player()->GetRealAutoAttackRange(target) >= Distance(GEntityList->Player(), target);
+	return GEntityList->Player()->AttackRange() + GEntityList->Player()->BoundingRadius() + target->BoundingRadius() >= Distance(GEntityList->Player(), target);
 }
-inline bool IsADCanCastSpell()
+inline bool IsADCanCastSpell(bool anymode = false)
 {
-	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo || GOrbwalking->GetOrbwalkingMode() == kModeMixed)
+	if (GOrbwalking->GetOrbwalkingMode() == kModeCombo || GOrbwalking->GetOrbwalkingMode() == kModeMixed || anymode)
 	{
-		if (CountEnemiesInRange(GEntityList->Player()->GetPosition(), GEntityList->Player()->GetRealAutoAttackRange(GEntityList->Player())) == 0)
+		if (CountEnemiesInRange(GEntityList->Player()->GetPosition(), GEntityList->Player()->AttackRange() + GEntityList->Player()->BoundingRadius() * 2) == 0)
 			return true;
 		if (GOrbwalking->CanMove() && !GOrbwalking->CanAttack())
 			return true;
@@ -401,6 +405,12 @@ inline bool IsADCanCastSpell()
 	{
 		return GOrbwalking->CanMove();
 	}
+}
+inline IUnit*  GetOrbwalkTarget()
+{
+	SArray<IUnit*> ignoretargets = ValidEnemies().Where([&](IUnit*i) {return !IsInAutoAttackRange(i); });
+	IUnit* target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, GEntityList->Player()->AttackRange() + 400, nullptr, true, &ignoretargets.ToVector());
+	return target;
 }
 #pragma endregion 
 
