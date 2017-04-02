@@ -182,5 +182,9 @@ inline int YasuoGEtRcount(IUnit* target)
 }
 inline double YasuoGetEDamage(IUnit* target)
 {
-	return GetSpellDamage(target, kSlotE) * (1 + Player()->GetBuffCount("YasuoDashScalar") * 0.25f);
+	if (Player()->GetSpellBook()->GetLevel(kSlotE) == 0)
+		return 0;
+	double raw = (vector<double>{60,70,80,90,100}[Player()->GetSpellBook()->GetLevel(kSlotE)-1] + 0.2*Player()->PhysicalDamageMod() + 0.6*Player()->MagicDamage()) 
+	*(1 + Player()->GetBuffCount("YasuoDashScalar") * 0.25f);
+	return GDamage->CalcMagicDamage(Player(), target, raw);
 }

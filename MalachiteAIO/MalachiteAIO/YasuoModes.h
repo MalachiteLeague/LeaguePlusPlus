@@ -34,7 +34,8 @@ inline void YasuoModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, Q2->Range());
 			if (IsValidTarget(target))
 			{
-				if (!YasuoComboQ3Spin->Enabled() || target->HasBuff("YasuoDashWrapper") || Distance(target, Player()->GetPosition()) > YasuoComboQ3SpinMaxDist->GetInteger())
+				if (!YasuoComboQ3Spin->Enabled() || target->HasBuff("YasuoDashWrapper") || Distance(target, Player()->GetPosition()) > YasuoComboQ3SpinMaxDist->GetInteger()
+					|| CountEnemiesInRange(Player()->GetPosition(), 1150) >= 2)
 				{
 					YasuoCastQ(target);
 				}
@@ -66,7 +67,6 @@ inline void YasuoModeOnUpdate()
 			YasuoCastEMouse(underturret);
 		}
 		YasuoStackQ();
-
 	}
 	//// CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM 
 	if (IsKeyDown(YasuoCustomKey))
@@ -101,7 +101,8 @@ inline void YasuoModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, Q2->Range());
 			if (IsValidTarget(target))
 			{
-				if (!YasuoCustomQ3Spin->Enabled() || target->HasBuff("YasuoDashWrapper") || Distance(target, Player()->GetPosition()) > YasuoCustomQ3SpinMaxDist->GetInteger())
+				if (!YasuoCustomQ3Spin->Enabled() || target->HasBuff("YasuoDashWrapper") || Distance(target, Player()->GetPosition()) > YasuoCustomQ3SpinMaxDist->GetInteger()
+					|| CountEnemiesInRange(Player()->GetPosition(), 1150) >= 2)
 				{
 					YasuoCastQ(target);
 				}

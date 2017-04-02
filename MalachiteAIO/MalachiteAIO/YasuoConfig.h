@@ -76,15 +76,15 @@ inline void YasuoMenuAndSpells()
 
 	YasuoComboMenu = YasuoMainMenu->AddMenu("Combo Settings");
 	YasuoComboQ3Spin = YasuoComboMenu->CheckBox("Q3 circle", true);
-	YasuoComboFlashEQR = YasuoComboMenu->CheckBox("Flash-E-Q3-R", true);
+	//YasuoComboFlashEQR = YasuoComboMenu->CheckBox("Flash-E-Q3-R", true);
 	YasuoComboQ3SpinMaxDist = YasuoComboMenu->AddInteger("Force Q3 circle at distance",500,1150,500 );
 	YasuoComboEMode = YasuoComboMenu->AddSelection("E Mode",0 ,{"Fly","Stick","Mouse"});
 	YasuoComboEUnderTurret = YasuoComboMenu->CheckBox("E Under Turret", true);
 	YasuoComboR = YasuoComboMenu->CheckBox("R", true);
-	YasuoComboRHits = YasuoComboMenu->AddInteger("R", 1,3,2);
+	YasuoComboRHits = YasuoComboMenu->AddInteger("R if will hit", 1,3,2);
 	for (IUnit* hero : GEntityList->GetAllHeros(false, true))
 	{
-		string checkboxname = string("R on") + hero->ChampionName() + "(" + hero->GetObjectName() +")";
+		string checkboxname = string("R on ") + hero->ChampionName() + "(" + hero->GetObjectName() +")";
 		YasuoComboRWhiteList[string("combo") + std::to_string(hero->GetNetworkId())] = YasuoComboMenu->CheckBox(checkboxname.c_str(), true);
 		YasuoComboRWhiteListHP[string("combohp") + std::to_string(hero->GetNetworkId())] = YasuoComboMenu->AddInteger("if %hp <", 0,101,101);
 	}
@@ -113,14 +113,14 @@ inline void YasuoMenuAndSpells()
 	YasuoCustomKey = YasuoCustomModeMenu->AddKey("Custom Key", 'G');
 	YasuoCustomQ3Spin = YasuoCustomModeMenu->CheckBox("Q3 circle", true);
 	YasuoCustomQ3SpinMaxDist = YasuoCustomModeMenu->AddInteger("Force Q3 circle at distance", 500, 1150, 500);
-	YasuoCustomFlashEQR = YasuoCustomModeMenu->CheckBox("Flash-E-Q3-R", true);
+	//YasuoCustomFlashEQR = YasuoCustomModeMenu->CheckBox("Flash-E-Q3-R", true);
 	YasuoCustomEMode = YasuoCustomModeMenu->AddSelection("E Mode", 0, { "Fly","Stick","Mouse" });
 	YasuoCustomEUnderTurret = YasuoCustomModeMenu->CheckBox("E Under Turret", true);
 	YasuoCustomR = YasuoCustomModeMenu->CheckBox("R", true);
-	YasuoCustomRHits = YasuoCustomModeMenu->AddInteger("R", 1, 3, 2);
+	YasuoCustomRHits = YasuoCustomModeMenu->AddInteger("R if will hit", 1, 3, 2);
 	for (IUnit* hero : GEntityList->GetAllHeros(false, true))
 	{
-		string checkboxname = string("R on") + hero->ChampionName() + "(" + hero->GetObjectName() + ")";
+		string checkboxname = string("R on ") + hero->ChampionName() + "(" + hero->GetObjectName() + ")";
 		YasuoCustomRWhiteList[string("custom") + std::to_string(hero->GetNetworkId())] = YasuoCustomModeMenu->CheckBox(checkboxname.c_str(), true);
 		YasuoCustomRWhiteListHP[string("customhp") + std::to_string(hero->GetNetworkId())] = YasuoCustomModeMenu->AddInteger("if %hp <", 0, 101, 101);
 	}

@@ -22,7 +22,7 @@ inline void InitOnLoad()
 {
 	pDelay = new DelayAction;
 	Ignite = GPluginSDK->CreateSpell(GEntityList->Player()->GetSpellSlot("summonerdot"), 600);
-	Flash = GPluginSDK->CreateSpell(GEntityList->Player()->GetSpellSlot("summonerflash"), 600);
+	Flash = GPluginSDK->CreateSpell(GEntityList->Player()->GetSpellSlot("summonerflash"), 425);
 	Heal = GPluginSDK->CreateSpell(GEntityList->Player()->GetSpellSlot("summonerheal"), 600);
 	summoner1 = GEntityList->Player()->GetSpellName(kSummonerSlot1);
 	summoner2 = GEntityList->Player()->GetSpellName(kSummonerSlot2);
