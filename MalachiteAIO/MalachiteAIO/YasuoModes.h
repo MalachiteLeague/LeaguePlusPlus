@@ -34,11 +34,11 @@ inline void YasuoModeOnUpdate()
 			auto target = SelectTarget(PhysicalDamage, Q2->Range());
 			if (IsValidTarget(target))
 			{
-				if (!YasuoComboQ3Spin->Enabled() || target->HasBuff("YasuoDashWrapper") || Distance(target, Player()->GetPosition()) > YasuoComboQ3SpinMaxDist->GetInteger()
-					|| CountEnemiesInRange(Player()->GetPosition(), 1150) >= 2)
-				{
+				//if (!YasuoComboQ3Spin->Enabled() || target->HasBuff("YasuoDashWrapper") || Distance(target, Player()->GetPosition()) > YasuoComboQ3SpinMaxDist->GetInteger()
+				//	|| CountEnemiesInRange(Player()->GetPosition(), 1150) >= 2)
+				//{
 					YasuoCastQ(target);
-				}
+				//}
 			}
 			for (IUnit* hero : ValidEnemies().ToVector())
 			{
@@ -66,7 +66,8 @@ inline void YasuoModeOnUpdate()
 		{
 			YasuoCastEMouse(underturret);
 		}
-		YasuoStackQ();
+		if (YasuoComboStackQ->Enabled())
+			YasuoStackQ();
 	}
 	//// CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM CUSTOM 
 	if (IsKeyDown(YasuoCustomKey))
@@ -133,7 +134,8 @@ inline void YasuoModeOnUpdate()
 		{
 			YasuoCastEMouse(underturret);
 		}
-		YasuoStackQ();
+		if (YasuoCustomStackQ->Enabled())
+			YasuoStackQ();
 	}
 	//// HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS HARASS
 	if (GOrbwalking->GetOrbwalkingMode() == kModeMixed)
@@ -229,7 +231,7 @@ inline void YasuoModeOnUpdate()
 	{
 		GOrbwalking->Orbwalk(nullptr, GGame->CursorPosition());
 		YasuoCastEFlee();
-		if (YasuoFleeStackQ)
+		if (YasuoFleeStackQ->Enabled())
 			YasuoStackQ();
 	}
 	// AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO AUTO

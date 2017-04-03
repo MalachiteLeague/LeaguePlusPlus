@@ -21,7 +21,7 @@ inline int YasuoQStage()
 }
 inline bool YasuoCastQ(IUnit* target)
 {
-	if (YasuoIsDashing())
+	if (!YasuoNotDashing())
 		return false;
 	if (YasuoQStage() == 3)
 	{
@@ -31,7 +31,7 @@ inline bool YasuoCastQ(IUnit* target)
 }
 inline bool YasuoCastQ()
 {
-	if (YasuoIsDashing())
+	if (!YasuoNotDashing())
 		return false;
 	auto enemies = ValidEnemies().OrderBy<float>([](IUnit* i) {return i->GetHealth(); });
 	for (auto target : enemies.ToVector())
@@ -159,6 +159,8 @@ inline bool YasuoCastEOnUnit(IUnit* target,bool Underturret)
 }
 inline void YasuoStackQ()
 {
+	if (!YasuoNotDashing())
+		return;
 	if (CountEnemiesInRange(Player()->GetPosition(),E->Range()) == 0 && YasuoQStage() != 3)
 	{
 		for (IUnit* target : YasuoAllETargets(false).ToVector())

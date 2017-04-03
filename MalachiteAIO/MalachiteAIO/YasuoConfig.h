@@ -12,8 +12,9 @@ IMenu* YasuoFleeMenu;
 IMenu* YasuoDrawingsMenu;
 
 //combo
-IMenuOption* YasuoComboQ3Spin;
-IMenuOption* YasuoComboQ3SpinMaxDist;
+//IMenuOption* YasuoComboQ3Spin;
+//IMenuOption* YasuoComboQ3SpinMaxDist;
+IMenuOption* YasuoComboStackQ;
 IMenuOption* YasuoComboFlashEQR;
 IMenuOption* YasuoComboEMode;
 IMenuOption* YasuoComboEUnderTurret;
@@ -24,6 +25,7 @@ std::map<string, IMenuOption*> YasuoComboRWhiteListHP;
 
 //custom
 IMenuOption* YasuoCustomKey;
+IMenuOption* YasuoCustomStackQ;
 IMenuOption* YasuoCustomQ3Spin;
 IMenuOption* YasuoCustomQ3SpinMaxDist;
 IMenuOption* YasuoCustomFlashEQR;
@@ -75,9 +77,10 @@ inline void YasuoMenuAndSpells()
 	YasuoMainMenu = GPluginSDK->AddMenu("MalaChiteAIO Yasuo");
 
 	YasuoComboMenu = YasuoMainMenu->AddMenu("Combo Settings");
-	YasuoComboQ3Spin = YasuoComboMenu->CheckBox("Q3 circle", true);
+	//YasuoComboQ3Spin = YasuoComboMenu->CheckBox("Q3 circle", true);
 	//YasuoComboFlashEQR = YasuoComboMenu->CheckBox("Flash-E-Q3-R", true);
-	YasuoComboQ3SpinMaxDist = YasuoComboMenu->AddInteger("Force Q3 circle at distance",500,1150,500 );
+	//YasuoComboQ3SpinMaxDist = YasuoComboMenu->AddInteger("Force Q3 circle at distance",500,1150,500 );
+	YasuoComboStackQ = YasuoComboMenu->CheckBox("Stack Q", true);
 	YasuoComboEMode = YasuoComboMenu->AddSelection("E Mode",0 ,{"Fly","Stick","Mouse"});
 	YasuoComboEUnderTurret = YasuoComboMenu->CheckBox("E Under Turret", true);
 	YasuoComboR = YasuoComboMenu->CheckBox("R", true);
@@ -111,8 +114,9 @@ inline void YasuoMenuAndSpells()
 	//
 	YasuoCustomModeMenu = YasuoMainMenu->AddMenu("Custom Mode Settings");
 	YasuoCustomKey = YasuoCustomModeMenu->AddKey("Custom Key", 'G');
-	YasuoCustomQ3Spin = YasuoCustomModeMenu->CheckBox("Q3 circle", true);
-	YasuoCustomQ3SpinMaxDist = YasuoCustomModeMenu->AddInteger("Force Q3 circle at distance", 500, 1150, 500);
+	YasuoCustomStackQ = YasuoCustomModeMenu->CheckBox("Stack Q", true);
+	YasuoCustomQ3Spin = YasuoCustomModeMenu->CheckBox("E - Q3", true);
+	YasuoCustomQ3SpinMaxDist = YasuoCustomModeMenu->AddInteger("Force E - Q3 at distance", 500, 1150, 500);
 	//YasuoCustomFlashEQR = YasuoCustomModeMenu->CheckBox("Flash-E-Q3-R", true);
 	YasuoCustomEMode = YasuoCustomModeMenu->AddSelection("E Mode", 0, { "Fly","Stick","Mouse" });
 	YasuoCustomEUnderTurret = YasuoCustomModeMenu->CheckBox("E Under Turret", true);
