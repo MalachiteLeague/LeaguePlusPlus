@@ -4,6 +4,7 @@
 PLUGIN_EVENT(void) DravenOnGameUpdate()
 {
 	DravenModeOnUpdate();
+	//GGame->PrintChat(std::to_string((DravenAxesOnHand() + DravenAxesObject.Count())).c_str());
 }
 PLUGIN_EVENT(void) DravenOnRender()
 {
@@ -26,6 +27,8 @@ PLUGIN_EVENT(void) DravenOnCreateObject(IUnit* Source)
 		auto data = GMissileData->GetName(Source);
 		if (Equals(data, "DravenSpinningReturn"))
 			DravenAxesObject.Add(Source);
+		if (Equals(data, "DravenSpinningAttack"))
+			DravenAxesMissileOne.Add(Source);
 	}
 }
 PLUGIN_EVENT(void) DravenOnDestroyObject(IUnit* Source)
@@ -37,6 +40,8 @@ PLUGIN_EVENT(void) DravenOnDestroyObject(IUnit* Source)
 		auto data = GMissileData->GetName(Source);
 		if (Equals(data, "DravenSpinningReturn"))
 			DravenAxesObject.RemoveAll([&](IUnit* i) {return i->GetNetworkId() == Source->GetNetworkId(); });
+		if (Equals(data, "DravenSpinningAttack"))
+			DravenAxesMissileOne.RemoveAll([&](IUnit* i) {return i->GetNetworkId() == Source->GetNetworkId(); });
 	}
 }
 void DravenOnload()

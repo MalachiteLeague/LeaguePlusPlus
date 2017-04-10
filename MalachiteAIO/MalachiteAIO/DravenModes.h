@@ -46,7 +46,7 @@ inline void DravenModeOnUpdate()
 		}
 		if (!IsADCanCastSpell())
 			return;
-		if (DravenComboQ->Enabled() && DravenAxesOnHand() + DravenAxesObject.Count() < 2)
+		if (DravenComboQ->Enabled() && DravenAxesCount() < 2)
 		{
 			if (CountEnemiesInRange(Player()->GetPosition(), 900) > 0)
 			{
@@ -93,7 +93,7 @@ inline void DravenModeOnUpdate()
 			return;
 		if (Player()->ManaPercent() <= DravenFarmMana->GetInteger())
 			return;
-		if (DravenFarmQ->Enabled() && DravenAxesOnHand() + DravenAxesObject.Count() < 1)
+		if (DravenFarmQ->Enabled() && DravenAxesCount() < 1)
 		{
 			auto Minions = EnemyMinions(700).AddRange(NeutralMinions(700));
 			if (Minions.Count() > 0)
