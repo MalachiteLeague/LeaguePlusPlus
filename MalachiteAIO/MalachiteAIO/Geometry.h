@@ -51,7 +51,7 @@ inline Vec3 RotateAround(Vec3 pointToRotate3D, Vec3 centerPoint3D, float angleIn
 {
 	auto angleInRadians = AngleToRadian(angleInDegree);
 	double cosTheta = cos(angleInRadians);
-	double sinTheta = cos(angleInRadians);
+	double sinTheta = sin(angleInRadians);
 	Vec2 pointToRotate = ToVec2(pointToRotate3D);
 	Vec2 centerPoint = ToVec2(centerPoint3D);
 	Vec2 vec2Return

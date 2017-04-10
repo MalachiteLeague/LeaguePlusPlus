@@ -54,7 +54,7 @@ inline void XerathMenuAndSpells()
 	W = GPluginSDK->CreateSpell2(kSlotW, kLineCast, true, false, kCollidesWithNothing);
 	W->SetSkillshot(0.4f, 125, std::numeric_limits<float>::infinity(), 1100);
 	E = GPluginSDK->CreateSpell2(kSlotE, kLineCast, true, false, kCollidesWithYasuoWall | kCollidesWithMinions | kCollidesWithHeroes);
-	E->SetSkillshot(0.f, 60, 1400, 1050);
+	E->SetSkillshot(0.25f, 60, 1400, 1050);
 	R = GPluginSDK->CreateSpell2(kSlotR, kLineCast, true, false, kCollidesWithNothing);
 	R->SetSkillshot(0.4f, 130, std::numeric_limits<float>::infinity(), 3520);// 4840 , 6160
 

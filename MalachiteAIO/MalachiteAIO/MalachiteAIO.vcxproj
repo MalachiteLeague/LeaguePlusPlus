@@ -180,6 +180,10 @@
     <ClInclude Include="Header2.h" />
     <ClInclude Include="Header3.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="VelkozConfig.h" />
+    <ClInclude Include="VelkozVariables.h" />
+    <ClInclude Include="VelkozModes.h" />
+    <ClInclude Include="VelkozLoad.h" />
     <ClInclude Include="YasuoHelper.h" />
     <ClInclude Include="YasuoLoad.h" />
     <ClInclude Include="YasuoModes.h" />

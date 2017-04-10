@@ -58,6 +58,9 @@
     <Filter Include="Yasuo">
       <UniqueIdentifier>{8e3f8a15-0290-4c13-b068-d487f25d34cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Velkoz">
+      <UniqueIdentifier>{25426680-c39b-4094-b553-5c70af0424a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPPConstants.h">
@@ -269,6 +272,18 @@
     </ClInclude>
     <ClInclude Include="YasuoHelper.h">
       <Filter>Yasuo</Filter>
+    </ClInclude>
+    <ClInclude Include="VelkozConfig.h">
+      <Filter>Velkoz</Filter>
+    </ClInclude>
+    <ClInclude Include="VelkozVariables.h">
+      <Filter>Velkoz</Filter>
+    </ClInclude>
+    <ClInclude Include="VelkozModes.h">
+      <Filter>Velkoz</Filter>
+    </ClInclude>
+    <ClInclude Include="VelkozLoad.h">
+      <Filter>Velkoz</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

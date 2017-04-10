@@ -11,7 +11,7 @@ inline IUnit* Player() { return GEntityList->Player(); }
 inline SArray<IUnit*> Enemies() { return  SArray<IUnit*>(GEntityList->GetAllHeros(false, true)); }
 inline SArray <IUnit*>Allies() { return SArray<IUnit*>(GEntityList->GetAllHeros(true, false)); }
 inline SArray <IUnit*>AllHeros() { return SArray<IUnit*>(GEntityList->GetAllHeros(true, true)); }
-ISpell2* Q, *E, *W, *R, *Q2, *W2, *E2, *R2;
+ISpell2* Q, *E, *W, *R, *Q2, *W2, *E2, *R2, *Q3;
 ISpell  *Flash, *Ignite, *Heal, *Smite;
 string summoner1, summoner2;
 PLUGIN_EVENT(void) InitOnUpdate()

@@ -53,7 +53,7 @@ inline void LucianModeAfterAttack(IUnit* Source, IUnit* Target)
 	if (GOrbwalking->GetOrbwalkingMode() == kModeLaneClear && Player()->ManaPercent() >= LucianFarmMana->GetInteger())
 	{
 		//GGame->PrintChat(std::to_string(Target->GetTeam()).c_str());
-		if (Target->GetTeam() != kTeamNeutral)
+		if (Target->GetTeam() != kNeutral)
 		{
 			if (LucianLaneClearW->Enabled() && CountMinionsInRange(Player()->GetPosition(), 700) >= 2)
 			{
