@@ -3,8 +3,13 @@
 #include <string>
 Vec3 RenderPos1;
 Vec3 RenderPos2;
+int LastEvadeTick = 0;
 PLUGIN_EVENT(bool) SSDetectorOnIssueOrder(IUnit* Source, DWORD OrderIdx, Vec3* Position, IUnit* Target)
 {
+	if (GGame->TickCount() < LastEvadeTick + 100)
+	{
+		return false;
+	}
 	if (Source == Player() && OrderIdx == kMoveTo && ShouldBlock(DetectedSkillShots,Player(),*Position,EvadeWithWalkingDanger->GetInteger()))
 	{
 		//GGame->PrintChat("blocked");
@@ -159,12 +164,13 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 
 
 	// evadeing
-	if (EvadeWithWalking->Enabled())
+	if (EvadeWithWalking->Enabled() && GGame->TickCount() >= LastEvadeTick + 100)
 	{
 		Vec2 EvadePoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
 		if (EvadePoint != Vec2(0, 0))
 		{
 			GGame->IssueOrderEx(Player(), kMoveTo, ToVec3(EvadePoint), false);
+			LastEvadeTick = GGame->TickCount();
 		}
 		if (ShouldHoldOn(DetectedSkillShots, Player(),EvadeWithWalkingDanger->GetInteger()))
 		{
