@@ -65,7 +65,7 @@ SpellDB::SpellDB()
 #pragma endregion
 
 #pragma region Ashe
-	Spells.push_back(CreateSpell()->_ChampName("Ashe")->_MenuName("AsheW")->_MissileName("VolleyAttack")->_ExtraMissileNames("VolleyAttackWithSound")-> _SpellName("Volley")->_DangerValue(2)->_MissileSpeed(1500)->_Slot(kSlotW)->_Range(1275)->_Radius(20)->_FixedRange(true)->_MultipleNumber(9)->_InfrontStart(75)->_MultipleAngle(M_PI)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall));
+	//Spells.push_back(CreateSpell()->_ChampName("Ashe")->_MenuName("AsheW")->_MissileName("VolleyAttack")->_ExtraMissileNames("VolleyAttackWithSound")-> _SpellName("Volley")->_DangerValue(2)->_MissileSpeed(1500)->_Slot(kSlotW)->_Range(1275)->_Radius(20)->_FixedRange(true)->_MultipleNumber(9)->_InfrontStart(75)->_MultipleAngle(M_PI)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall));
 	Spells.push_back(CreateSpell()->_ChampName("Ashe")->_MenuName("AsheR")->_SpellName("EnchantedCrystalArrow")->_DangerValue(5)->_MissileName("EnchantedCrystalArrow")->_Slot(kSlotR)->_Range(25000)->_MissileSpeed(1600)->_Radius(130)->_FixedRange(true)->_IsDangerous(true)->_CollisionObjects(kCollidesWithHeroes | kCollidesWithYasuoWall));
 #pragma endregion
 
@@ -386,7 +386,7 @@ SpellDB::SpellDB()
 #pragma endregion
 
 #pragma region Orianna
-	Spells.push_back(CreateSpell()->_ChampName("Orianna")->_MenuName("OriannaQ")->_SpellName("OrianaIzunaCommand")->_DangerValue(2)->_Delay(0)->_MissileName("OrianaIzuna")->_Range(2000)->_Radius(80)->_MissileSpeed(1200)->_HasEndExplosion(true)->_RadiusEx(230)->_IsOriana(true	)->_CollisionObjects( kCollidesWithYasuoWall));
+	Spells.push_back(CreateSpell()->_ChampName("Orianna")->_MenuName("OriannaQ")->_SpellName("OrianaIzunaCommand")->_DangerValue(2)->_Delay(0)->_MissileName("OrianaIzuna")->_Range(2000)->_Radius(100)->_MissileSpeed(1200)->_HasEndExplosion(true)->_RadiusEx(230)->_IsOriana(true)->_InfrontStart(125)->_CollisionObjects( kCollidesWithYasuoWall));
 	Spells.push_back(CreateSpell()->_ChampName("Orianna")->_MenuName("OriannaW")->_SpellName("OrianaDissonanceCommand")->_DangerValue(2)->_Delay(250)->_Slot(kSlotW)->_Type(ST_Circle)->_Radius(255)->_IsOriana(true)->_AddHitbox(false));
 	Spells.push_back(CreateSpell()->_ChampName("Orianna")->_DangerValue(5)->_MenuName("OriannaR")->_SpellName("OrianaDetonateCommand")->_Delay(500)->_IsDangerous(true)->_Slot(kSlotR)->_Type(ST_Circle)->_Radius(410)->_IsOriana(true)->_AddHitbox(false));
 #pragma endregion
@@ -623,4 +623,4 @@ SpellDB::SpellDB()
 	Spells.push_back(CreateSpell()->_ChampName("Zyra")->_DangerValue(5)->_MenuName("ZyraR")->_Slot(kSlotR)->_SpellName("ZyraR")->_Delay(2200)->_Type(ST_Circle)->_Range(700)->_Radius(520)->_MissileSpeed(INT_MAX));
 #pragma endregion
 
-}
+} 
