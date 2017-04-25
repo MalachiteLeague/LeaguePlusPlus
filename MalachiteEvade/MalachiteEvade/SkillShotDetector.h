@@ -4,6 +4,7 @@
 Vec3 RenderPos1;
 Vec3 RenderPos2;
 int LastEvadeTick = 0;
+Vec2 EvadeWalkingPoint;
 PLUGIN_EVENT(bool) SSDetectorOnIssueOrder(IUnit* Source, DWORD OrderIdx, Vec3* Position, IUnit* Target)
 {
 	if (GGame->TickCount() < LastEvadeTick + 100)
@@ -17,8 +18,7 @@ PLUGIN_EVENT(bool) SSDetectorOnIssueOrder(IUnit* Source, DWORD OrderIdx, Vec3* P
 	}
 	if (Source == Player())
 	{
-		Vec2 EvadePoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
-		if (EvadePoint != Vec2(0, 0))
+		if (EvadeWalkingPoint != Vec2(0, 0))
 		{
 			//GGame->PrintChat("blocked number 2");
 			return false;
@@ -140,8 +140,8 @@ PLUGIN_EVENT(void) SSDetectorOnRender()
 		string Text = EvadeEnable->Enabled() ? "Evade : ON" : "Evade : OFF";
 		GRender->DrawTextW(Position, Color, Text.c_str());
 	}
-	/*GRender->DrawOutlinedCircle(RenderPos1, Green(), 100);
-	GRender->DrawOutlinedCircle(RenderPos2, Red(), 100);*/
+	//GRender->DrawOutlinedCircle(RenderPos1, Green(), 100);
+	//GRender->DrawOutlinedCircle(RenderPos2, Red(), 100);
 }
 PLUGIN_EVENT(void) SSDetectorOnUpdate()
 {
@@ -151,25 +151,27 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 		[&](DetectedSKillShot i)
 	{
 		//GGame->PrintChat(string(i.Data->MissileName) == string("") ? "yes " : "no");
-		return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay +  i.Data->ExtraDuration
-		+ (string(i.Data->MissileName) == string("") ?  (Distance(i.Start, i.End)*1000/i.Data->MissileSpeed) : 0);
+		float distance = Distance(i.Start, i.End);
+		return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration
+			+ distance * 1000 / i.Data->MissileSpeed ;
 	});
 	DetectedSkillShotsAlly.RemoveAll(
 		[&](DetectedSKillShot i)
 	{
 		//GGame->PrintChat(string(i.Data->MissileName) == string("") ? "yes " : "no");
+		float distance = Distance(i.Start, i.End);
 		return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration
-			+ (string(i.Data->MissileName) == string("") ? (Distance(i.Start, i.End) * 1000 / i.Data->MissileSpeed): 0);
+			+ distance * 1000 / i.Data->MissileSpeed ;
 	});
 
 
 	// evadeing
 	if (EvadeWithWalking->Enabled() && GGame->TickCount() >= LastEvadeTick + 100)
 	{
-		Vec2 EvadePoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
-		if (EvadePoint != Vec2(0, 0))
+		EvadeWalkingPoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
+		if (EvadeWalkingPoint != Vec2(0, 0))
 		{
-			GGame->IssueOrderEx(Player(), kMoveTo, ToVec3(EvadePoint), false);
+			GGame->IssueOrderEx(Player(), kMoveTo, ToVec3(EvadeWalkingPoint), false);
 			LastEvadeTick = GGame->TickCount();
 		}
 		if (ShouldHoldOn(DetectedSkillShots, Player(),EvadeWithWalkingDanger->GetInteger()))
@@ -179,12 +181,12 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 	}
 	if(EvadeWithFlash->Enabled() && Flash->IsReady())
 	{
-		Vec2 EvadePoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithFLashDanger->GetInteger());
 		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithFLashDanger->GetInteger()); });
 		for (DetectedSKillShot skillshot : detected.ToVector())
 		{
 			if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
 			{
+				Vec2 EvadePoint = GetEvadePosition(SArray<DetectedSKillShot>().Add(skillshot), Player(), EvadeWithFLashDanger->GetInteger());
 				Vec2 Point = Extend(Player()->GetPosition().To2D(), EvadePoint, 424);
 				Flash->CastOnPosition(ToVec3(Point));
 			}
@@ -192,7 +194,6 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 	}
 	if (EvadeWithHourglass->Enabled())
 	{
-		Vec2 EvadePoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithHourglassDanger->GetInteger());
 		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithHourglassDanger->GetInteger()); });
 		for (DetectedSKillShot skillshot : detected.ToVector())
 		{
@@ -222,6 +223,10 @@ inline void SkillshotDetectorLoad()
 {
 	SpellsDB = new SpellDB;
 	EvadeMenuInit();
+	SpellsDB->Spells = SArray<SpellData*>(SpellsDB->Spells).Where([&](SpellData*  i){return SArray<IUnit*>(GEntityList->GetAllHeros(true,true)).Any([&](IUnit* hero)
+	{
+		return string(hero->ChampionName()) == i->ChampName;
+	}); }).ToVector();
 	GEventManager->AddEventHandler(kEventOnSpellCast, SSDetectorOnCast);
 	GEventManager->AddEventHandler(kEventOnCreateObject, SSDetectorOnCreate);
 	GEventManager->AddEventHandler(kEventOnDestroyObject, SSDetectorOnDestroy);

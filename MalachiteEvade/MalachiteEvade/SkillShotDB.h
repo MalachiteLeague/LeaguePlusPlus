@@ -129,7 +129,7 @@ SpellDB::SpellDB()
 #pragma endregion
 
 #pragma region Darius
-	Spells.push_back(CreateSpell()->_ChampName("Darius")->_DangerValue(3)->_MenuName("DariusQ")->_SpellName("DariusCleave")->_Delay(750)->_MissileToUnit(true)->_RadiusEx(225)->_Type(ST_Ring)->_Radius(425)->_DisabledByDefault(true)->_DontCross(true));
+	Spells.push_back(CreateSpell()->_ChampName("Darius")->_DangerValue(3)->_MenuName("DariusQ")->_SpellName("DariusCleave")->_Delay(750)->_MissileToUnit(true) ->_MissileFromUnit(true)->_RadiusEx(225)->_Type(ST_Ring)->_Radius(425)->_DisabledByDefault(true)->_DontCross(true));
 	Spells.push_back(CreateSpell()->_ChampName("Darius")->_DangerValue(3)->_MenuName("DariusE")->_SpellName("DariusAxeGrabCone")->_IsDangerous(true)->_Slot(kSlotE)->_Type(ST_Cone)->_Range(510)->_Radius(50));
 #pragma endregion
 

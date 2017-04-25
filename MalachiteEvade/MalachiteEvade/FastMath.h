@@ -81,18 +81,6 @@ inline Geometry::IPolygon GetPolygon(DetectedSKillShot skillshot, bool useBoundi
 		//skillshot.End = NewEnd;
 
 		//
-		if (skillshot.Data->MissileToUnit)
-		{
-			if (skillshot.IsProcess && skillshot.Caster != nullptr)
-			{
-				skillshot.End = skillshot.Caster->GetPosition().To2D();
-			}
-			if (skillshot.IsMissile &&  GMissileData->GetCaster(skillshot.MissileObject) != nullptr)
-			{
-				skillshot.End = GMissileData->GetCaster(skillshot.MissileObject)->GetPosition().To2D();
-			}
-		}
-		//
 		if (skillshot.Data->MissileFromUnit)
 		{
 			Vec2 dir = (skillshot.End - skillshot.Start).VectorNormalize();
@@ -105,6 +93,19 @@ inline Geometry::IPolygon GetPolygon(DetectedSKillShot skillshot, bool useBoundi
 			{
 				skillshot.Start = GMissileData->GetCaster(skillshot.MissileObject)->GetPosition().To2D();
 				skillshot.End = skillshot.Start + dir*skillshot.Data->RawRange;
+			}
+		}
+		//
+		if (skillshot.Data->MissileToUnit)
+		{
+
+			if (skillshot.IsProcess && skillshot.Caster != nullptr)
+			{
+				skillshot.End = skillshot.Caster->GetPosition().To2D();
+			}
+			if (skillshot.IsMissile &&  GMissileData->GetCaster(skillshot.MissileObject) != nullptr)
+			{
+				skillshot.End = GMissileData->GetCaster(skillshot.MissileObject)->GetPosition().To2D();
 			}
 		}
 	}
@@ -182,7 +183,11 @@ inline Geometry::IPolygon GetPolygon(DetectedSKillShot skillshot, bool useBoundi
 inline bool GetDetectedSSOnCast(SpellData* spelldata, CastedSpell const& Args)
 {
 	Vec2 StartPos = /*Args.Position_.To2D();*/ GSpellData->GetStartPosition(Args.Data_).To2D();
+	if (spelldata->MissileFromUnit)
+		StartPos = GSpellData->GetCaster(Args.Data_)->GetPosition().To2D();
 	Vec2 EndPos = /*Args.EndPosition_.To2D();*/ GSpellData->GetEndPosition(Args.Data_).To2D();
+	if (spelldata->MissileToUnit)
+		EndPos = GSpellData->GetCaster(Args.Data_)->GetPosition().To2D();
 	if (spelldata->FixedRange)
 		EndPos = Extend(Args.Position_, Args.EndPosition_, spelldata->RawRange).To2D();
 	// fast calculation

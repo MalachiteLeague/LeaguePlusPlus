@@ -30,7 +30,10 @@ inline Vec3 Pendicular(Vec3 x)
 
 inline float Distance(Vec3 from, Vec3 to)
 {
-	return (from - to).Length2D();
+	float distance = (from.To2D() - to.To2D()).Length();
+	if (isnan(distance))
+		return 0;
+	return distance;
 }
 inline float AngleBetween(Vec3 a, Vec3 center, Vec3 c)
 {

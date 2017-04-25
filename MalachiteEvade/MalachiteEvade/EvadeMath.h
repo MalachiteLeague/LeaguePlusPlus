@@ -132,11 +132,11 @@ inline bool IsGettingHit (int milisecond, DetectedSKillShot skillshot , IUnit* t
 }
 inline bool ShouldHoldOn (SArray<DetectedSKillShot> Detected, IUnit* target, int Dangerouslevel)
 {
-	SArray<DetectedSKillShot> detected = Detected.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, Dangerouslevel); });
-	DetectedSKillShot skillshot;
 	vector<Vec3> waypoint = target->GetWaypointList();
 	if (waypoint.size() <= 1)
 		return false;
+	SArray<DetectedSKillShot> detected = Detected.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, Dangerouslevel); });
+	DetectedSKillShot skillshot;
 	if (GetDangerousLevel(ToVec2(waypoint[0]), detected, skillshot) != 0)
 		return false;
 	if (GetDangerousLevel(ToVec2(Extend(waypoint[0], waypoint[1], 50)), detected, skillshot) != 0)
