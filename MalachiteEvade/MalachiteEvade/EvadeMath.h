@@ -100,7 +100,7 @@ inline Vec2 GetEvadePosition(SArray<DetectedSKillShot> Detected, IUnit* target,i
 		EvadePoint = Points.MinOrDefault<float>([&](Vec2 i) {return DistanceSqr(ToVec3(i), target->GetPosition()); });
 	//kiem diem di bo ne phu hop
 	DetectedSKillShot SShot;
-	Points = Points.Where([&](Vec2 i) {return !GNavMesh->IsPointWall(ToVec3(i)) && GetDangerousLevel(i, detected, SShot) <= dangerouslevel; });
+	Points = Points.Where([&](Vec2 i) {return !GNavMesh->IsPointWall(ToVec3(i)) && GetDangerousLevel(i, detected, SShot) < dangerouslevel; });
 	if (Points.Any())
 	{
 		Points = Points.OrderBy<float>([&](Vec2 i) {return Distance(i, target->GetPosition().To2D()); });
