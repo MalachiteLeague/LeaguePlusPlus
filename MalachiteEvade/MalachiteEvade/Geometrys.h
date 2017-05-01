@@ -109,16 +109,15 @@ inline float Distance(Vec2 from, Vec2 to)
 	return Distance(ToVec3(from),ToVec3(to));
 }
 //dich chuyen ex- vector tend
-inline Vec3 Extend(Vec3 from, Vec3 to, float distance)
-{
-	float realDistance = (from - to).Length() * distance / (from - to).Length2D();
-	auto direction = (to - from).VectorNormalize();
-	return from + direction * realDistance;
-}
+
 inline Vec2 Extend(Vec2 from, Vec2 to, float distance)
 {
 	auto direction = (to - from).VectorNormalize();
 	return from + direction * distance;
+}
+inline Vec3 Extend(Vec3 from, Vec3 to, float distance)
+{
+	return ToVec3(Extend(from.To2D(), to.To2D(), distance));
 }
 inline SArray<Vec3> GetCircleCircleIntersections(Vec3 center1, Vec3 center2, float radius1, float radius2)
 {

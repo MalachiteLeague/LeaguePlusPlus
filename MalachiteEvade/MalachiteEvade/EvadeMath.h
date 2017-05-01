@@ -47,69 +47,70 @@ inline Vec2 GetEvadePosition(SArray<DetectedSKillShot> Detected, IUnit* target,i
 
 	// tim tat ca cac diem quen thuoc
 	SArray<Vec2> Points;
-	if (skillshot.Data->Type == ST_Line || skillshot.Data->Type == ST_MissileLine || skillshot.Data->Type == ST_Box)
-	{
+	//if (skillshot.Data->Type == ST_Line || skillshot.Data->Type == ST_MissileLine || skillshot.Data->Type == ST_Box)
+	//{
+	//	for (int i = 1; i < Polygon.Points.size(); i = i + 1)
+	//	{
+	//		Points.Add(Polygon.Points[i]);
+	//		float dists = Distance(target->GetPosition(), ToVec3(Polygon.Points[i - 1]), ToVec3(Polygon.Points[i]));
+	//		Vec2 middle = Extend(target->GetPosition().To2D(), GetLineLineIntersections(target->GetPosition().To2D(), target->GetPosition().To2D() + Pendicular(ToVec3((Polygon.Points[i - 1] - Polygon.Points[i]))).To2D(),
+	//			Polygon.Points[i - 1], Polygon.Points[i]), dists + 50);
+	//		Points.Add(middle);
+	//		float dist = Distance(ToVec3(Polygon.Points[i - 1]), ToVec3(Polygon.Points[i]));
+	//		// more maybe no need ?
+	//		if (Polygon.Points.size() < 6)
+	//		{
+	//			for (int j = -4; j < 5; j = j + 1)
+	//			{
+	//				Points.Add(Extend(Polygon.Points[i - 1], middle, j * 25));
+	//			}
+	//		}
+
+	//	}
+	//	Points.Add(Polygon.Points[0]);
+	//	float dists = Distance(target->GetPosition(), ToVec3(Polygon.Points.back()), ToVec3(Polygon.Points[0]));
+	//	Vec2 middle = Extend(target->GetPosition().To2D(), GetLineLineIntersections(target->GetPosition().To2D(), target->GetPosition().To2D() + Pendicular(ToVec3((Polygon.Points.front() - Polygon.Points.back()))).To2D(),
+	//		Polygon.Points.front(), Polygon.Points.back()), dists + 50);
+	//	Points.Add(middle);
+	//	float dist = Distance(ToVec3(Polygon.Points.back()), ToVec3(Polygon.Points[0]));
+	//	// more maybe no need ?
+	//	if (Polygon.Points.size() < 6)
+	//	{
+	//		for (int j = -4; j < 5; j = j + 1)
+	//		{
+	//			Points.Add(Extend(Polygon.Points.back(), middle, j * 25));
+	//		}
+	//	}
+	//}
+	//else
+	//{
 		for (int i = 1; i < Polygon.Points.size(); i = i + 1)
 		{
-			Points.Add(Polygon.Points[i]);
 			float dists = Distance(target->GetPosition(), ToVec3(Polygon.Points[i - 1]), ToVec3(Polygon.Points[i]));
 			Vec2 middle = Extend(target->GetPosition().To2D(), GetLineLineIntersections(target->GetPosition().To2D(), target->GetPosition().To2D() + Pendicular(ToVec3((Polygon.Points[i - 1] - Polygon.Points[i]))).To2D(),
 				Polygon.Points[i - 1], Polygon.Points[i]), dists + 50);
 			Points.Add(middle);
-			float dist = Distance(ToVec3(Polygon.Points[i - 1]), ToVec3(Polygon.Points[i]));
-			// more maybe no need ?
-			if (Polygon.Points.size() < 6)
-			{
-				for (int j = -4; j < 5; j = j + 1)
-				{
-					Points.Add(Extend(Polygon.Points[i - 1], middle, j * 25));
-				}
-			}
-
-		}
-		Points.Add(Polygon.Points[0]);
-		float dists = Distance(target->GetPosition(), ToVec3(Polygon.Points.back()), ToVec3(Polygon.Points[0]));
-		Vec2 middle = Extend(target->GetPosition().To2D(), GetLineLineIntersections(target->GetPosition().To2D(), target->GetPosition().To2D() + Pendicular(ToVec3((Polygon.Points.front() - Polygon.Points.back()))).To2D(),
-			Polygon.Points.front(), Polygon.Points.back()), dists + 50);
-		Points.Add(middle);
-		float dist = Distance(ToVec3(Polygon.Points.back()), ToVec3(Polygon.Points[0]));
-		// more maybe no need ?
-		if (Polygon.Points.size() < 6)
-		{
-			for (int j = -4; j < 5; j = j + 1)
-			{
-				Points.Add(Extend(Polygon.Points.back(), middle, j * 25));
-			}
-		}
-	}
-	else
-	{
-		for (int i = 1; i < Polygon.Points.size(); i = i + 1)
-		{
-			float dists = Distance(target->GetPosition(), ToVec3(Polygon.Points[i - 1]), ToVec3(Polygon.Points[i]));
-			Vec2 middle = Extend(target->GetPosition().To2D(), GetLineLineIntersections(target->GetPosition().To2D(), target->GetPosition().To2D() + Pendicular(ToVec3((Polygon.Points[i - 1] - Polygon.Points[i]))).To2D(),
-				Polygon.Points[i - 1], Polygon.Points[i]), dists + 50);
-			Points.Add(middle);
 		}
 		float dists = Distance(target->GetPosition(), ToVec3(Polygon.Points.back()), ToVec3(Polygon.Points[0]));
 		Vec2 middle = Extend(target->GetPosition().To2D(), GetLineLineIntersections(target->GetPosition().To2D(), target->GetPosition().To2D() + Pendicular(ToVec3((Polygon.Points.front() - Polygon.Points.back()))).To2D(),
 			Polygon.Points.front(), Polygon.Points.back()), dists + 50);
 		Points.Add(middle);
-	}
-
+	//}
+	if (Points.Any())
+		EvadePoint = Points.MinOrDefault<float>([&](Vec2 i) {return DistanceSqr(ToVec3(i), target->GetPosition()); });
 	//kiem diem di bo ne phu hop
 	DetectedSKillShot SShot;
-	Points = Points.Where([&](Vec2 i) {return !GNavMesh->IsPointWall(ToVec3(i)) && GetDangerousLevel(i, detected, SShot) < dangerouslevel; });
+	Points = Points.Where([&](Vec2 i) {return !GNavMesh->IsPointWall(ToVec3(i)) && GetDangerousLevel(i, detected, SShot) <= dangerouslevel; });
 	if (Points.Any())
 	{
 		Points = Points.OrderBy<float>([&](Vec2 i) {return Distance(i, target->GetPosition().To2D()); });
 		EvadePoint = Points.FirstOrDefault();
-		Points = Points.Where([&](Vec2 i) {return IsAbleWalkEvade(i, skillshot, target); });
-		if (Points.Any())
-		{
-			Points = Points.OrderBy<float>([&](Vec2 i) {return Distance(i, GGame->CursorPosition().To2D()); });
-			EvadePoint = Points.FirstOrDefault();
-		}
+		//Points = Points.Where([&](Vec2 i) {return IsAbleWalkEvade(i, skillshot, target); });
+		//if (Points.Any())
+		//{
+		//	Points = Points.OrderBy<float>([&](Vec2 i) {return Distance(i, GGame->CursorPosition().To2D()); });
+		//	EvadePoint = Points.FirstOrDefault();
+		//}
 	}
 	return  EvadePoint;
 	return Vec2(0, 0);

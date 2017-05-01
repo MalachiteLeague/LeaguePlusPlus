@@ -152,12 +152,8 @@ T SArray<T>::MinOrDefault(std::function<T2(T)> MinOrDefault)
 	returnelem = T();
 	if (newvec.empty())
 		return returnelem;
+	std::sort(newvec.begin(), newvec.end(), [&](T a, T b) { return MinOrDefault(a) < MinOrDefault(b); });
 	returnelem = newvec.front();
-	for each (T i in newvec)
-	{
-		if (MinOrDefault(i) < MinOrDefault(returnelem))
-			returnelem = i;
-	}
 	return returnelem;
 }
 
@@ -171,12 +167,8 @@ T SArray<T>::MaxOrDefault(std::function<T2(T)> MaxOrDefault)
 	returnelem = T();
 	if (newvec.empty())
 		return returnelem;
-	returnelem = newvec.front();
-	for each (T i in newvec)
-	{
-		if (MaxOrDefault(i) > MaxOrDefault(returnelem))
-			returnelem = i;
-	}
+	std::sort(newvec.begin(), newvec.end(), [&](T a, T b) { return MaxOrDefault(a) < MaxOrDefault(b); });
+	returnelem = newvec.back();
 	return returnelem;
 }
 
