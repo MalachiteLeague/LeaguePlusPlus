@@ -57,6 +57,7 @@ inline Vec2 GetEvadePosition(SArray<DetectedSKillShot> Detected, IUnit* target,i
 				Polygon.Points[i - 1], Polygon.Points[i]), dists + 50);
 			Points.Add(middle);
 			float dist = Distance(ToVec3(Polygon.Points[i - 1]), ToVec3(Polygon.Points[i]));
+			// more maybe no need ?
 			if (Polygon.Points.size() < 6)
 			{
 				for (int j = -4; j < 5; j = j + 1)
@@ -72,6 +73,7 @@ inline Vec2 GetEvadePosition(SArray<DetectedSKillShot> Detected, IUnit* target,i
 			Polygon.Points.front(), Polygon.Points.back()), dists + 50);
 		Points.Add(middle);
 		float dist = Distance(ToVec3(Polygon.Points.back()), ToVec3(Polygon.Points[0]));
+		// more maybe no need ?
 		if (Polygon.Points.size() < 6)
 		{
 			for (int j = -4; j < 5; j = j + 1)

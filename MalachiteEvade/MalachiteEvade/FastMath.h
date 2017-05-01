@@ -188,7 +188,7 @@ inline bool GetDetectedSSOnCast(SpellData* spelldata, CastedSpell const& Args)
 	Vec2 EndPos = /*Args.EndPosition_.To2D();*/ GSpellData->GetEndPosition(Args.Data_).To2D();
 	if (spelldata->MissileToUnit)
 		EndPos = GSpellData->GetCaster(Args.Data_)->GetPosition().To2D();
-	if (spelldata->FixedRange)
+	if (spelldata->FixedRange || DistanceSqr(ToVec3(StartPos), Args.EndPosition_) > pow(spelldata->RawRange, 2))
 		EndPos = Extend(Args.Position_, Args.EndPosition_, spelldata->RawRange).To2D();
 	// fast calculation
 	{

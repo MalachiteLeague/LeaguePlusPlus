@@ -212,11 +212,11 @@ inline SArray<IUnit*> ValidAllies(vector<IUnit*> input)
 }
 inline bool IsValidTarget(IUnit* target, float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return target != nullptr && GEntityList->Player()->IsValidTarget(target, range) && Distance(target, RangeCheckFrom) <= range;
+	return target != nullptr && GEntityList->Player()->IsValidTarget(target, range) && DistanceSqr(target->GetPosition(), RangeCheckFrom) <= range * range;
 }
 inline bool IsValidAllies(IUnit* target, float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
-	return target != nullptr && !target->IsDead() && Distance(target, RangeCheckFrom) <= range;
+	return target != nullptr && !target->IsDead() && DistanceSqr(target->GetPosition(), RangeCheckFrom) <= range* range;
 }
 inline bool IsValidBoth(IUnit* target, float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
 {
@@ -256,15 +256,15 @@ inline int CountEnemiesInRange(Vec3 Position, float Range)
 {
 	vector<IUnit*> a;
 	a = SArray<IUnit*>(GEntityList->GetAllHeros(false, true)).Where([&](IUnit* i) { return
-		IsValidTarget(i) && Distance(i->GetPosition(), Position) <= Range; }).ToVector();
+		IsValidTarget(i) && DistanceSqr(i->GetPosition(), Position) <= Range * Range; }).ToVector();
 	return a.size();
 }
 inline int CountMinionsInRange(Vec3 Position, float Range, bool enemy = true, bool neutral = false, bool ally = false)
 {
 	int i = 0;
-	if (enemy) i += EnemyMinions().Where([&](IUnit* i) {return Distance(i, Position) <= Range; }).Count();
-	if (neutral) i += NeutralMinions().Where([&](IUnit* i) {return Distance(i, Position) <= Range; }).Count();
-	if (ally) i += AllyMinions().Where([&](IUnit* i) {return Distance(i, Position) <= Range; }).Count();
+	if (enemy) i += EnemyMinions(Range, Position).Count();
+	if (neutral) i += NeutralMinions(Range,Position).Count();
+	if (ally) i += AllyMinions(Range, Position).Count();
 	return i;
 }
 inline SArray<IUnit*> ValidEnemies(float range = 100000, Vec3 RangeCheckFrom = GEntityList->Player()->GetPosition())
@@ -281,15 +281,15 @@ inline SArray<IUnit*> ValidAllHeroes(float range = 100000, Vec3 RangeCheckFrom =
 }
 inline bool InAutoAttackRange(IUnit* target)
 {
-	return Distance(GEntityList->Player(), target) <= GEntityList->Player()->BoundingRadius() + GEntityList->Player()->AttackRange() + target->BoundingRadius();
+	return DistanceSqr(GEntityList->Player()->GetPosition(), target->GetPosition()) <= GetAutoAttackRange(target)* GetAutoAttackRange(target);
 }
 inline bool InSpellRange(ISpell2* spell, IUnit* target)
 {
-	return Distance(GEntityList->Player(), target) <= spell->Range();
+	return DistanceSqr(GEntityList->Player()->GetPosition(), target->GetPosition()) <= spell->Range()* spell->Range();
 }
 inline bool InSpellRange(ISpell2* spell, Vec3 position)
 {
-	return Distance(GEntityList->Player(), position) <= spell->Range();
+	return DistanceSqr(GEntityList->Player()->GetPosition(), position) <= spell->Range()* spell->Range();
 }
 inline double GetSpellDamage(IUnit* target, int slot)
 {
@@ -405,11 +405,11 @@ inline bool IsGoingToWard(IUnit* ThisUnit, IUnit* ToUnit)
 }
 inline bool IsInAutoAttackRange(Vec3 position)
 {
-	return GEntityList->Player()->AttackRange() + GEntityList->Player()->BoundingRadius() *2 >= Distance(GEntityList->Player(), position);
+	return pow(GetAutoAttackRange(GEntityList->Player()),2) >= DistanceSqr(GEntityList->Player()->GetPosition(), position);
 }
 inline bool IsInAutoAttackRange(IUnit* target)
 {
-	return GEntityList->Player()->AttackRange() + GEntityList->Player()->BoundingRadius() + target->BoundingRadius() >= Distance(GEntityList->Player(), target);
+	return pow(GetAutoAttackRange(target), 2) >= DistanceSqr(GEntityList->Player()->GetPosition(), target->GetPosition());
 }
 inline bool IsADCanCastSpell(bool anymode = false)
 {

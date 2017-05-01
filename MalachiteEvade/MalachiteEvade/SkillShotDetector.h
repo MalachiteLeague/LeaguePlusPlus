@@ -7,22 +7,22 @@ int LastEvadeTick = 0;
 Vec2 EvadeWalkingPoint;
 PLUGIN_EVENT(bool) SSDetectorOnIssueOrder(IUnit* Source, DWORD OrderIdx, Vec3* Position, IUnit* Target)
 {
-	if (GGame->TickCount() < LastEvadeTick + 100)
+	if (GGame->TickCount() < LastEvadeTick + 150)
 	{
 		return false;
 	}
-	if (Source == Player() && OrderIdx == kMoveTo && ShouldBlock(DetectedSkillShots,Player(),*Position,EvadeWithWalkingDanger->GetInteger()))
-	{
-		//GGame->PrintChat("blocked");
-		return false;
-	}
-	if (Source == Player())
+	if (Source == Player() && EvadeWithWalking->Enabled())
 	{
 		if (EvadeWalkingPoint != Vec2(0, 0))
 		{
 			//GGame->PrintChat("blocked number 2");
 			return false;
 		}
+	}
+	if (Source == Player() && OrderIdx == kMoveTo && ShouldBlock(DetectedSkillShots, Player(), *Position, EvadeWithWalkingDanger->GetInteger()))
+	{
+		//GGame->PrintChat("blocked");
+		return false;
 	}
 	return  true;
 }
@@ -36,7 +36,8 @@ PLUGIN_EVENT(void) SSDetectorOnCast(CastedSpell const& Args)
 		if (i->SpellName == string(Args.Name_)
 			|| std::find(i->ExtraSpellNames.begin(), i->ExtraSpellNames.end(), string(Args.Name_)) != i->ExtraSpellNames.end())
 		{
-			GetDetectedSSOnCast(i, Args);
+			if (!i->MissileOnly)
+				GetDetectedSSOnCast(i, Args);
 		}
 	}
 }
@@ -151,22 +152,37 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 		[&](DetectedSKillShot i)
 	{
 		//GGame->PrintChat(string(i.Data->MissileName) == string("") ? "yes " : "no");
-		float distance = Distance(i.Start, i.End);
-		return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration
-			+ distance * 1000 / i.Data->MissileSpeed ;
+		
+		if (i.Data->MissileName == "")
+		{
+			float distance = Distance(i.Start, i.End);
+			return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration
+				+ distance * 1000 / i.Data->MissileSpeed;
+		}
+		else
+		{
+			return  !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration;
+		}
 	});
 	DetectedSkillShotsAlly.RemoveAll(
 		[&](DetectedSKillShot i)
 	{
 		//GGame->PrintChat(string(i.Data->MissileName) == string("") ? "yes " : "no");
-		float distance = Distance(i.Start, i.End);
-		return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration
-			+ distance * 1000 / i.Data->MissileSpeed ;
+		if (i.Data->MissileName == "")
+		{
+			float distance = Distance(i.Start, i.End);
+			return !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration
+				+ distance * 1000 / i.Data->MissileSpeed;
+		}
+		else
+		{
+			return  !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration;
+		}
 	});
 
 
 	// evadeing
-	if (EvadeWithWalking->Enabled() && GGame->TickCount() >= LastEvadeTick + 100)
+	if (EvadeWithWalking->Enabled() && GGame->TickCount() >= LastEvadeTick + 150)
 	{
 		EvadeWalkingPoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
 		if (EvadeWalkingPoint != Vec2(0, 0))

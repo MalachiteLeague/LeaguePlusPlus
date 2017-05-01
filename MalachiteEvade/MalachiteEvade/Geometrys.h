@@ -27,7 +27,13 @@ inline Vec3 Pendicular(Vec3 x)
 	X2.y = X1.x;
 	return ToVec3(X2);
 }
-
+inline float DistanceSqr(Vec3 from, Vec3 to)
+{
+	float distance = (from.To2D() - to.To2D()).LengthSqr();
+	if (isnan(distance))
+		return 0;
+	return distance;
+}
 inline float Distance(Vec3 from, Vec3 to)
 {
 	float distance = (from.To2D() - to.To2D()).Length();
@@ -92,15 +98,15 @@ inline float Distance(Vec3 point, Vec3 segmentStart, Vec3 segmentEnd, bool onlyI
 }
 inline float Distance(IUnit* from, IUnit* to)
 {
-	return (from->GetPosition() - to->GetPosition()).Length2D();
+	return Distance(from->GetPosition(),to->GetPosition());
 }
 inline float Distance(IUnit* from, Vec3 to)
 {
-	return (from->GetPosition() - to).Length2D();
+	return Distance(from->GetPosition(), to);
 }
 inline float Distance(Vec2 from, Vec2 to)
 {
-	return (from - to).Length();
+	return Distance(ToVec3(from),ToVec3(to));
 }
 //dich chuyen ex- vector tend
 inline Vec3 Extend(Vec3 from, Vec3 to, float distance)

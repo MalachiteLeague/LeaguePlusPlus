@@ -86,34 +86,28 @@ SArray<T> SArray<T>::AddRange(vector<T> vec)
 template <class T>
 SArray<T> SArray<T>::RemoveAll(std::function<bool(T)> Remove)
 {
-	vector<T> newelems;
-	for each (T i in elems)
+	elems.erase(std::remove_if(elems.begin(),elems.end(), [&](T i)
 	{
-		if (!Remove(i))
-			newelems.push_back(i);
-	}
-	elems = newelems;
-	return SArray<T>(newelems);
+		return Remove(i);
+	}), elems.end());
+	return SArray(elems);
 }
 
 template<class T>
 SArray<T> SArray<T>::Where(std::function<bool(T)> Where)
 {
-	vector<T> newvec;
-	for each (T i in elems)
+	vector<T> newvec = elems;
+	newvec.erase(std::remove_if(newvec.begin(), newvec.end(), [&](T i)
 	{
-		if (Where(i))
-			newvec.push_back(i);
-	}
-	return newvec;
+		return !Where(i);
+	}), newvec.end());
+	return SArray(newvec);
 }
 
 template<class T>
 bool SArray<T>::Any(std::function<bool(T)> Any)
 {
-	vector<T> newelems;
-	newelems = this->Where([&](T i) {return Any(i); }).ToVector();
-	return !newelems.empty();
+	return std::find_if(elems.begin(), elems.end(), [&](T i) {return Any(i); }) != elems.end();
 }
 
 template<class T>
