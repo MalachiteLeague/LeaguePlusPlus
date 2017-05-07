@@ -5,12 +5,13 @@ Vec3 RenderPos1;
 Vec3 RenderPos2;
 int LastEvadeTick = 0;
 Vec2 EvadeWalkingPoint;
+extern int LastPolygonTick = 0;
 PLUGIN_EVENT(bool) SSDetectorOnIssueOrder(IUnit* Source, DWORD OrderIdx, Vec3* Position, IUnit* Target)
 {
-	if (GGame->TickCount() < LastEvadeTick + 150)
-	{
-		return false;
-	}
+	//if (GGame->TickCount() < LastEvadeTick + 150)
+	//{
+	//	return false;
+	//}
 	if (Source == Player() && EvadeWithWalking->Enabled())
 	{
 		if (EvadeWalkingPoint != Vec2(0, 0))
@@ -83,67 +84,6 @@ PLUGIN_EVENT(void) SSDetectorOnDestroy(IUnit* Source)
 		});
 	}
 }
-PLUGIN_EVENT(void) SSDetectorOnRender()
-{
-	if (EvadeDrawTestOnAlly->Enabled())
-	{
-		for (DetectedSKillShot skillshot : DetectedSkillShotsAlly.ToVector())
-		{
-			Geometry::IPolygon Poly = GetPolygon(skillshot);
-			Poly.Draw(Black());
-			//Geometry::IPolygon Poly = GetPolygon(skillshot);
-			//Vec4 Color;
-			//if (GetDodgeStage(skillshot, EvadeWithWalkingDanger->GetInteger()))
-			//{
-			//	Color = White();
-			//}
-			//else
-			//{
-			//	Color = Yellow();
-			//}
-			//Poly.Draw(Color);
-		}
-		//{
-		//	auto target = SelectTarget(PhysicalDamage, 2000);
-		//	if (target != nullptr)
-		//	{
-		//		GRender->DrawOutlinedCircle(ToVec3(GetEvadePosition(DetectedSkillShotsAlly, target)), Pink(), 50);
-		//	}
-		//}
-	}
-	// draw skill shot
-	for (DetectedSKillShot skillshot : DetectedSkillShots.ToVector())
-	{
-		if (EvadeSkillShotOptions[skillshot.Data->MenuName].Draw->Enabled())
-		{
-			Geometry::IPolygon Poly = GetPolygon(skillshot);
-			Vec4 Color;
-			if (GetDodgeStage(skillshot, EvadeWithWalkingDanger->GetInteger()))
-			{
-				Color = White();
-			}
-			else
-			{
-				Color = Red();
-			}
-			Poly.Draw(Color);
-		}
-	}
-	// draw status
-	if (EvadeDrawStatus->Enabled())
-	{
-		Vec2 Position;
-		GGame->Projection(Player()->GetPosition(), &Position);
-		Position.x = Position.x - 25;
-		Position.y = Position.y + 25;
-		Vec4 Color = 
-		EvadeEnable->Enabled() ? White() : Red();
-		string Text = EvadeEnable->Enabled() ? "Evade : ON" : "Evade : OFF";
-		GRender->DrawTextW(Position, Color, Text.c_str());
-	}
-	//GRender->DrawOutlinedCircle(RenderPos1, Green(), 100);
-	//GRender->DrawOutlinedCircle(RenderPos2, Red(), 100);
-}
 PLUGIN_EVENT(void) SSDetectorOnUpdate()
 {
 	// destroy process
@@ -179,10 +119,23 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 			return  !i.IsMissile && GGame->TickCount() - i.DetectionTime >= i.Data->Delay + i.Data->ExtraDuration;
 		}
 	});
+	// 
+    if (GGame->TickCount() - LastPolygonTick >= 100)
+    {
+		LastPolygonTick = GGame->TickCount();
+		for (int i = 0; i < DetectedSkillShots.ToVector().size(); ++i)
+		{
+			DetectedSkillShots.elems[i].Polygon = GetPolygon(DetectedSkillShots.elems[i], DetectedSkillShots.elems[i].Data->AddHitbox);
+		}
+		for (int i = 0; i < DetectedSkillShotsAlly.ToVector().size(); ++i)
+		{
+			DetectedSkillShotsAlly.elems[i].Polygon = GetPolygon(DetectedSkillShotsAlly.elems[i], DetectedSkillShotsAlly.elems[i].Data->AddHitbox);
+		}
+    }
 
 
 	// evadeing
-	if (EvadeWithWalking->Enabled() && GGame->TickCount() >= LastEvadeTick + 150)
+	if (EvadeWithWalking->Enabled() /*&& GGame->TickCount() >= LastEvadeTick + 150*/)
 	{
 		EvadeWalkingPoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
 		if (EvadeWalkingPoint != Vec2(0, 0))
@@ -198,7 +151,7 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 	if(EvadeWithFlash->Enabled() && Flash->IsReady())
 	{
 		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithFLashDanger->GetInteger()); });
-		for (DetectedSKillShot skillshot : detected.ToVector())
+		for (DetectedSKillShot skillshot : detected.elems)
 		{
 			if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
 			{
@@ -211,7 +164,7 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 	if (EvadeWithHourglass->Enabled())
 	{
 		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithHourglassDanger->GetInteger()); });
-		for (DetectedSKillShot skillshot : detected.ToVector())
+		for (DetectedSKillShot skillshot : detected.elems)
 		{
 			if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
 			{
@@ -230,6 +183,63 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 		}
 	}
 }
+PLUGIN_EVENT(void) SSDetectorOnRender()
+{
+	//for (int i = 0; i < DetectedSkillShots.ToVector().size(); ++i)
+	//{
+	//	DetectedSkillShots.elems[i].Polygon = GetPolygon(DetectedSkillShots.elems[i], DetectedSkillShots.elems[i].Data->AddHitbox);
+	//}
+	//for (int i = 0; i < DetectedSkillShotsAlly.ToVector().size(); ++i)
+	//{
+	//	DetectedSkillShotsAlly.elems[i].Polygon = GetPolygon(DetectedSkillShotsAlly.elems[i], DetectedSkillShotsAlly.elems[i].Data->AddHitbox);
+	//}
+	//for (DetectedSKillShot skillshot : DetectedSkillShots.elems)
+	//{
+	//	skillshot.Polygon = GetPolygon(skillshot, skillshot.Data->AddHitbox);
+	//}
+	//for (DetectedSKillShot skillshot : DetectedSkillShotsAlly.elems)
+	//{
+	//	skillshot.Polygon = GetPolygon(skillshot, skillshot.Data->AddHitbox);
+	//}
+	if (EvadeDrawTestOnAlly->Enabled())
+	{
+		for (DetectedSKillShot skillshot : DetectedSkillShotsAlly.elems)
+		{
+			skillshot.Polygon.Draw(Black());
+		}
+	}
+	// draw skill shot
+	for (DetectedSKillShot skillshot : DetectedSkillShots.elems)
+	{
+		if (EvadeSkillShotOptions[skillshot.Data->MenuName].Draw->Enabled())
+		{
+			Vec4 Color;
+			if (GetDodgeStage(skillshot, EvadeWithWalkingDanger->GetInteger()))
+			{
+				Color = White();
+			}
+			else
+			{
+				Color = Red();
+			}
+			skillshot.Polygon.Draw(Color);
+		}
+	}
+	// draw status
+	if (EvadeDrawStatus->Enabled())
+	{
+		Vec2 Position;
+		GGame->Projection(Player()->GetPosition(), &Position);
+		Position.x = Position.x - 25;
+		Position.y = Position.y + 25;
+		Vec4 Color =
+			EvadeEnable->Enabled() ? White() : Red();
+		string Text = EvadeEnable->Enabled() ? "Evade : ON" : "Evade : OFF"	;
+		GRender->DrawTextW(Position, Color, Text.c_str());
+	}
+	//GRender->DrawOutlinedCircle(RenderPos1, Green(), 100);
+	//GRender->DrawOutlinedCircle(RenderPos2, Red(), 100);
+}
 PLUGIN_EVENT(bool) SSDetectorOnWndProc(HWND Wnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	ToogleKeyChecker(EvadeToogleKey, EvadeEnable, Wnd, Message, wParam, lParam);
@@ -242,7 +252,7 @@ inline void SkillshotDetectorLoad()
 	SpellsDB->Spells = SArray<SpellData*>(SpellsDB->Spells).Where([&](SpellData*  i){return SArray<IUnit*>(GEntityList->GetAllHeros(true,true)).Any([&](IUnit* hero)
 	{
 		return string(hero->ChampionName()) == i->ChampName;
-	}); }).ToVector();
+	}); }).elems;
 	GEventManager->AddEventHandler(kEventOnSpellCast, SSDetectorOnCast);
 	GEventManager->AddEventHandler(kEventOnCreateObject, SSDetectorOnCreate);
 	GEventManager->AddEventHandler(kEventOnDestroyObject, SSDetectorOnDestroy);

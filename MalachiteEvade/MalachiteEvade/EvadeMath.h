@@ -4,9 +4,9 @@
 inline int GetDangerousLevel (Vec2 Position, SArray<DetectedSKillShot> Detected, DetectedSKillShot& SkillShot)
 {
 	int danger = 0;
-	for (DetectedSKillShot skillshot : Detected.ToVector())
+	for (DetectedSKillShot skillshot : Detected.elems)
 	{
-		if (GetPolygon(skillshot, skillshot.Data->AddHitbox).IsInside(Position) && EvadeSkillShotOptions[skillshot.Data->MenuName].DangerLevel->GetInteger() > danger)
+		if (skillshot.Polygon.IsInside(Position) && EvadeSkillShotOptions[skillshot.Data->MenuName].DangerLevel->GetInteger() > danger)
 		{
 			danger = EvadeSkillShotOptions[skillshot.Data->MenuName].DangerLevel->GetInteger();
 			SkillShot = skillshot;
@@ -43,7 +43,7 @@ inline Vec2 GetEvadePosition(SArray<DetectedSKillShot> Detected, IUnit* target,i
 	// nguy hiem ne
 	//float distance = 10000000000000000;
 	Vec2 EvadePoint = Vec2(0, 0);
-	Geometry::IPolygon Polygon = GetPolygon(skillshot, skillshot.Data->AddHitbox, 50);
+	Geometry::IPolygon Polygon = skillshot.Polygon;
 
 	// tim tat ca cac diem quen thuoc
 	SArray<Vec2> Points;
@@ -117,7 +117,7 @@ inline Vec2 GetEvadePosition(SArray<DetectedSKillShot> Detected, IUnit* target,i
 }
 inline bool IsGettingHit (int milisecond, DetectedSKillShot skillshot , IUnit* target)
 {
-	if (!GetPolygon(skillshot, skillshot.Data->AddHitbox).IsInside(target->GetPosition().To2D()))
+	if (!skillshot.Polygon.IsInside(target->GetPosition().To2D()))
 		return false;
     if (skillshot.IsProcess)
     {

@@ -71,7 +71,7 @@ inline vector<IUnit*> MalachitePredGetCollisions (Vec3 From, Vec3 To, int ColiFl
 		}
 		AllUnits.AddRange(Heroes);
 		AllUnits.AddRange(Minions);
-		for (IUnit* hero : AllUnits.ToVector())
+		for (IUnit* hero : AllUnits.elems)
 		{
 			float delay = spell->GetDelay() + Distance(From, hero->GetPosition()) / spell->Speed();
 			Vec3 pred = MalachitePredGetUnitPosition(hero, delay);

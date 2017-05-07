@@ -26,7 +26,7 @@ inline Vec2 GetFirstCollision (Vec2 From, Vec2 To, int ColiFlag, float speed, fl
 		}
 		AllUnits.AddRange(Heroes);
 		AllUnits.AddRange(Minions);
-		for (IUnit* hero : AllUnits.ToVector())
+		for (IUnit* hero : AllUnits.elems)
 		{
 			float delay = Distance(ToVec3(From), hero->GetPosition()) / speed;
 			Vec3 pred = MalachitePredGetUnitPosition(hero, delay);
@@ -127,18 +127,20 @@ inline Geometry::IPolygon GetPolygon(DetectedSKillShot skillshot, bool useBoundi
 			Vec2 dir = (skillshot.Start - skillshot.End).VectorNormalize().Perpendicular();
 			Vec2 start = skillshot.End - (dir * skillshot.Data->RadiusEx / 2);
 			Vec2 end = skillshot.End + (dir * skillshot.Data->RadiusEx / 2);
-			return Polygons::Line(start, end, skillshot.Data->RawRadius ).ToPolygon(ExtraRadius);
+			return Polygons::Line(start, end, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius);
 		}
 		case ST_Line:
 			return CollisionPos == Vec2(0, 0) ?
-				Polygons::Line(skillshot.Start, skillshot.End, skillshot.Data->RawRadius).ToPolygon(ExtraRadius) :
-				Polygons::Line(skillshot.Start, CollisionPos, skillshot.Data->RawRadius).ToPolygon(ExtraRadius);
+				Polygons::Line(skillshot.Start, skillshot.End, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius) :
+				Polygons::Line(skillshot.Start, CollisionPos, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius);
 		case ST_MissileLine:
 			return CollisionPos == Vec2(0, 0) ?
-				Polygons::Line(skillshot.Start, skillshot.End, skillshot.Data->RawRadius ).ToPolygon(ExtraRadius) :
-				Polygons::Line(skillshot.Start, CollisionPos, skillshot.Data->RawRadius ).ToPolygon(ExtraRadius);
+				Polygons::Line(skillshot.Start, skillshot.End, skillshot.Data->RawRadius/2 ).ToPolygon(ExtraRadius) :
+				Polygons::Line(skillshot.Start, CollisionPos, skillshot.Data->RawRadius/2 ).ToPolygon(ExtraRadius);
 		case ST_Circle:
 			return Polygons::Circle(skillshot.End, skillshot.Data->RawRadius ).ToPolygon(ExtraRadius);
+		case ST_Ellipse:
+			return Polygons::Ellipse(skillshot.Start,skillshot.End,skillshot.End,skillshot.Data->RawRadius,skillshot.Data->RadiusEx).ToPolygon(ExtraRadius);
 		case ST_MissileCone:
 			return  Polygons::Cone(skillshot.Start, (skillshot.End - skillshot.Start).VectorNormalize(), skillshot.Data->RawRadius, skillshot.Data->RawRange).ToPolygon(ExtraRadius);
 		default :
@@ -159,20 +161,22 @@ inline Geometry::IPolygon GetPolygon(DetectedSKillShot skillshot, bool useBoundi
 			Vec2 dir = (skillshot.Start - skillshot.End).VectorNormalize().Perpendicular();
 			Vec2 start = skillshot.End - (dir * skillshot.Data->RadiusEx / 2);
 			Vec2 end = skillshot.End + (dir * skillshot.Data->RadiusEx / 2);
-			return Polygons::Line(start, end, skillshot.Data->RawRadius ).ToPolygon(ExtraRadius);
+			return Polygons::Line(start, end, skillshot.Data->RawRadius/2 ).ToPolygon(ExtraRadius);
 		}
 		case ST_Line:
 			return CollisionPos == Vec2(0, 0) ?
-				Polygons::Line(skillshot.Start, skillshot.End, skillshot.Data->RawRadius).ToPolygon(ExtraRadius) :
-				Polygons::Line(skillshot.Start, CollisionPos, skillshot.Data->RawRadius).ToPolygon(ExtraRadius);
+				Polygons::Line(skillshot.Start, skillshot.End, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius) :
+				Polygons::Line(skillshot.Start, CollisionPos, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius);
 		case ST_MissileLine:
 		{	
 			return CollisionPos == Vec2(0, 0) ?
-				Polygons::Line(skillshot.MissileObject->GetPosition().To2D(), skillshot.End, skillshot.Data->RawRadius).ToPolygon(ExtraRadius) :
-				Polygons::Line(skillshot.MissileObject->GetPosition().To2D(), CollisionPos, skillshot.Data->RawRadius).ToPolygon(ExtraRadius);
+				Polygons::Line(skillshot.MissileObject->GetPosition().To2D(), skillshot.End, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius) :
+				Polygons::Line(skillshot.MissileObject->GetPosition().To2D(), CollisionPos, skillshot.Data->RawRadius/2).ToPolygon(ExtraRadius);
 		}
 		case ST_Circle:
 			return Polygons::Circle(skillshot.End, skillshot.Data->RawRadius ).ToPolygon(ExtraRadius);
+		case ST_Ellipse:
+			return Polygons::Ellipse(skillshot.Start, skillshot.End, skillshot.End, skillshot.Data->RawRadius, skillshot.Data->RadiusEx).ToPolygon(ExtraRadius);
 		case ST_MissileCone:
 			return  Polygons::Cone(skillshot.Start, (skillshot.End - skillshot.Start).VectorNormalize(), skillshot.Data->RawRadius, skillshot.Data->RawRange).ToPolygon(ExtraRadius);
 		default:
@@ -200,37 +204,48 @@ inline bool GetDetectedSSOnCast(SpellData* spelldata, CastedSpell const& Args)
 		NewEnd = Extend(EndPos, StartPos, - spelldata->InfrontStart);
 		StartPos = NewStart;
 		EndPos = NewEnd;
-
-		// oriana
-		if (spelldata->IsOriana)
+		if (spelldata->IsSpecial)
 		{
-			vector<IUnit*> AllUnit = GEntityList->GetAllUnits();
-			vector<IUnit*>::iterator objectIterator = std::find_if(AllUnit.begin(),AllUnit.end(),[&](IUnit* i)
+			// oriana
+			if (spelldata->IsOriana)
 			{
-				return i != nullptr && string(i->GetObjectName()) == string("Orianna_Base_Z_ball_glow_red.troy");
-				/*&& i->GetTeam() == Args.Caster_->GetTeam()*/;
-			});
-			if (objectIterator != AllUnit.end())
-			{
-				IUnit* object = *objectIterator;
-				StartPos = ToVec2(object->GetPosition());
-				EndPos = ToVec2(object->GetPosition());
-			}
-			else 
-			{
-				bool found = false;
-				for (IUnit* i : GEntityList->GetAllHeros(false,true))
+				vector<IUnit*> AllUnit = GEntityList->GetAllUnits();
+				vector<IUnit*>::iterator objectIterator = std::find_if(AllUnit.begin(), AllUnit.end(), [&](IUnit* i)
 				{
-					if (i != nullptr && i->IsVisible() && (i->HasBuff("OrianaGhost") || i->HasBuff("OrianaGhostSelf")))
+					return i != nullptr && string(i->GetObjectName()) == string("Orianna_Base_Z_ball_glow_red.troy");
+					/*&& i->GetTeam() == Args.Caster_->GetTeam()*/;
+				});
+				if (objectIterator != AllUnit.end())
+				{
+					IUnit* object = *objectIterator;
+					StartPos = ToVec2(object->GetPosition());
+					EndPos = ToVec2(object->GetPosition());
+				}
+				else
+				{
+					bool found = false;
+					for (IUnit* i : GEntityList->GetAllHeros(false, true))
 					{
-						StartPos = i->GetPosition().To2D();
-						EndPos = i->GetPosition().To2D();
-						found = true;
+						if (i != nullptr && i->IsVisible() && (i->HasBuff("OrianaGhost") || i->HasBuff("OrianaGhostSelf")))
+						{
+							StartPos = i->GetPosition().To2D();
+							EndPos = i->GetPosition().To2D();
+							found = true;
+						}
+					}
+					if (!found)
+					{
+						return false;
 					}
 				}
-				if(!found)
+			}
+			// galio
+			if (spelldata->IsGalio)
+			{
+				EndPos = Args.EndPosition_.To2D();
+				if (DistanceSqr(ToVec3(StartPos), ToVec3(EndPos)) > pow(spelldata->RawRange,2))
 				{
-					return false;
+					EndPos = Extend(StartPos, EndPos, spelldata->RawRange);
 				}
 			}
 		}
@@ -238,23 +253,25 @@ inline bool GetDetectedSSOnCast(SpellData* spelldata, CastedSpell const& Args)
 
 	if (Args.Caster_->IsEnemy(Player()))
 	{
-		DetectedSkillShots.Add(
-			DetectedSKillShot(
-				spelldata,
-				StartPos,
-				EndPos,
-				GGame->TickCount()
-				, true, false, nullptr, 0, Args.Caster_));
+		DetectedSKillShot a = DetectedSKillShot(
+			spelldata,
+			StartPos,
+			EndPos,
+			GGame->TickCount()
+			, true, false, nullptr, 0, Args.Caster_);
+		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		DetectedSkillShots.Add(a);
 	}
 	else
 	{
-		DetectedSkillShotsAlly.Add(
-			DetectedSKillShot(
-				spelldata,
-				StartPos,
-				EndPos,
-				GGame->TickCount()
-				, true, false, nullptr, 0, Args.Caster_));
+		DetectedSKillShot a = DetectedSKillShot(
+			spelldata,
+			StartPos,
+			EndPos,
+			GGame->TickCount()
+			, true, false, nullptr, 0, Args.Caster_);
+		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		DetectedSkillShotsAlly.Add(a);
 	}
 	return true;
 }
@@ -271,23 +288,25 @@ inline bool GetDetectedSSOnCreate(SpellData* spelldata, IUnit* Source)
 
 	if (GMissileData->GetCaster(Source)->IsEnemy(Player()))
 	{
-		DetectedSkillShots.Add(
-			DetectedSKillShot(
-				spelldata,
-				GMissileData->GetStartPosition(Source).To2D(),
-				EndPos
-				, GGame->TickCount()
-				, false, true, Source, Source->GetNetworkId()));
+		DetectedSKillShot a = DetectedSKillShot(
+			spelldata,
+			GMissileData->GetStartPosition(Source).To2D(),
+			EndPos
+			, GGame->TickCount()
+			, false, true, Source, Source->GetNetworkId());
+		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		DetectedSkillShots.Add(a);
 	}
 	else
 	{
-		DetectedSkillShotsAlly.Add(
-			DetectedSKillShot(
-				spelldata,
-				GMissileData->GetStartPosition(Source).To2D(),
-				EndPos
-				, GGame->TickCount()
-				, false, true, Source, Source->GetNetworkId()));
+		DetectedSKillShot a = DetectedSKillShot(
+			spelldata,
+			GMissileData->GetStartPosition(Source).To2D(),
+			EndPos
+			, GGame->TickCount()
+			, false, true, Source, Source->GetNetworkId());
+		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		DetectedSkillShotsAlly.Add(a);
 	}
 	return true;
 }

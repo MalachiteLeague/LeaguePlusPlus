@@ -11,7 +11,8 @@ enum SpellType
 	ST_Circle,
 	ST_Ring,
 	ST_Arc,
-	ST_None
+	ST_None,
+	ST_Ellipse
 };
 
 #define VarSetB(Name) SpellData* _##Name(bool _Var) { Name = _Var; return this; }
@@ -123,6 +124,11 @@ struct SpellData
 	AddVarS(ToggleName);
 	AddVarI(Type);
 	AddVarS(TrapName);
+
+	//special
+	AddVarB(IsSpecial);
+	//Galio
+	AddVarB(IsGalio);
 	//Oriana
 	AddVarB(IsOriana);
 
@@ -161,6 +167,11 @@ public:
 	};
 	DetectedSKillShot() { IsNull = true; }
 	bool IsNull = false;
+	Geometry::IPolygon Polygon;
+	void SetPolygon(Geometry::IPolygon poly)
+	{
+		Polygon = poly;
+	}
 };
 
 SArray<DetectedSKillShot> DetectedSkillShots;

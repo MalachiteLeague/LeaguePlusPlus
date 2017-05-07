@@ -256,7 +256,7 @@ inline int CountEnemiesInRange(Vec3 Position, float Range)
 {
 	vector<IUnit*> a;
 	a = SArray<IUnit*>(GEntityList->GetAllHeros(false, true)).Where([&](IUnit* i) { return
-		IsValidTarget(i) && DistanceSqr(i->GetPosition(), Position) <= Range * Range; }).ToVector();
+		IsValidTarget(i) && DistanceSqr(i->GetPosition(), Position) <= Range * Range; }).elems;
 	return a.size();
 }
 inline int CountMinionsInRange(Vec3 Position, float Range, bool enemy = true, bool neutral = false, bool ally = false)
@@ -353,7 +353,7 @@ FarmLocation FindBestLineCastPosition(vector<Vec3> RangeCheckFroms, float range,
 			targets.AddRange(heroes);
 			casttargets.AddRange(castheroes);
 		}
-		for (auto target : casttargets.ToVector())
+		for (auto target : casttargets.elems)
 		{
 			Vec3 endpos = Extend(RangeCheckFrom, target->GetPosition(), range);
 			int count = targets.Where([&](IUnit* i) 
@@ -429,7 +429,7 @@ inline bool IsADCanCastSpell(bool anymode = false)
 inline IUnit*  GetOrbwalkTarget()
 {
 	SArray<IUnit*> ignoretargets = ValidEnemies().Where([&](IUnit*i) {return !IsInAutoAttackRange(i); });
-	IUnit* target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, GEntityList->Player()->AttackRange() + 400, nullptr, true, &ignoretargets.ToVector());
+	IUnit* target = GTargetSelector->FindTargetEx(QuickestKill, PhysicalDamage, GEntityList->Player()->AttackRange() + 400, nullptr, true, &ignoretargets.elems);
 	return target;
 }
 #pragma endregion 

@@ -419,7 +419,46 @@ namespace Polygons
 
 		return points;
 	}
+	struct Ellipse
+	{
+		Vec2 Start;
+		Vec2 End;
+		Vec2 Center;
+		int Radius;
+		int RadiusEx;
+		Ellipse(){}
+		Ellipse(Vec2 start,Vec2 end,Vec2 center, int radius, int radiusex): Start(start),End(end),Center(center), Radius(radius), RadiusEx(radiusex)
+		{
+			
+		}
+		Geometry::IPolygon ToPolygon(int extraRadius = 0)
+		{
+			Geometry::IPolygon result;
 
+			const double Step = 2.f * M_PI / static_cast<float>(Quality);
+			auto radius = (extraRadius + Radius) / cos(Step);
+			auto radiusex = (extraRadius + RadiusEx) / cos(Step);
+			auto angle = (double)Radius;
+			Vec2 Direction = End - Start;
+			float anglerotate = AngleBetween(ToVec3(Direction), Vec3(0, 0, 0), Vec3(0, 0,1));
+			float anglerad = AngleToRadian(anglerotate);
+			for (auto i = - Quality; i <= Quality; i++)
+			{
+				angle += Step;
+
+				result.Add(Vec2(Center.x + radius * cosf(angle + anglerad), Center.y + radiusex * sinf(angle + anglerad)));
+			}
+			//for (auto i = 0; i <= Quality; i++)
+			//{
+			//	angle += Step;
+			//	Vec2 point = Vec2(Center.x + radius * cosf(angle), Center.y + radiusex * sinf(angle));
+
+			//	result.Add(RotateAround(ToVec3(point), ToVec3(Center),anglerotate).To2D());
+			//}
+
+			return result;
+		}
+	};
 	struct Arc
 	{
 		float Distance;

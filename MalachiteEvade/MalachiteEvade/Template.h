@@ -10,7 +10,7 @@ class SArray {
 public:
 	SArray() {};
 	SArray(vector<T> Svector) { elems = Svector; };
-private:
+public:
 	vector<T> elems;     // elements 
 
 public:
@@ -71,7 +71,7 @@ SArray<T> SArray<T>::Add(T elem)
 template <class T>
 SArray<T> SArray<T>::AddRange(SArray<T> elemstoadd)
 {
-	vector<T> vec = elemstoadd.ToVector();
+	vector<T> vec = elemstoadd.elems;
 	elems.insert(elems.end(), vec.begin(), vec.end());
 	return SArray<T>(elems);
 }
@@ -126,7 +126,7 @@ template <class T>
 T SArray<T>::FirstOrDefault(std::function<bool(T)> FirstOrDefault)
 {
 	vector<T> newvec;
-	newvec = this->Where([&](T i) {return FirstOrDefault(i); }).ToVector();
+	newvec = this->Where([&](T i) {return FirstOrDefault(i); }).elems;
 	if (newvec.empty())
 		return T();
 	return newvec.front();
@@ -136,7 +136,7 @@ template <class T>
 T SArray<T>::LastOrDefault(std::function<bool(T)> LastOrDefault)
 {
 	vector<T> newvec;
-	newvec = this->Where([&](T i) {return LastOrDefault(i); }).ToVector();
+	newvec = this->Where([&](T i) {return LastOrDefault(i); }).elems;
 	if (newvec.empty())
 		return T();
 	return newvec.back();
