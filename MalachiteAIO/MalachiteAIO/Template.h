@@ -10,7 +10,7 @@ class SArray {
 public:
 	SArray() {};
 	SArray(vector<T> Svector) { elems = Svector; };
-private:
+public:
 	vector<T> elems;     // elements 
 
 public:
@@ -71,7 +71,7 @@ SArray<T> SArray<T>::Add(T elem)
 template <class T>
 SArray<T> SArray<T>::AddRange(SArray<T> elemstoadd)
 {
-	vector<T> vec = elemstoadd.ToVector();
+	vector<T> vec = elemstoadd.elems;
 	elems.insert(elems.end(), vec.begin(), vec.end());
 	return SArray<T>(elems);
 }
@@ -86,34 +86,28 @@ SArray<T> SArray<T>::AddRange(vector<T> vec)
 template <class T>
 SArray<T> SArray<T>::RemoveAll(std::function<bool(T)> Remove)
 {
-	vector<T> newelems;
-	for each (T i in elems)
+	elems.erase(std::remove_if(elems.begin(), elems.end(), [&](T i)
 	{
-		if (!Remove(i))
-			newelems.push_back(i);
-	}
-	elems = newelems;
-	return SArray<T>(newelems);
+		return Remove(i);
+	}), elems.end());
+	return SArray(elems);
 }
 
 template<class T>
 SArray<T> SArray<T>::Where(std::function<bool(T)> Where)
 {
-	vector<T> newvec;
-	for each (T i in elems)
+	vector<T> newvec = elems;
+	newvec.erase(std::remove_if(newvec.begin(), newvec.end(), [&](T i)
 	{
-		if (Where(i))
-			newvec.push_back(i);
-	}
-	return newvec;
+		return !Where(i);
+	}), newvec.end());
+	return SArray(newvec);
 }
 
 template<class T>
 bool SArray<T>::Any(std::function<bool(T)> Any)
 {
-	vector<T> newelems;
-	newelems = this->Where([&](T i) {return Any(i); }).ToVector();
-	return !newelems.empty();
+	return std::find_if(elems.begin(), elems.end(), [&](T i) {return Any(i); }) != elems.end();
 }
 
 template<class T>
@@ -132,7 +126,7 @@ template <class T>
 T SArray<T>::FirstOrDefault(std::function<bool(T)> FirstOrDefault)
 {
 	vector<T> newvec;
-	newvec = this->Where([&](T i) {return FirstOrDefault(i); }).ToVector();
+	newvec = this->Where([&](T i) {return FirstOrDefault(i); }).elems;
 	if (newvec.empty())
 		return T();
 	return newvec.front();
@@ -142,7 +136,7 @@ template <class T>
 T SArray<T>::LastOrDefault(std::function<bool(T)> LastOrDefault)
 {
 	vector<T> newvec;
-	newvec = this->Where([&](T i) {return LastOrDefault(i); }).ToVector();
+	newvec = this->Where([&](T i) {return LastOrDefault(i); }).elems;
 	if (newvec.empty())
 		return T();
 	return newvec.back();
@@ -158,12 +152,8 @@ T SArray<T>::MinOrDefault(std::function<T2(T)> MinOrDefault)
 	returnelem = T();
 	if (newvec.empty())
 		return returnelem;
+	std::sort(newvec.begin(), newvec.end(), [&](T a, T b) { return MinOrDefault(a) < MinOrDefault(b); });
 	returnelem = newvec.front();
-	for each (T i in newvec)
-	{
-		if (MinOrDefault(i) < MinOrDefault(returnelem))
-			returnelem = i;
-	}
 	return returnelem;
 }
 
@@ -177,12 +167,8 @@ T SArray<T>::MaxOrDefault(std::function<T2(T)> MaxOrDefault)
 	returnelem = T();
 	if (newvec.empty())
 		return returnelem;
-	returnelem = newvec.front();
-	for each (T i in newvec)
-	{
-		if (MaxOrDefault(i) > MaxOrDefault(returnelem))
-			returnelem = i;
-	}
+	std::sort(newvec.begin(), newvec.end(), [&](T a, T b) { return MaxOrDefault(a) < MaxOrDefault(b); });
+	returnelem = newvec.back();
 	return returnelem;
 }
 

@@ -144,6 +144,8 @@ inline bool ShouldHoldOn (SArray<DetectedSKillShot> Detected, IUnit* target, int
 		return false;
 	if (GetDangerousLevel(ToVec2(Extend(waypoint[0], waypoint[1], 50)), detected, skillshot) != 0)
 		return true;
+	if (GetDangerousLevel(ToVec2(Extend(waypoint[0], waypoint[1], 100)), detected, skillshot) != 0)
+		return true;
 	return false;
 }
 inline bool ShouldBlock (SArray<DetectedSKillShot> Detected, IUnit* target, Vec3 Position, int Dangerouslevel)

@@ -27,10 +27,19 @@ inline Vec3 Pendicular(Vec3 x)
 	X2.y = X1.x;
 	return ToVec3(X2);
 }
-
+inline float DistanceSqr(Vec3 from, Vec3 to)
+{
+	float distance = (from.To2D() - to.To2D()).LengthSqr();
+	if (isnan(distance))
+		return 0;
+	return distance;
+}
 inline float Distance(Vec3 from, Vec3 to)
 {
-	return (from - to).Length2D();
+	float distance = (from.To2D() - to.To2D()).Length();
+	if (isnan(distance))
+		return 0;
+	return distance;
 }
 inline float AngleBetween(Vec3 a, Vec3 center, Vec3 c)
 {
@@ -51,7 +60,7 @@ inline Vec3 RotateAround(Vec3 pointToRotate3D, Vec3 centerPoint3D, float angleIn
 {
 	auto angleInRadians = AngleToRadian(angleInDegree);
 	double cosTheta = cos(angleInRadians);
-	double sinTheta = sin(angleInRadians);
+	double sinTheta = cos(angleInRadians);
 	Vec2 pointToRotate = ToVec2(pointToRotate3D);
 	Vec2 centerPoint = ToVec2(centerPoint3D);
 	Vec2 vec2Return
@@ -89,22 +98,26 @@ inline float Distance(Vec3 point, Vec3 segmentStart, Vec3 segmentEnd, bool onlyI
 }
 inline float Distance(IUnit* from, IUnit* to)
 {
-	return (from->GetPosition() - to->GetPosition()).Length2D();
+	return Distance(from->GetPosition(), to->GetPosition());
 }
 inline float Distance(IUnit* from, Vec3 to)
 {
-	return (from->GetPosition() - to).Length2D();
+	return Distance(from->GetPosition(), to);
 }
 inline float Distance(Vec2 from, Vec2 to)
 {
-	return (from - to).Length();
+	return Distance(ToVec3(from), ToVec3(to));
 }
 //dich chuyen ex- vector tend
+
+inline Vec2 Extend(Vec2 from, Vec2 to, float distance)
+{
+	auto direction = (to - from).VectorNormalize();
+	return from + direction * distance;
+}
 inline Vec3 Extend(Vec3 from, Vec3 to, float distance)
 {
-	float realDistance = (from - to).Length() * distance / (from - to).Length2D();
-	auto direction = (to - from).VectorNormalize();
-	return from + direction * realDistance;
+	return ToVec3(Extend(from.To2D(), to.To2D(), distance));
 }
 inline SArray<Vec3> GetCircleCircleIntersections(Vec3 center1, Vec3 center2, float radius1, float radius2)
 {
@@ -189,4 +202,19 @@ inline bool GetSegmentSegmentIntersections(
 {
 	Vec2 out;
 	return GetSegmentSegmentIntersections(ToVec2(lineSegment1Start), ToVec2(lineSegment1End), ToVec2(lineSegment2Start), ToVec2(lineSegment2End), out);
+}
+inline Vec2 GetLineLineIntersections(Vec2 A1, Vec2 A2, Vec2 B1, Vec2 B2)
+{
+	float a1 = A2.y - A1.y;
+	float b1 = A1.x - A2.x;
+	float c1 = a1* A1.x + b1 * A1.y;
+
+	float a2 = B2.y - B1.y;
+	float b2 = B1.x - B2.x;
+	float c2 = a2* B1.x + b2 * B1.y;
+
+	float det = a1*b2 - a2*b1;
+	float x = (b2*c1 - b1*c2) / det;
+	float y = (a1*c2 - a2*c1) / det;
+	return Vec2(x, y);
 }

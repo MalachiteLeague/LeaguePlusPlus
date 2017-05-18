@@ -594,7 +594,7 @@ namespace Polygons
 		{
 			Geometry::IPolygon result;
 			auto radius = (overrideRadius > 0 ? overrideRadius : Radius + extraRadius) * Perpendicular;
-			auto dir = static_cast<float>(extraRadius) * Direction;
+			auto dir = (static_cast<float>(extraRadius) + 50) * Direction;
 			result.Add(Start + radius - dir);
 			result.Add(Start - radius - dir);
 			result.Add(End - radius + dir);

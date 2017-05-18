@@ -181,15 +181,15 @@ inline void VelkozModeOnGapClose(GapCloserSpell const& Args)
 {
 	if (!VelkozAutoEGap->Enabled())
 		return;
-	if (Args.Sender == nullptr)
+	if (Args.Source == nullptr)
 		return;
-	MalachiteCast(E, Args.Sender);
+	MalachiteCast(E, Args.Source);
 }
 inline void VelkozModeOnInterrupt(InterruptibleSpell const& Args)
 {
 	if (!VelkozAutoEInterrupt->Enabled())
 		return;
-	if (Args.Target == nullptr)
+	if (Args.Source == nullptr)
 		return;
-	MalachiteCast(E, Args.Target);
+	MalachiteCast(E, Args.Source);
 }

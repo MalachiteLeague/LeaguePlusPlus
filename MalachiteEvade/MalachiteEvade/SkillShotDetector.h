@@ -185,22 +185,6 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 }
 PLUGIN_EVENT(void) SSDetectorOnRender()
 {
-	//for (int i = 0; i < DetectedSkillShots.ToVector().size(); ++i)
-	//{
-	//	DetectedSkillShots.elems[i].Polygon = GetPolygon(DetectedSkillShots.elems[i], DetectedSkillShots.elems[i].Data->AddHitbox);
-	//}
-	//for (int i = 0; i < DetectedSkillShotsAlly.ToVector().size(); ++i)
-	//{
-	//	DetectedSkillShotsAlly.elems[i].Polygon = GetPolygon(DetectedSkillShotsAlly.elems[i], DetectedSkillShotsAlly.elems[i].Data->AddHitbox);
-	//}
-	//for (DetectedSKillShot skillshot : DetectedSkillShots.elems)
-	//{
-	//	skillshot.Polygon = GetPolygon(skillshot, skillshot.Data->AddHitbox);
-	//}
-	//for (DetectedSKillShot skillshot : DetectedSkillShotsAlly.elems)
-	//{
-	//	skillshot.Polygon = GetPolygon(skillshot, skillshot.Data->AddHitbox);
-	//}
 	if (EvadeDrawTestOnAlly->Enabled())
 	{
 		for (DetectedSKillShot skillshot : DetectedSkillShotsAlly.elems)
@@ -211,6 +195,8 @@ PLUGIN_EVENT(void) SSDetectorOnRender()
 	// draw skill shot
 	for (DetectedSKillShot skillshot : DetectedSkillShots.elems)
 	{
+		if (EvadeSkillShotOptions.find(skillshot.Data->MenuName) == EvadeSkillShotOptions.end())
+			continue;
 		if (EvadeSkillShotOptions[skillshot.Data->MenuName].Draw->Enabled())
 		{
 			Vec4 Color;

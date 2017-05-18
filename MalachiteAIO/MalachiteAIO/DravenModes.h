@@ -107,17 +107,17 @@ inline void DravenModeOnGapClose(GapCloserSpell const& Args)
 {
 	if (!DravenAutoEGap->Enabled())
 		return;
-	if (Args.Sender == nullptr || !InSpellRange(E, Args.Sender))
+	if (Args.Source == nullptr || !InSpellRange(E, Args.Source))
 		return;
-	MalachiteCast(E, Args.Sender, kHitChanceHigh);
+	MalachiteCast(E, Args.Source, kHitChanceHigh);
 }
 inline void DravenModeOnInterrupt(InterruptibleSpell const& Args)
 {
 	if (!DravenAutoEInterrupt->Enabled())
 		return;
-	if (Args.Target == nullptr || !InSpellRange(E, Args.Target))
+	if (Args.Source == nullptr || !InSpellRange(E, Args.Source))
 		return;
-	MalachiteCast(E, Args.Target, kHitChanceHigh);
+	MalachiteCast(E, Args.Source, kHitChanceHigh);
 }
 inline void DravenModeOnRender ()
 {

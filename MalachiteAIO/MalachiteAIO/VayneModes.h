@@ -96,15 +96,15 @@ inline void VayneModeOnGapClose (GapCloserSpell const& Args)
 {
 	if (!VayneAutoEGapClose->Enabled())
 		return;
-	if (Args.Sender == nullptr || !IsInAutoAttackRange(Args.Sender))
+	if (Args.Source == nullptr || !IsInAutoAttackRange(Args.Source))
 		return;
-	E->CastOnUnit(Args.Sender);
+	E->CastOnUnit(Args.Source);
 }
 inline void VayneModeOnInterrupt (InterruptibleSpell const& Args)
 {
 	if (!VayneAutoEInterrupt->Enabled())
 		return;
-	if (Args.Target == nullptr || !IsInAutoAttackRange(Args.Target))
+	if (Args.Source == nullptr || !IsInAutoAttackRange(Args.Source))
 		return;
-	E->CastOnUnit(Args.Target);
+	E->CastOnUnit(Args.Source);
 }

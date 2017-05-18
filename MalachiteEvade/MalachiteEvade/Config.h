@@ -86,6 +86,8 @@ inline void EvadeMenuInit()
 //
 inline bool GetDodgeStage(DetectedSKillShot skillshot, int DangerousLevel)
 {
+	if (EvadeSkillShotOptions.find(skillshot.Data->MenuName) == EvadeSkillShotOptions.end())
+		return false;
 	if (!EvadeEnable->Enabled())
 		return false;
 	if (DangerousLevel > EvadeSkillShotOptions[skillshot.Data->MenuName].DangerLevel->GetInteger())

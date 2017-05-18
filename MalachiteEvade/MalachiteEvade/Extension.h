@@ -136,7 +136,7 @@ inline string SpellSlotToString (eSpellSlot slot)
 // keydown
 inline bool IsKeyDown(IMenuOption* menuOption)
 {
-	return (GetAsyncKeyState(menuOption->GetInteger()) & 0x8000) != 0;
+	return GUtility->IsKeyDown(menuOption->GetInteger());
 }
 // get toogle key
 inline void ToogleKeyChecker(IMenuOption* tooglekey, IMenuOption* checkbox, HWND Wnd, UINT Message, WPARAM wParam, LPARAM lParam)
