@@ -260,6 +260,7 @@ inline bool GetDetectedSSOnCast(SpellData* spelldata, CastedSpell const& Args)
 			GGame->TickCount()
 			, true, false, nullptr, 0, Args.Caster_);
 		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		a.DetectionTime = GGame->TickCount();
 		DetectedSkillShots.Add(a);
 	}
 	else
@@ -271,6 +272,7 @@ inline bool GetDetectedSSOnCast(SpellData* spelldata, CastedSpell const& Args)
 			GGame->TickCount()
 			, true, false, nullptr, 0, Args.Caster_);
 		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		a.DetectionTime = GGame->TickCount();
 		DetectedSkillShotsAlly.Add(a);
 	}
 	return true;
@@ -295,6 +297,7 @@ inline bool GetDetectedSSOnCreate(SpellData* spelldata, IUnit* Source)
 			, GGame->TickCount()
 			, false, true, Source, Source->GetNetworkId());
 		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		a.DetectionTime = GGame->TickCount();
 		DetectedSkillShots.Add(a);
 	}
 	else
@@ -306,6 +309,7 @@ inline bool GetDetectedSSOnCreate(SpellData* spelldata, IUnit* Source)
 			, GGame->TickCount()
 			, false, true, Source, Source->GetNetworkId());
 		a.Polygon = GetPolygon(a, a.Data->AddHitbox);
+		a.DetectionTime = GGame->TickCount();
 		DetectedSkillShotsAlly.Add(a);
 	}
 	return true;

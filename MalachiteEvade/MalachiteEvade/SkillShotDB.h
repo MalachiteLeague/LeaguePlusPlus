@@ -306,8 +306,7 @@ SpellDB::SpellDB()
 
 #pragma region Leblanc
 	Spells.push_back(CreateSpell()->_ChampName("Leblanc")->_DangerValue(2)->_MenuName("LeblancW")->_SpellName("LeblancW")->_Delay(0)->_MissileSpeed(1600)->_Slot(kSlotW)->_Range(600)->_Radius(220)->_IsDash(true)->_Type(ST_Circle));
-	Spells.push_back(CreateSpell()->_ChampName("Leblanc")->_MenuName("LeblancE")->_SpellName("LeblancE")->_DangerValue(3)->_MissileName("LeblancEMissile")->_MissileSpeed(1600)->_Slot(kSlotE)->_Range(950)->_Radius(70)->_FixedRange(true)->_IsDangerous(true)->_AddHitbox(true)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall)->_ExtraMissileNames("LeblancRE"));
-	Spells.push_back(CreateSpell()->_ChampName("Leblanc")->_MenuName("LeblancER")->_SpellName("LeblancEM")->_DangerValue(3)->_MissileName("LeblancEM")->_MissileSpeed(1600)->_Slot(kSlotR)->_Range(950)->_Radius(70)->_FixedRange(true)->_IsDangerous(true)->_AddHitbox(true)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall)->_ExtraMissileNames("LeblancRE"));
+	Spells.push_back(CreateSpell()->_ChampName("Leblanc")->_MenuName("LeblancE")->_SpellName("LeblancE")->_Delay(250)->_DangerValue(3)->_MissileName("LeblancEMissile")->_MissileSpeed(1600)->_Slot(kSlotE)->_Range(950)->_Radius(70)->_FixedRange(true)->_IsDangerous(true)->_AddHitbox(true)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall)->_ExtraMissileNames("LeblancRE"));
 #pragma endregion
 
 #pragma region LeeSin
@@ -589,7 +588,7 @@ SpellDB::SpellDB()
 #pragma endregion
 
 #pragma region Rakan
-	Spells.push_back(CreateSpell()->_ChampName("Rakan")->_MenuName("RakanQ")->_SpellName("RakanQ")->_MissileName("RakanQMis")->_DangerValue(2)->_Delay(250)->_Slot(kSlotQ)->_Range(800)->_MissileSpeed(1850)->_Radius(80)->_FixedRange(true)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall));
+	Spells.push_back(CreateSpell()->_ChampName("Rakan")->_MenuName("RakanQ")->_SpellName("RakanQ")->_MissileName("RakanQMis")->_DangerValue(2)->_Delay(250)->_Slot(kSlotQ)->_Range(900)->_MissileSpeed(1850)->_Radius(80)->_FixedRange(true)->_CollisionObjects(kCollidesWithMinions | kCollidesWithHeroes | kCollidesWithYasuoWall));
 	Spells.push_back(CreateSpell()->_ChampName("Rakan")->_MenuName("RakanW1")->_SpellName("RakanW")->_AddHitbox(false)->_DangerValue(3)->_Delay(500)->_Slot(kSlotW)->_Range(650)->_MissileSpeed(1850)->_Radius(250)->_Type(ST_Circle));
 	//Spells.push_back(CreateSpell()->_ChampName("Rakan")->_MenuName("RakanW2")->_SpellName("RakanWCast")->_AddHitbox(false)->_DangerValue(3)->_Delay(500)->_Slot(kSlotW)->_Radius(250)->_Type(ST_Circle)->_MissileToUnit(true));
 	//Spells.push_back(CreateSpell()->_ChampName("Xayah")->_MenuName("XayahR")->_SpellName("XayahR")->_DangerValue(2)->_Delay(1000)->_Slot(kSlotR)->_Range(1100)->_MissileSpeed(4000)->_Radius(30)->_FixedRange(true)->_Type(ST_Cone)->_MissileFromUnit(true));
@@ -641,4 +640,9 @@ SpellDB::SpellDB()
 	Spells.push_back(CreateSpell()->_ChampName("Zyra")->_DangerValue(5)->_MenuName("ZyraR")->_Slot(kSlotR)->_SpellName("ZyraR")->_Delay(2200)->_Type(ST_Circle)->_Range(700)->_Radius(520)->_MissileSpeed(INT_MAX));
 #pragma endregion
 
+	//delete some :D
+	Spells.erase(std::remove_if(Spells.begin(), Spells.end(), [&](SpellData* i)
+	{
+		return !Enemies().Any([&](IUnit* i2) {return string(i2->ChampionName()) == i->ChampName; });
+	}), Spells.end());
 }

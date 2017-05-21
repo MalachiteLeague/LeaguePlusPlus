@@ -1,6 +1,7 @@
 #pragma once
 #include "PluginSDK.h"
 #include <map>
+#include "EvaderDB.h"
 
 class SkillShotMenu
 {
@@ -12,6 +13,12 @@ public :
 	IMenuOption* IsDangerous;
 	IMenuOption* Draw;
 
+};
+class EvaderMenu
+{
+public:
+	IMenuOption* Enable;
+	IMenuOption* DangerLevel;
 };
 IMenu* EvadeMenu;
 IMenu* EvadeSkillMenu;
@@ -34,6 +41,7 @@ IMenuOption* EvadeWithFLashDanger;
 IMenuOption* EvadeWithHourglass;
 IMenuOption* EvadeWithHourglassDanger;
 
+std::map<string, EvaderMenu> EvaderOptions;
 std::map<string, SkillShotMenu> EvadeSkillShotOptions;
 
 inline void EvadeMenuInit()
@@ -56,6 +64,14 @@ inline void EvadeMenuInit()
 	EvadeWithFLashDanger = EvadeSkillMenu->AddInteger("Min Flash Danger Level", 1, 5, 5);
 	EvadeWithHourglass = EvadeSkillMenu->CheckBox("Hourglass", true);
 	EvadeWithHourglassDanger = EvadeSkillMenu->AddInteger("Min Hourglass Danger Level", 1, 5, 5);
+	for (Evader* spell : EvadersDB->EvadeSpells)
+	{
+		//if (spell->ChampionName == string(Player()->ChampionName()))
+		{
+			EvaderOptions[spell->MenuName].Enable = EvadeSkillMenu->CheckBox(spell->MenuName.c_str(), true);
+			EvaderOptions[spell->MenuName].DangerLevel = EvadeSkillMenu->AddInteger((spell->MenuName + " min danger level").c_str(), 1, 5, 3);
+		}
+	}
 
 	//
 	EvadeSkillShotMenu = EvadeMenu->AddMenu("SkillShot setting");
@@ -101,3 +117,11 @@ inline bool GetDodgeStage(DetectedSKillShot skillshot, int DangerousLevel)
 	return true;
 }
 
+inline bool GetEvaderStage(Evader* spell, DetectedSKillShot skillshot)
+{
+	if (EvaderOptions.find(spell->MenuName) == EvaderOptions.end())
+		return false;
+	if (!EvaderOptions[spell->MenuName].Enable->Enabled())
+		return false;
+	return GetDodgeStage(skillshot, EvaderOptions[spell->MenuName].DangerLevel->GetInteger());
+}

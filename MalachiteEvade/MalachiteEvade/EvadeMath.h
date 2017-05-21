@@ -21,14 +21,14 @@ inline bool IsAbleWalkEvade(Vec2 Point, DetectedSKillShot skillshot, IUnit* targ
 		float distance = Distance(target->GetPosition(), ToVec3(skillshot.Start));
 		int time = skillshot.Data->Delay + distance * 1000 / skillshot.Data->MissileSpeed;
 		int time2 = Distance(target, ToVec3(Point)) * 1000 / target->MovementSpeed();
-		return time2 + GGame->Latency() + 100 < time ;
+		return time2 + GGame->Latency() + GGame->TickCount() < time + skillshot.DetectionTime ;
 	}
 	if (skillshot.IsMissile && skillshot.MissileObject != nullptr)
 	{
 		float distance = Distance(skillshot.MissileObject, target);
 		int time = distance * 100 / skillshot.Data->MissileSpeed;
 		int time2 = Distance(target, ToVec3(Point)) * 1000 / target->MovementSpeed();
-		return time2 + GGame->Latency() + 100 < time ;
+		return time2 + GGame->Latency() < time ;
 	}
 	return false;
 }
@@ -157,4 +157,54 @@ inline bool ShouldBlock (SArray<DetectedSKillShot> Detected, IUnit* target, Vec3
 	if (GetDangerousLevel(ToVec2(Extend(target->GetPosition(), Position, 100)), detected, skillshot) != 0)
 		return true;
 	return false;
+}
+inline void TriggerEvader(Evader* evader, DetectedSKillShot skillshot)
+{
+	switch (evader->Type)
+	{
+	case Movement:
+		{
+			R = GPluginSDK->CreateSpell2(evader->Slot, kLineCast, false, false, kCollidesWithNothing);
+			Vec2 EvadePoint = GetEvadePosition(SArray<DetectedSKillShot>().Add(skillshot), Player(), EvaderOptions[evader->MenuName].DangerLevel->GetInteger());
+			if (EvadePoint != Vec2(0, 0))
+				R->CastOnPosition(ToVec3(EvadePoint));
+		}
+		break;
+	case SpeedBuffer:
+		{
+			R = GPluginSDK->CreateSpell2(evader->Slot, kLineCast, false, false, kCollidesWithNothing);
+			R->CastOnPlayer();
+		}
+		break;
+	case Invulnerability:
+		{
+			R = GPluginSDK->CreateSpell2(evader->Slot, kLineCast, false, false, kCollidesWithNothing);
+			auto target = SelectTarget(PhysicalDamage, evader->Range);
+			if (target != nullptr)
+			{
+				R->CastOnPosition(target->GetPosition());
+			}
+			else
+			{
+				auto Position = Player()->GetPosition().To2D().Extend(skillshot.Start, evader->Range);
+				R->CastOnPosition(ToVec3(Position));
+			}
+		}
+		break;
+	case Shield:
+		{
+			R = GPluginSDK->CreateSpell2(evader->Slot, kLineCast, false, false, kCollidesWithNothing);
+			R->CastOnPlayer();
+		}
+		break;
+	case Wall:
+		{
+			if (skillshot.Data->MissileName != "")
+			{
+				R = GPluginSDK->CreateSpell2(evader->Slot, kLineCast, false, false, kCollidesWithNothing);
+				R->CastOnPosition(ToVec3(skillshot.Start));
+			}
+		}
+		break;
+	}
 }

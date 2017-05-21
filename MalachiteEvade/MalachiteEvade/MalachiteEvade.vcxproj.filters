@@ -72,6 +72,9 @@
     <ClInclude Include="Config.h">
       <Filter>Evade</Filter>
     </ClInclude>
+    <ClInclude Include="EvaderDB.h">
+      <Filter>Evade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

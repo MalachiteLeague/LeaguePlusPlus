@@ -1,5 +1,6 @@
 #pragma once
 #include "EvadeMath.h"
+#include "EvaderDB.h"
 #include <string>
 Vec3 RenderPos1;
 Vec3 RenderPos2;
@@ -133,11 +134,12 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 		}
     }
 
+	//initialize evading point 
+	EvadeWalkingPoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
 
 	// evadeing
 	if (EvadeWithWalking->Enabled() /*&& GGame->TickCount() >= LastEvadeTick + 150*/)
 	{
-		EvadeWalkingPoint = GetEvadePosition(DetectedSkillShots, Player(), EvadeWithWalkingDanger->GetInteger());
 		if (EvadeWalkingPoint != Vec2(0, 0))
 		{
 			GGame->IssueOrderEx(Player(), kMoveTo, ToVec3(EvadeWalkingPoint), false);
@@ -148,37 +150,52 @@ PLUGIN_EVENT(void) SSDetectorOnUpdate()
 			GGame->IssueOrderEx(Player(), kHoldPosition, Player()->GetPosition(), true);
 		}
 	}
-	if(EvadeWithFlash->Enabled() && Flash->IsReady())
-	{
-		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithFLashDanger->GetInteger()); });
-		for (DetectedSKillShot skillshot : detected.elems)
-		{
-			if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
-			{
-				Vec2 EvadePoint = GetEvadePosition(SArray<DetectedSKillShot>().Add(skillshot), Player(), EvadeWithFLashDanger->GetInteger());
-				Vec2 Point = Extend(Player()->GetPosition().To2D(), EvadePoint, 424);
-				Flash->CastOnPosition(ToVec3(Point));
-			}
-		}
-	}
+	// HOURGLASS
 	if (EvadeWithHourglass->Enabled())
 	{
 		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithHourglassDanger->GetInteger()); });
 		for (DetectedSKillShot skillshot : detected.elems)
 		{
-			if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
+			if (!IsAbleWalkEvade(EvadeWalkingPoint, skillshot, Player()) || !EvadeWithWalking->Enabled())
 			{
-				CastItemOnUnit(3157, 500, nullptr);
-				//if (string(Player()->ChampionName()) == string("Xayah") )
-				//{
-				//	R = GPluginSDK->CreateSpell2(kSlotR, kLineCast, false, false, kCollidesWithNothing);
-				//	R->SetOverrideRange(10000);
-				//	auto target = SelectTarget(PhysicalDamage, 1000);
-				//	if (target != nullptr)
-				//		R->CastOnPosition(target->GetPosition());
-				//	else
-				//		R->CastOnPosition(ToVec3(skillshot.Start));
-				//}
+				if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
+				{
+					CastItemOnUnit(3157, 500, nullptr);
+				}
+			}
+		}
+	}
+	//FLASH 
+	if(EvadeWithFlash->Enabled() && Flash->IsReady())
+	{
+		SArray<DetectedSKillShot> detected = DetectedSkillShots.Where([&](DetectedSKillShot i) {return GetDodgeStage(i, EvadeWithFLashDanger->GetInteger()); });
+		for (DetectedSKillShot skillshot : detected.elems)
+		{
+			if (!IsAbleWalkEvade(EvadeWalkingPoint, skillshot, Player()) || !EvadeWithWalking->Enabled())
+			{
+				if (IsGettingHit(GGame->Latency() + 100, skillshot, Player()))
+				{
+					Vec2 EvadePoint = GetEvadePosition(SArray<DetectedSKillShot>().Add(skillshot), Player(), EvadeWithFLashDanger->GetInteger());
+					Vec2 Point = Extend(Player()->GetPosition().To2D(), EvadePoint, 424);
+					Flash->CastOnPosition(ToVec3(Point));
+				}
+			}
+		}
+	}
+	// EVADER
+	for (Evader* evader : EvadersDB->EvadeSpells)
+	{
+		for (DetectedSKillShot skillshot : DetectedSkillShots.elems)
+		{
+			if (GetEvaderStage(evader, skillshot) && EvadeWalkingPoint != Vec2(0,0))
+			{
+				if (!IsAbleWalkEvade(Extend(EvadeWalkingPoint,Player()->GetPosition().To2D(),50),skillshot,Player()) || !EvadeWithWalking->Enabled())
+				{
+					if (IsGettingHit(evader->Delay + GGame->Latency(), skillshot, Player()))
+					{
+						TriggerEvader(evader, skillshot);
+					}
+				}
 			}
 		}
 	}
@@ -234,6 +251,7 @@ PLUGIN_EVENT(bool) SSDetectorOnWndProc(HWND Wnd, UINT Message, WPARAM wParam, LP
 inline void SkillshotDetectorLoad()
 {
 	SpellsDB = new SpellDB;
+	EvadersDB = new EvaderDB;
 	EvadeMenuInit();
 	SpellsDB->Spells = SArray<SpellData*>(SpellsDB->Spells).Where([&](SpellData*  i){return SArray<IUnit*>(GEntityList->GetAllHeros(true,true)).Any([&](IUnit* hero)
 	{

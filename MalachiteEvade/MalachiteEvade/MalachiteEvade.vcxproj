@@ -158,6 +158,7 @@
     <ClInclude Include="Clipper.h" />
     <ClInclude Include="EvadeMath.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="EvaderDB.h" />
     <ClInclude Include="SkillShotDB.h" />
     <ClInclude Include="SkillShotDetector.h" />
     <ClInclude Include="SkillShot.h" />
